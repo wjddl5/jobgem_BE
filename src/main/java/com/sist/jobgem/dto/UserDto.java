@@ -14,17 +14,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDto {
 
-  public UserDto(User user) {
-    this.id = user.getId();
-    this.usId = user.getUsId();
-    this.usPw = user.getUsPw();
-    this.joinDate = user.getJoinDate();
-    this.leaveDate = user.getLeaveDate();
-    this.usType = user.getUsType();
-    this.usState = user.getUsState();
-    this.accessToken = user.getAccessToken();
-    this.refreshToken = user.getRefreshToken();
-  }
+  // public UserDto(User user) {
+  // this.id = user.getId();
+  // this.usId = user.getUsId();
+  // this.usPw = user.getUsPw();
+  // this.joinDate = user.getJoinDate();
+  // this.leaveDate = user.getLeaveDate();
+  // this.usType = user.getUsType();
+  // this.usState = user.getUsState();
+  // this.accessToken = user.getAccessToken();
+  // this.refreshToken = user.getRefreshToken();
+  // }
 
   private Integer id;
 

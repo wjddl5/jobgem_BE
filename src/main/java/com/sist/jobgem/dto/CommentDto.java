@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentDto {
 
-  public CommentDto(Comment comment) {
-    this.id = comment.getId();
-    this.boIdx = comment.getBoIdx();
-    this.usIdx = comment.getUsIdx();
-    this.commContent = comment.getCommContent();
-    this.user = comment.getUser();
-  }
+  // public CommentDto(Comment comment) {
+  // this.id = comment.getId();
+  // this.boIdx = comment.getBoIdx();
+  // this.usIdx = comment.getUsIdx();
+  // this.commContent = comment.getCommContent();
+  // this.user = comment.getUser();
+  // }
 
   private Integer id;
 
