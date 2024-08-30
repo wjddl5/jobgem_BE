@@ -1,18 +1,21 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "companies")
+@Builder
 public class Company {
     @Id
     @Column(name = "co_idx", nullable = false)
@@ -52,13 +55,13 @@ public class Company {
 
     @Size(max = 20)
     @NotNull
-    @Column(name = "co_imgUrl", nullable = false, length = 20)
-    private String coImgurl;
+    @Column(name = "co_img_url", nullable = false, length = 20)
+    private String coImgUrl;
 
     @Size(max = 20)
     @NotNull
-    @Column(name = "co_thumbimgUrl", nullable = false, length = 20)
-    private String coThumbimgurl;
+    @Column(name = "co_thumbimg_url", nullable = false, length = 20)
+    private String coThumbimgUrl;
 
     @Size(max = 20)
     @NotNull
@@ -70,5 +73,13 @@ public class Company {
 
     @Column(name = "co_state")
     private Integer coState;
+
+    @Column(name = "co_open")
+    private LocalDate coOpen;
+
+    @OneToMany
+    @JoinColumn(name = "co_idx")
+    @JsonManagedReference
+    private List<Post> posts;
 
 }

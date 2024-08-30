@@ -1,13 +1,10 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -15,6 +12,9 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "posts")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post {
     @Id
     @Column(name = "po_idx", nullable = false)
