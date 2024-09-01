@@ -79,7 +79,6 @@ public class Company {
 
     @OneToMany
     @JoinColumn(name = "co_idx")
-    @JsonManagedReference
     private List<Post> posts;
 
 }

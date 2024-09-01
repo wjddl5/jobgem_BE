@@ -1,11 +1,14 @@
 package com.sist.jobgem.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class CompanyIndexDto {
 
     private CompanyDto company;
     private Integer postCount;
+    private Integer noPostCount;
 
 }
