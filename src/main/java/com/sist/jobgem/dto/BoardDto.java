@@ -24,25 +24,8 @@ public class BoardDto {
   private Integer boLike;
   private Integer boAnswer;
   private Integer boStatus;
-  private UserDto user;
-  private List<CommentDto> commentList;
 
-  // Entity -> DTO 변환
   public static BoardDto fromEntity(Board board) {
-    return new BoardDto(
-        board.getId(),
-        board.getUsIdx(),
-        board.getBoType(),
-        board.getBoTitle(),
-        board.getBoContent(),
-        board.getBoWritedate(),
-        board.getBoHit(),
-        board.getBoLike(),
-        board.getBoAnswer(),
-        board.getBoStatus(),
-        UserDto.fromEntity(board.getUser()),
-        board.getCommentList().stream()
-            .map(CommentDto::fromEntity)
-            .collect(Collectors.toList()));
+    return new BoardDto();
   }
 }
