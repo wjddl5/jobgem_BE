@@ -1,12 +1,9 @@
 package com.sist.jobgem.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "hk_bridge")
 public class HkBridge {
