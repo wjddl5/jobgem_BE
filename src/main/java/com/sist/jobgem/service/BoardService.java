@@ -43,6 +43,13 @@ public class BoardService {
     // 변환된 DtoList를 사용하여 새로운 Page<BoardDto> 객체를 생성
     return new PageImpl<>(boardDtoList, pageable2, boardPage.getTotalElements());
   }
+  // public List<BoardDto> getBbsList(int boType, int boStatus, Pageable pageable)
+  // {
+  // List<Board> list = boardRepository.findByBoTypeAndBoStatus(boType, boStatus,
+  // pageable);
+  // List<BoardDto> dto_list = BoardMapper.INSTANCE.toDtoList(list);
+  // return dto_list;
+  // }
 
   // Board 엔티티를 BoardDto로 변환하는 메소드
   private BoardDto convertToDto(Board board) {
@@ -56,4 +63,24 @@ public class BoardService {
     BoardDto boardDto = BoardMapper.INSTANCE.toDto(board);
     return boardDto;
   }
+  public Page<BoardDto> getBbsList(int boType, int boStatus, Pageable pageable) {
+    Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+        Sort.by(Sort.Direction.DESC, "id"));
+
+    Page<Board> boardPage = boardRepository.findByBoTypeAndBoStatus(boType, boStatus, pageable2);
+
+    // Board -> BoardDto 변환
+    List<BoardDto> boardDtoList = boardPage.getContent().stream()
+        .map(this::convertToDto)
+        .collect(Collectors.toList());
+
+    // 변환된 DtoList를 사용하여 새로운 Page<BoardDto> 객체를 생성
+    return new PageImpl<>(boardDtoList, pageable2, boardPage.getTotalElements());
+  }
+
+  // Board 엔티티를 BoardDto로 변환하는 메소드
+  private BoardDto convertToDto(Board board) {
+    return BoardDto.fromEntity(board);
+  }
+
 }

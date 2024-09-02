@@ -28,4 +28,6 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
   Page<Board> findByWithSearch(@Param("boType") int boType, @Param("boStatus") int boStatus, Pageable pageable,
       @Param("searchType") String searchType, @Param("searchValue") String searchValue);
 
+  Page<Board> findByBoTypeAndBoStatus(int boType, int boStatus, Pageable pageable);
+
 }

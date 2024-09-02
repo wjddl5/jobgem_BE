@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.sist.jobgem.entity.Board;
-import com.sist.jobgem.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +24,4 @@ public class BoardDto {
   private Integer boLike;
   private Integer boAnswer;
   private Integer boStatus;
-  private UserDto user;
-
 }

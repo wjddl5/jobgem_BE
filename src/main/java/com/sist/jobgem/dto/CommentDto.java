@@ -18,5 +18,4 @@ public class CommentDto {
   private Integer commStatus;
   private UserDto userDto;
   private BoardDto boardDto;
-
 }

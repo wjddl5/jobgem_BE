@@ -24,6 +24,7 @@ public class BoardController {
   @RequestMapping("/bbs/notice/list")
   public Page<BoardDto> getNoticeList(Pageable pageable, String searchType, String searchValue) {
     return boardService.getBbsList(1, 1, pageable, searchType, searchValue); // boType 1 : 공지사항
+
   }
 
   // @RequestMapping("/bbs/qna/list")

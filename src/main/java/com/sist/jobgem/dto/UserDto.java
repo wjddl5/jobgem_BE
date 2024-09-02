@@ -24,6 +24,6 @@ public class UserDto {
   private LocalDate leaveDate;
   private Integer usType;
   private Integer usState;
+  private String accessToken;
   private String refreshToken;
-
 }
