@@ -13,34 +13,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-
-  // public UserDto(User user) {
-  // this.id = user.getId();
-  // this.usId = user.getUsId();
-  // this.usPw = user.getUsPw();
-  // this.joinDate = user.getJoinDate();
-  // this.leaveDate = user.getLeaveDate();
-  // this.usType = user.getUsType();
-  // this.usState = user.getUsState();
-  // this.accessToken = user.getAccessToken();
-  // this.refreshToken = user.getRefreshToken();
-  // }
-
   private Integer id;
-
   private String usId;
-
   private String usPw;
-
   private Instant joinDate;
-
   private LocalDate leaveDate;
-
   private Integer usType;
-
   private Integer usState;
-
   private String accessToken;
-
   private String refreshToken;
+
+  // Entity -> DTO 변환
+  public static UserDto fromEntity(User user) {
+    return new UserDto(
+        user.getId(),
+        user.getUsId(),
+        user.getUsPw(),
+        user.getJoinDate(),
+        user.getLeaveDate(),
+        user.getUsType(),
+        user.getUsState(),
+        user.getAccessToken(),
+        user.getRefreshToken());
+  }
+
 }
