@@ -44,4 +44,7 @@ public class Board {
     @Column(name = "bo_status", nullable = false)
     private Integer boStatus;
 
+    @ManyToOne
+    @JoinColumn(name = "us_idx")
+    private User user;
 }
