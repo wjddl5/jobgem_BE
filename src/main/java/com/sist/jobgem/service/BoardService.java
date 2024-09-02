@@ -22,25 +22,18 @@ public class BoardService {
   @Autowired
   private BoardRepository boardRepository;
 
-  // public List<BoardDto> getBbsList(int boType, int boStatus, Pageable pageable)
-  // {
-  // List<Board> list = boardRepository.findByBoTypeAndBoStatus(boType, boStatus,
-  // pageable);
-  // List<BoardDto> dto_list = BoardMapper.INSTANCE.toDtoList(list);
-  // return dto_list;
-  // }
+  // 게시판 리스트
+  public Page<BoardDto> getBbsList(int boType, int boStatus, Pageable pageable, String searchType, String searchValue) {
+    Page<Board> boardPage = null;
 
-  public BoardDto getView(int id) {
-    Board board = boardRepository.findById(id).get();
-    BoardDto boardDto = BoardMapper.INSTANCE.toDto(board);
-    return boardDto;
-  }
-
-  public Page<BoardDto> getBbsList(int boType, int boStatus, Pageable pageable) {
     Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
         Sort.by(Sort.Direction.DESC, "id"));
 
-    Page<Board> boardPage = boardRepository.findByBoTypeAndBoStatus(boType, boStatus, pageable2);
+    if (searchValue == null) {
+      boardPage = boardRepository.findByBoTypeAndBoStatus(boType, boStatus, pageable2);
+    } else {
+      boardPage = boardRepository.findByWithSearch(boType, boStatus, pageable2, searchType, searchValue);
+    }
 
     // Board -> BoardDto 변환
     List<BoardDto> boardDtoList = boardPage.getContent().stream()
@@ -55,5 +48,12 @@ public class BoardService {
   private BoardDto convertToDto(Board board) {
     return BoardDto.fromEntity(board);
   }
+  // =============
 
+  // 게시글 상세보기
+  public BoardDto getView(int id) {
+    Board board = boardRepository.findById(id).get();
+    BoardDto boardDto = BoardMapper.INSTANCE.toDto(board);
+    return boardDto;
+  }
 }
