@@ -1,16 +1,15 @@
 package com.sist.jobgem.dto;
 
-import com.sist.jobgem.entity.Company;
-import com.sist.jobgem.entity.Post;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class CompanyDto {
     Integer id;
     @NotNull

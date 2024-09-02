@@ -9,7 +9,7 @@ spring:
       enabled: always
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mysist3_db
+    url: jdbc:mysql://localhost:3306/jobgem_db
     username: test
     password: 1111
 
