@@ -1,6 +1,7 @@
 package com.sist.jobgem.entity;
 
 import jakarta.persistence.*;
+
 import lombok.Getter;
 
 @Getter
@@ -24,4 +25,11 @@ public class Comment {
     @Column(name = "comm_status", nullable = false)
     private Integer commStatus;
 
+    @ManyToOne
+    @JoinColumn(name = "bo_idx")
+    private Board board;
+
+    @ManyToOne
+    @JoinColumn(name = "us_idx")
+    private User user;
 }
