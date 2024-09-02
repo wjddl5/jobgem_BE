@@ -6,12 +6,15 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "reviews")
 public class Review {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "re_idx", nullable = false)
     private Integer id;
 
@@ -36,6 +39,10 @@ public class Review {
     @NotNull
     @Column(name = "re_score", nullable = false)
     private Integer reScore;
+
+    @NotNull
+    @Column(name = "re_write_date", nullable = false)
+    private LocalDate reWriteDate;
 
     @NotNull
     @Column(name = "re_state", nullable = false)

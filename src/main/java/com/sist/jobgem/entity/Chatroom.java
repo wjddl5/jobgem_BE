@@ -1,9 +1,6 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,9 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "chatroom")
+@Table(name = "chatrooms")
 public class Chatroom {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cm_idx", nullable = false)
     private Integer id;
 
@@ -25,7 +23,8 @@ public class Chatroom {
     @Column(name = "jn_idx", nullable = false)
     private Integer jnIdx;
 
-    @Column(name = "Field")
-    private Integer field;
+    @NotNull
+    @Column(name = "cm_status", nullable = false)
+    private Integer cmStatus;
 
 }

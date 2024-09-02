@@ -1,9 +1,6 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -17,12 +14,13 @@ import java.time.Instant;
 @Table(name = "alerts")
 public class Alert {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "al_idx", nullable = false)
     private Integer id;
 
     @NotNull
-    @Column(name = "u_idx", nullable = false)
-    private Integer uIdx;
+    @Column(name = "us_idx", nullable = false)
+    private Integer usIdx;
 
     @Size(max = 100)
     @NotNull
