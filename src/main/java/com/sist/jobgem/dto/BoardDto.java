@@ -24,4 +24,8 @@ public class BoardDto {
   private Integer boLike;
   private Integer boAnswer;
   private Integer boStatus;
+
+  public static BoardDto fromEntity(Board board) {
+    return new BoardDto();
+  }
 }
