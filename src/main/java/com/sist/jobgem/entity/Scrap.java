@@ -1,9 +1,6 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +13,7 @@ import java.time.LocalDate;
 @Table(name = "scraps")
 public class Scrap {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sc_idx", nullable = false)
     private Integer id;
 
