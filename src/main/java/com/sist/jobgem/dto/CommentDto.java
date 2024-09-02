@@ -2,11 +2,14 @@ package com.sist.jobgem.dto;
 
 import com.sist.jobgem.entity.Board;
 import com.sist.jobgem.entity.Comment;
+import com.sist.jobgem.entity.Jobseeker;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +19,14 @@ public class CommentDto {
   private Integer usIdx;
   private String commContent;
   private Integer commStatus;
-  private UserDto userDto;
+  private String usId;
   private BoardDto boardDto;
+
+  public static CommentDto toDto(Comment comment) {
+    return CommentDto.builder()
+        .commContent(comment.getCommContent())
+        .usId(comment.getUser().getUsId())
+        .build();
+  }
+
 }

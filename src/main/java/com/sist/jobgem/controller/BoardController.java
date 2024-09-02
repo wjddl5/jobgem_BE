@@ -10,7 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sist.jobgem.dto.BoardDto;
+import com.sist.jobgem.dto.CommentDto;
 import com.sist.jobgem.service.BoardService;
+import com.sist.jobgem.service.CommentService;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,6 +23,9 @@ public class BoardController {
 
   @Autowired
   private BoardService boardService;
+
+  @Autowired
+  private CommentService commentService;
 
   @RequestMapping("/bbs/notice/list")
   public Page<BoardDto> getNoticeList(Pageable pageable, String searchType, String searchValue) {
@@ -41,11 +47,12 @@ public class BoardController {
 
   @RequestMapping(value = { "/bbs/notice/view", "/bbs/qna/view" })
   public Map<String, Object> getView(@RequestParam(value = "id") int id) {
-    System.out.println("aaaaaaaaaaaaaaaa");
     Map<String, Object> map = new HashMap<>();
     BoardDto vo = boardService.getView(id);
+    List<CommentDto> commentList = commentService.getCommList(id);
 
     map.put("vo", vo);
+    map.put("commentList", commentList);
 
     return map;
   }
