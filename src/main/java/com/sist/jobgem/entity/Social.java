@@ -1,13 +1,14 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "socials")
 public class Social {
@@ -16,12 +17,8 @@ public class Social {
     @Column(name = "so_idx", nullable = false)
     private Integer id;
 
-    @NotNull
-    @Column(name = "us_idx", nullable = false)
     private Integer usIdx;
 
-    @Size(max = 100)
-    @NotNull
     @Column(name = "so_id", nullable = false, length = 100)
     private String soId;
 
