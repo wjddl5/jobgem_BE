@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "careers")
+@Table(name = "career")
 public class Career {
     @Id
     @Column(name = "cr_idx", nullable = false)
@@ -21,9 +20,5 @@ public class Career {
     @Size(max = 30)
     @Column(name = "cr_name", length = 30)
     private String crName;
-
-    @NotNull
-    @Column(name = "po_idx", nullable = false)
-    private Integer poIdx;
 
 }

@@ -20,12 +20,10 @@ public class Blacklist {
     @Column(name = "bl_idx", nullable = false)
     private Integer id;
 
-    @NotNull
-    @Column(name = "co_idx", nullable = false)
+    @Column(name = "co_idx")
     private Integer coIdx;
 
-    @NotNull
-    @Column(name = "jo_idx", nullable = false)
+    @Column(name = "jo_idx")
     private Integer joIdx;
 
     @NotNull

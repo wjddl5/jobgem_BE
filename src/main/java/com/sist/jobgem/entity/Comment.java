@@ -3,8 +3,6 @@ package com.sist.jobgem.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 public class Comment {
     @Id
     @Column(name = "comm_idx", nullable = false)
@@ -33,8 +31,8 @@ public class Comment {
     @Column(name = "comm_content", nullable = false, length = 100)
     private String commContent;
 
-    @OneToOne
-    @JoinColumn(name = "us_idx", insertable = false, updatable = false)
-    private User user;
+    @NotNull
+    @Column(name = "comm_status", nullable = false)
+    private Integer commStatus;
 
 }

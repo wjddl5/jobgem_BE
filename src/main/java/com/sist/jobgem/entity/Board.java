@@ -3,9 +3,6 @@ package com.sist.jobgem.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,12 +10,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "board")
+@Table(name = "boards")
 public class Board {
     @Id
     @Column(name = "bo_idx", nullable = false)
@@ -56,15 +52,12 @@ public class Board {
     @Column(name = "bo_answer")
     private Integer boAnswer;
 
+    @Size(max = 100)
+    @Column(name = "bo_image", length = 100)
+    private String boImage;
+
     @NotNull
     @Column(name = "bo_status", nullable = false)
     private Integer boStatus;
 
-    @OneToOne
-    @JoinColumn(name = "us_idx", insertable = false, updatable = false)
-    private User user;
-
-    @OneToMany
-    @JoinColumn(name = "bo_idx", insertable = false, updatable = false)
-    private List<Comment> commentList;
 }

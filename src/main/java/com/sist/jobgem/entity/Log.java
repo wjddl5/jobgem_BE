@@ -24,14 +24,17 @@ public class Log {
     @Column(name = "us_idx", nullable = false)
     private Integer usIdx;
 
-    @Column(name = "us_type")
+    @NotNull
+    @Column(name = "us_type", nullable = false)
     private Integer usType;
 
     @Size(max = 100)
-    @Column(name = "lo_content", length = 100)
+    @NotNull
+    @Column(name = "lo_content", nullable = false, length = 100)
     private String loContent;
 
-    @Column(name = "lo_time")
+    @NotNull
+    @Column(name = "lo_time", nullable = false)
     private Instant loTime;
 
 }

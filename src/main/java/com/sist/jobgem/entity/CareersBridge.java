@@ -11,22 +11,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "chatrooms")
-public class Chatroom {
+@Table(name = "careers_bridge")
+public class CareersBridge {
     @Id
-    @Column(name = "cm_idx", nullable = false)
+    @Column(name = "cb_idx", nullable = false)
     private Integer id;
 
     @NotNull
-    @Column(name = "op_idx", nullable = false)
-    private Integer opIdx;
+    @Column(name = "cr_idx", nullable = false)
+    private Integer crIdx;
 
     @NotNull
-    @Column(name = "jn_idx", nullable = false)
-    private Integer jnIdx;
-
-    @NotNull
-    @Column(name = "cm_status", nullable = false)
-    private Integer cmStatus;
+    @Column(name = "po_idx", nullable = false)
+    private Integer poIdx;
 
 }

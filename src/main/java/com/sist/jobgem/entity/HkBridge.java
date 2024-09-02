@@ -8,15 +8,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @Entity
-@Table(name = "scraps")
-public class Scrap {
+@Table(name = "hk_bridge")
+public class HkBridge {
     @Id
-    @Column(name = "sc_idx", nullable = false)
+    @Column(name = "hkb__idx", nullable = false)
     private Integer id;
 
     @NotNull
@@ -24,14 +22,7 @@ public class Scrap {
     private Integer poIdx;
 
     @NotNull
-    @Column(name = "jo_idx", nullable = false)
-    private Integer joIdx;
-
-    @Column(name = "sc_date")
-    private LocalDate scDate;
-
-    @NotNull
-    @Column(name = "sc_state", nullable = false)
-    private Integer scState;
+    @Column(name = "hk_idx", nullable = false)
+    private Integer hkIdx;
 
 }

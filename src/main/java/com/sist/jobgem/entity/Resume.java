@@ -40,8 +40,4 @@ public class Resume {
     @Column(name = "re_state", nullable = false)
     private Integer reState;
 
-    @NotNull
-    @Column(name = "rv_idx", nullable = false)
-    private Integer rvIdx;
-
 }

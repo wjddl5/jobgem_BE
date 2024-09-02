@@ -27,7 +27,8 @@ public class Chat {
     private Integer cmIdx;
 
     @Size(max = 100)
-    @Column(name = "ch_content", length = 100)
+    @NotNull
+    @Column(name = "ch_content", nullable = false, length = 100)
     private String chContent;
 
 }

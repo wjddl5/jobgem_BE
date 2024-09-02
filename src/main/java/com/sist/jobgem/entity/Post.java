@@ -1,10 +1,13 @@
 package com.sist.jobgem.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -12,9 +15,6 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "posts")
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Post {
     @Id
     @Column(name = "po_idx", nullable = false)
@@ -41,41 +41,17 @@ public class Post {
     @Column(name = "po_deadline")
     private LocalDate poDeadline;
 
-    @Size(max = 10)
-    @Column(name = "po_edu", length = 10)
-    private String poEdu;
-
-    @Size(max = 30)
-    @Column(name = "po_imgUrl", length = 30)
+    @Size(max = 100)
+    @Column(name = "po_imgUrl", length = 100)
     private String poImgurl;
-
-    @Size(max = 10)
-    @NotNull
-    @Column(name = "po_location", nullable = false, length = 10)
-    private String poLocation;
 
     @Size(max = 10)
     @Column(name = "po_sal", length = 10)
     private String poSal;
 
-    @Size(max = 30)
-    @Column(name = "po_prefer", length = 30)
-    private String poPrefer;
-
-    @Size(max = 2)
-    @Column(name = "po_career", length = 2)
-    private String poCareer;
-
-    @Size(max = 10)
-    @Column(name = "po_type", length = 10)
-    private String poType;
-
     @Size(max = 15)
     @Column(name = "po_workhour", length = 15)
     private String poWorkhour;
-
-    @Column(name = "po_state")
-    private Integer poState;
 
     @Size(max = 20)
     @Column(name = "po_sub_type", length = 20)
@@ -92,5 +68,9 @@ public class Post {
     @Size(max = 30)
     @Column(name = "po_fax", length = 30)
     private String poFax;
+
+    @NotNull
+    @Column(name = "po_state", nullable = false)
+    private Integer poState;
 
 }

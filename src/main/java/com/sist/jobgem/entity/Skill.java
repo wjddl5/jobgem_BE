@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "skill")
+@Table(name = "skills")
 public class Skill {
     @Id
     @Column(name = "sk_idx", nullable = false)

@@ -27,8 +27,4 @@ public class Social {
     @Column(name = "so_id", nullable = false, length = 100)
     private String soId;
 
-    @NotNull
-    @Column(name = "us_idx2", nullable = false)
-    private Integer usIdx2;
-
 }

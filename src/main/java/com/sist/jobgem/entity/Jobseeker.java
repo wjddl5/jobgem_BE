@@ -24,10 +24,6 @@ public class Jobseeker {
     @Column(name = "us_idx", nullable = false)
     private Integer usIdx;
 
-    @NotNull
-    @Column(name = "hc_idx", nullable = false)
-    private Integer hcIdx;
-
     @Size(max = 10)
     @NotNull
     @Column(name = "jo_name", nullable = false, length = 10)
@@ -42,15 +38,19 @@ public class Jobseeker {
     @Column(name = "jo_address", nullable = false, length = 30)
     private String joAddress;
 
+    @Size(max = 15)
+    @NotNull
+    @Column(name = "jo_tel", nullable = false, length = 15)
+    private String joTel;
+
     @Size(max = 1)
     @NotNull
     @Column(name = "jo_gender", nullable = false, length = 1)
     private String joGender;
 
-    @Size(max = 30)
-    @NotNull
-    @Column(name = "jo_imgUrl", nullable = false, length = 30)
-    private String joImgurl;
+    @Size(max = 100)
+    @Column(name = "jo_img_url", length = 100)
+    private String joImgUrl;
 
     @Size(max = 10)
     @NotNull
@@ -60,9 +60,5 @@ public class Jobseeker {
     @Size(max = 10)
     @Column(name = "jo_sal", length = 10)
     private String joSal;
-
-    @NotNull
-    @Column(name = "jo_state", nullable = false)
-    private Integer joState;
 
 }

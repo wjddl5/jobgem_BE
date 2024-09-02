@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "interests_co")
-public class InterestsCo {
+@Table(name = "interest_companies")
+public class InterestCompany {
     @Id
     @Column(name = "ic_idx", nullable = false)
     private Integer id;

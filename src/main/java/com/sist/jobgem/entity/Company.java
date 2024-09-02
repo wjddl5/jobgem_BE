@@ -1,21 +1,20 @@
 package com.sist.jobgem.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "companies")
-@Builder
 public class Company {
     @Id
     @Column(name = "co_idx", nullable = false)
@@ -46,40 +45,39 @@ public class Company {
     private String coTel;
 
     @Size(max = 4)
-    @Column(name = "co_type", length = 4)
+    @NotNull
+    @Column(name = "co_type", nullable = false, length = 4)
     private String coType;
 
-    @NotNull
-    @Column(name = "co_employee", nullable = false)
+    @Column(name = "co_open")
+    private LocalDate coOpen;
+
+    @Column(name = "co_employee")
     private Integer coEmployee;
 
-    @Size(max = 20)
-    @NotNull
-    @Column(name = "co_img_url", nullable = false, length = 20)
+    @Size(max = 100)
+    @Column(name = "co_img_url", length = 100)
     private String coImgUrl;
 
-    @Size(max = 20)
-    @NotNull
-    @Column(name = "co_thumbimg_url", nullable = false, length = 20)
+    @Size(max = 100)
+    @Column(name = "co_thumbimg_url", length = 100)
     private String coThumbimgUrl;
 
     @Size(max = 20)
-    @NotNull
-    @Column(name = "co_sales", nullable = false, length = 20)
+    @Column(name = "co_sales", length = 20)
     private String coSales;
 
     @Column(name = "co_score")
     private Integer coScore;
 
-    @Column(name = "co_state")
-    private Integer coState;
+    @Size(max = 20)
+    @NotNull
+    @Column(name = "co_manager_name", nullable = false, length = 20)
+    private String coManagerName;
 
-    @Column(name = "co_open")
-    private LocalDate coOpen;
-
-    @OneToMany
-    @JoinColumn(name = "co_idx")
-    @JsonManagedReference
-    private List<Post> posts;
+    @Size(max = 15)
+    @NotNull
+    @Column(name = "co_manager_tel", nullable = false, length = 15)
+    private String coManagerTel;
 
 }
