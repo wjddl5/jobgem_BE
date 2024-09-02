@@ -14,7 +14,7 @@ public class CommentService {
   @Autowired
   private CommentRepository commentRepository;
 
-  public List<CommentDto> getCommList(Integer boId) {
-    return commentRepository.findByBoIdx(boId);
+  public List<CommentDto> getCommList(Integer boIdx) {
+    return commentRepository.findByBoIdx(boIdx);
   }
 }

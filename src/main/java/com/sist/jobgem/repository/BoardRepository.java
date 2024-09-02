@@ -14,18 +14,18 @@ import com.sist.jobgem.entity.Board;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
-  // List<Board> findByBoTypeAndBoStatus(int boType, int boStatus, Pageable
-  // pageable);
+    // List<Board> findByBoTypeAndBoStatus(int boType, int boStatus, Pageable
+    // pageable);
 
-  Page<Board> findByBoTypeAndBoStatus(int boType, int boStatus, Pageable pageable);
+    Page<Board> findByBoTypeAndBoStatus(int boType, int boStatus, Pageable pageable);
 
-  @Query("SELECT b FROM Board b " +
-      "WHERE b.boType = :boType " +
-      "AND b.boStatus = :boStatus " +
-      "AND ((:searchType = 'title' AND b.boTitle LIKE %:searchValue%) " +
-      "OR (:searchType = 'content' AND b.boContent LIKE %:searchValue%)" +
-      "OR (:searchType = 'writer' AND b.user.usId LIKE %:searchValue%))")
-  Page<Board> findByWithSearch(@Param("boType") int boType, @Param("boStatus") int boStatus, Pageable pageable,
-      @Param("searchType") String searchType, @Param("searchValue") String searchValue);
+    @Query("SELECT b FROM Board b " +
+            "WHERE b.boType = :boType " +
+            "AND b.boStatus = :boStatus " +
+            "AND ((:searchType = 'title' AND b.boTitle LIKE %:searchValue%) " +
+            "OR (:searchType = 'content' AND b.boContent LIKE %:searchValue%)" +
+            "OR (:searchType = 'writer' AND b.user.usId LIKE %:searchValue%))")
+    Page<Board> findByWithSearch(@Param("boType") int boType, @Param("boStatus") int boStatus, Pageable pageable,
+            @Param("searchType") String searchType, @Param("searchValue") String searchValue);
 
 }

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
-  List<CommentDto> findByBoIdx(Integer boId);
+  List<CommentDto> findByBoIdx(Integer boIdx);
 
 }

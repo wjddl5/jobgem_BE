@@ -28,7 +28,9 @@ public class BoardController {
   private CommentService commentService;
 
   @RequestMapping("/bbs/notice/list")
-  public Page<BoardDto> getNoticeList(Pageable pageable, String searchType, String searchValue) {
+  public Page<BoardDto> getNoticeList(Pageable pageable,
+      @RequestParam(value = "searchType", required = false) String searchType,
+      @RequestParam(value = "searchValue", required = false) String searchValue) {
     return boardService.getBbsList(1, 1, pageable, searchType, searchValue); // boType 1 : 공지사항
 
   }
