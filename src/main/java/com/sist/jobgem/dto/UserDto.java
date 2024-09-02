@@ -3,15 +3,19 @@ package com.sist.jobgem.dto;
 import java.time.Instant;
 import java.time.LocalDate;
 
+import com.sist.jobgem.entity.Board;
+import com.sist.jobgem.entity.Jobseeker;
 import com.sist.jobgem.entity.User;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserDto {
   private Integer id;
   private String usId;
@@ -20,21 +24,6 @@ public class UserDto {
   private LocalDate leaveDate;
   private Integer usType;
   private Integer usState;
-  private String accessToken;
   private String refreshToken;
-
-  // Entity -> DTO 변환
-  public static UserDto fromEntity(User user) {
-    return new UserDto(
-        user.getId(),
-        user.getUsId(),
-        user.getUsPw(),
-        user.getJoinDate(),
-        user.getLeaveDate(),
-        user.getUsType(),
-        user.getUsState(),
-        user.getAccessToken(),
-        user.getRefreshToken());
-  }
 
 }

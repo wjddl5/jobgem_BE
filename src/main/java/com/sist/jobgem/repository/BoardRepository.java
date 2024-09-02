@@ -16,6 +16,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
   // List<Board> findByBoTypeAndBoStatus(int boType, int boStatus, Pageable
   // pageable);
+
   Page<Board> findByBoTypeAndBoStatus(int boType, int boStatus, Pageable pageable);
 
   @Query("SELECT b FROM Board b " +

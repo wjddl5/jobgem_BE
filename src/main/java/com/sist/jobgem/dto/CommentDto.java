@@ -1,5 +1,6 @@
 package com.sist.jobgem.dto;
 
+import com.sist.jobgem.entity.Board;
 import com.sist.jobgem.entity.Comment;
 
 import lombok.AllArgsConstructor;
@@ -14,16 +15,8 @@ public class CommentDto {
   private Integer boIdx;
   private Integer usIdx;
   private String commContent;
-  private UserDto user;
-
-  // Entity -> DTO 변환
-  public static CommentDto fromEntity(Comment comment) {
-    return new CommentDto(
-        comment.getId(),
-        comment.getBoIdx(),
-        comment.getUsIdx(),
-        comment.getCommContent(),
-        UserDto.fromEntity(comment.getUser()));
-  }
+  private Integer commStatus;
+  private UserDto userDto;
+  private BoardDto boardDto;
 
 }
