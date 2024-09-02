@@ -7,19 +7,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
-@Table(name = "location_do")
-public class LocationDo {
+@Table(name = "hk_bridge")
+public class HkBridge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ld_idx", nullable = false)
+    @Column(name = "hkb__idx", nullable = false)
     private Integer id;
 
-    @Column(name = "ld_name", length = 5)
-    private String ldName;
+    @Column(name = "po_idx", nullable = false)
+    private Integer poIdx;
+
+    @Column(name = "hk_idx", nullable = false)
+    private Integer hkIdx;
 
 }

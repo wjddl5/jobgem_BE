@@ -2,30 +2,28 @@ package com.sist.jobgem.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
-@Table(name = "chatroom")
+@Table(name = "chatrooms")
 public class Chatroom {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cm_idx", nullable = false)
     private Integer id;
 
-    @NotNull
     @Column(name = "op_idx", nullable = false)
     private Integer opIdx;
 
-    @NotNull
     @Column(name = "jn_idx", nullable = false)
     private Integer jnIdx;
 
-    @Column(name = "Field")
-    private Integer field;
+    @Column(name = "cm_status", nullable = false)
+    private Integer cmStatus;
 
 }

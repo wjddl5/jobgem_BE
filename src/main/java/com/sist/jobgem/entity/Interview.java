@@ -1,28 +1,34 @@
 package com.sist.jobgem.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
-@Table(name = "interview")
+@Table(name = "interviews")
 public class Interview {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "in_idx", nullable = false)
     private Integer id;
 
-    @NotNull
     @Column(name = "jo_idx", nullable = false)
     private Integer joIdx;
 
-    @NotNull
     @Column(name = "co_idx", nullable = false)
     private Integer coIdx;
+
+    @Column(name = "in_write_date", nullable = false)
+    private LocalDate inWriteDate;
+
+    @Column(name = "in_state")
+    private Integer inState;
 
 }
