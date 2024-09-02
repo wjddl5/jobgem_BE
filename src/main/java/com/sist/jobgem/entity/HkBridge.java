@@ -1,6 +1,11 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 
 @Getter
@@ -12,11 +17,9 @@ public class HkBridge {
     @Column(name = "hkb__idx", nullable = false)
     private Integer id;
 
-    @NotNull
     @Column(name = "po_idx", nullable = false)
     private Integer poIdx;
 
-    @NotNull
     @Column(name = "hk_idx", nullable = false)
     private Integer hkIdx;
 

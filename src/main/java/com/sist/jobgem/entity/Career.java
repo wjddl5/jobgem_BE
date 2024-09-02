@@ -1,6 +1,11 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 
 @Getter
@@ -12,7 +17,6 @@ public class Career {
     @Column(name = "cr_idx", nullable = false)
     private Integer id;
 
-    @Size(max = 30)
     @Column(name = "cr_name", length = 30)
     private String crName;
 
