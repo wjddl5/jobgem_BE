@@ -10,10 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.jobgem.dto.BoardDto;
 import com.sist.jobgem.entity.Board;
-import com.sist.jobgem.mapper.BoardMapper;
 import com.sist.jobgem.repository.BoardRepository;
 
 @Service
@@ -21,6 +21,11 @@ public class BoardService {
 
   @Autowired
   private BoardRepository boardRepository;
+
+  // Board 엔티티를 BoardDto로 변환하는 메소드
+  private BoardDto convertToDto(Board board) {
+    return BoardDto.toDto(board);
+  }
 
   // 게시판 리스트
   public Page<BoardDto> getBbsList(int boType, int boStatus, Pageable pageable, String searchType, String searchValue) {
@@ -52,31 +57,21 @@ public class BoardService {
   // return dto_list;
   // }
   // =============
+
   // 게시글 상세보기
   public BoardDto getView(int id) {
-    Board board = boardRepository.findById(id).get();
-    BoardDto boardDto = BoardMapper.INSTANCE.toDto(board);
+    Board board = boardRepository.findById(id);
+    BoardDto boardDto = convertToDto(board);
     return boardDto;
   }
 
-  public Page<BoardDto> getBbsList(int boType, int boStatus, Pageable pageable) {
-    Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-        Sort.by(Sort.Direction.DESC, "id"));
-
-    Page<Board> boardPage = boardRepository.findByBoTypeAndBoStatus(boType, boStatus, pageable2);
-
-    // Board -> BoardDto 변환
-    List<BoardDto> boardDtoList = boardPage.getContent().stream()
-        .map(this::convertToDto)
-        .collect(Collectors.toList());
-
-    // 변환된 DtoList를 사용하여 새로운 Page<BoardDto> 객체를 생성
-    return new PageImpl<>(boardDtoList, pageable2, boardPage.getTotalElements());
+  // 게시글 삭제
+  @Transactional
+  public boolean removeBbs(int id) {
+    int chk = boardRepository.updateBoardStatus(id);
+    if (chk == 1)
+      return true;
+    else
+      return false;
   }
-
-  // Board 엔티티를 BoardDto로 변환하는 메소드
-  private BoardDto convertToDto(Board board) {
-    return BoardDto.fromEntity(board);
-  }
-
 }

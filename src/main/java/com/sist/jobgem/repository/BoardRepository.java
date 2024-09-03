@@ -1,10 +1,9 @@
 package com.sist.jobgem.repository;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -27,5 +26,11 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
       "OR (:searchType = 'writer' AND b.user.usId LIKE %:searchValue%))")
   Page<Board> findByWithSearch(@Param("boType") int boType, @Param("boStatus") int boStatus, Pageable pageable,
       @Param("searchType") String searchType, @Param("searchValue") String searchValue);
+
+  Board findById(int id);
+
+  @Modifying
+  @Query("UPDATE Board b SET b.boStatus = 0 WHERE b.id = :id")
+  int updateBoardStatus(@Param("id") int id);
 
 }
