@@ -25,6 +25,9 @@ public class Interview {
     @Column(name = "co_idx", nullable = false)
     private Integer coIdx;
 
+    @Column(name = "in_content", nullable = false)
+    private String inContent;
+
     @Column(name = "in_write_date", nullable = false)
     private LocalDate inWriteDate;
 
