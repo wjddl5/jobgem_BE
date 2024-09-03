@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sist.jobgem.dto.CompanyDto;
-import com.sist.jobgem.dto.JobseekerDto;
-import com.sist.jobgem.dto.UserDto;
+import com.sist.jobgem.dto.CompanyJoinRequest;
+import com.sist.jobgem.dto.JobseekerJoinRequest;
 import com.sist.jobgem.entity.User;
 import com.sist.jobgem.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -28,21 +29,16 @@ public class UserController {
 
     @PostMapping("/join/emailcheck")
     public String postMethodName(@RequestBody String entity) {
-        //TODO: process POST request
-        
         return entity;
     }
     
     @PostMapping("/join/jobseeker")
-    public ResponseEntity<Integer> joinJobseeker(@RequestBody UserDto user, JobseekerDto jobseeker) {
-        
-        return ResponseEntity.ok(userService.addJobseeker(user, jobseeker));
+    public ResponseEntity<Integer> joinJobseeker(@Valid @RequestBody JobseekerJoinRequest request) {
+        return ResponseEntity.ok(userService.addJobseeker(request.getUser(), request.getJobseeker()));
     }
 
     @PostMapping("/join/company")
-    public ResponseEntity<Integer> joinCompany(User user, CompanyDto company) {
-        return ResponseEntity.ok(1);
+    public ResponseEntity<Integer> joinCompany(@Valid @RequestBody CompanyJoinRequest request) {
+        return ResponseEntity.ok(userService.addCompany(request.getUser(), request.getCompany()));
     }
-    
-    
 }
