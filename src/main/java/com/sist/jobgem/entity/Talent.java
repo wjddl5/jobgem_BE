@@ -12,11 +12,11 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "interviews")
-public class Interview {
+@Table(name = "talents")
+public class Talent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "in_idx", nullable = false)
+    @Column(name = "ta_idx", nullable = false)
     private Integer id;
 
     @Column(name = "jo_idx", nullable = false)
@@ -25,13 +25,7 @@ public class Interview {
     @Column(name = "co_idx", nullable = false)
     private Integer coIdx;
 
-    @Column(name = "in_content", nullable = false)
-    private String inContent;
-
-    @Column(name = "in_write_date", nullable = false)
-    private LocalDate inWriteDate;
-
-    @Column(name = "in_state")
-    private Integer inState;
+    @Column(name = "ta_date", nullable = false)
+    private LocalDate taDate;
 
 }

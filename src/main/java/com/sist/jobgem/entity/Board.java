@@ -1,10 +1,17 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-
 import java.time.LocalDate;
 import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Getter;
 
 @Getter
 @Entity
@@ -15,7 +22,9 @@ public class Board {
     @Column(name = "bo_idx", nullable = false)
     private Integer id;
 
+
     @Column(name = "us_idx", nullable = false, insertable = false, updatable = false)
+
     private Integer usIdx;
 
     @Column(name = "bo_type", nullable = false)
@@ -46,7 +55,7 @@ public class Board {
     private Integer boStatus;
 
     @ManyToOne
-    @JoinColumn(name = "us_idx")
+    @JoinColumn(name = "us_idx", insertable = false, updatable = false)
     private User user;
 
     @OneToMany(mappedBy = "board")

@@ -12,4 +12,5 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     Page<Review> findByJoIdx(int idx, Pageable pageable);
 
     int countByCoIdxAndReState(int coIdx, int reState);
+
 }
