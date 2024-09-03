@@ -13,10 +13,10 @@ public class Comment {
     @Column(name = "comm_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "bo_idx", nullable = false, insertable = false, updatable = false)
+    @Column(name = "bo_idx")
     private Integer boIdx;
 
-    @Column(name = "us_idx", nullable = false, insertable = false, updatable = false)
+    @Column(name = "us_idx")
     private Integer usIdx;
 
     @Column(name = "comm_content", nullable = false, length = 100)
@@ -26,10 +26,10 @@ public class Comment {
     private Integer commStatus;
 
     @ManyToOne
-    @JoinColumn(name = "bo_idx")
+    @JoinColumn(name = "bo_idx", nullable = false, insertable = false, updatable = false)
     private Board board;
 
     @ManyToOne
-    @JoinColumn(name = "us_idx")
+    @JoinColumn(name = "us_idx", nullable = false, insertable = false, updatable = false)
     private User user;
 }

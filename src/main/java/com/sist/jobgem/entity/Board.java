@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Entity
@@ -47,4 +48,7 @@ public class Board {
     @ManyToOne
     @JoinColumn(name = "us_idx")
     private User user;
+
+    @OneToMany(mappedBy = "board")
+    private List<Comment> commList;
 }

@@ -10,10 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.jobgem.dto.BoardDto;
 import com.sist.jobgem.entity.Board;
-import com.sist.jobgem.mapper.BoardMapper;
 import com.sist.jobgem.repository.BoardRepository;
 
 @Service
@@ -21,6 +21,11 @@ public class BoardService {
 
   @Autowired
   private BoardRepository boardRepository;
+
+  // Board 엔티티를 BoardDto로 변환하는 메소드
+  private BoardDto convertToDto(Board board) {
+    return BoardDto.toDto(board);
+  }
 
   // 게시판 리스트
   public Page<BoardDto> getBbsList(int boType, int boStatus, Pageable pageable, String searchType, String searchValue) {
@@ -55,14 +60,18 @@ public class BoardService {
 
   // 게시글 상세보기
   public BoardDto getView(int id) {
-    Board board = boardRepository.findById(id).get();
-    BoardDto boardDto = BoardMapper.INSTANCE.toDto(board);
+    Board board = boardRepository.findById(id);
+    BoardDto boardDto = convertToDto(board);
     return boardDto;
   }
 
-  // Board 엔티티를 BoardDto로 변환하는 메소드
-  private BoardDto convertToDto(Board board) {
-    return BoardDto.toDto(board);
+  // 게시글 삭제
+  @Transactional
+  public boolean removeBbs(int id) {
+    int chk = boardRepository.updateBoardStatus(id);
+    if (chk == 1)
+      return true;
+    else
+      return false;
   }
-
 }

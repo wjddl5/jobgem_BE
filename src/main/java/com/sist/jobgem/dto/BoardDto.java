@@ -2,7 +2,7 @@ package com.sist.jobgem.dto;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 import com.sist.jobgem.entity.Board;
 import com.sist.jobgem.entity.Comment;
@@ -28,9 +28,19 @@ public class BoardDto {
   private Integer boAnswer;
   private Integer boStatus;
   private String usId;
+  private int commCount;
 
   public static BoardDto toDto(Board board) {
+    List<Comment> list = board.getCommList();
+    List<Comment> list2 = new ArrayList<Comment>();
+
+    for (Comment cvo : list) {
+      if (cvo.getCommStatus() == 1) {
+        list2.add(cvo);
+      }
+    }
     return BoardDto.builder()
+        .id(board.getId())
         .boTitle(board.getBoTitle())
         .boContent(board.getBoContent())
         .boWritedate(board.getBoWritedate())
@@ -38,6 +48,7 @@ public class BoardDto {
         .boLike(board.getBoLike())
         .boAnswer(board.getBoAnswer())
         .usId(board.getUser().getUsId())
+        .commCount(list2.size())
         .build();
   }
 }

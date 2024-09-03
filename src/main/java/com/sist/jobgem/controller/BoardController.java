@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/bbs")
 public class BoardController {
 
   @Autowired
@@ -27,15 +27,14 @@ public class BoardController {
   @Autowired
   private CommentService commentService;
 
-  @RequestMapping("/bbs/notice/list")
+  @RequestMapping("/notice/list")
   public Page<BoardDto> getNoticeList(Pageable pageable,
       @RequestParam(value = "searchType", required = false) String searchType,
       @RequestParam(value = "searchValue", required = false) String searchValue) {
     return boardService.getBbsList(1, 1, pageable, searchType, searchValue); // boType 1 : 공지사항
-
   }
 
-  // @RequestMapping("/bbs/qna/list")
+  // @RequestMapping("/qna/list")
   // public Map<String, Object> getQnaList(Pageable pageable) {
   // Map<String, Object> map = new HashMap<>();
   // List<BoardDto> ar = boardService.getBbsList(2, 1, pageable); // boType 2 :
@@ -47,8 +46,9 @@ public class BoardController {
   // return map;
   // }
 
-  @RequestMapping(value = { "/bbs/notice/view", "/bbs/qna/view" })
+  @RequestMapping(value = { "/notice/view", "/qna/view" })
   public Map<String, Object> getView(@RequestParam(value = "id") int id) {
+    System.out.println("Aaaaaaaaaaaaaaaaaaaaaa");
     Map<String, Object> map = new HashMap<>();
     BoardDto vo = boardService.getView(id);
     List<CommentDto> commentList = commentService.getCommList(id);
@@ -57,6 +57,24 @@ public class BoardController {
     map.put("commentList", commentList);
 
     return map;
+  }
+
+  @RequestMapping("/notice/remove")
+  public boolean removeBbs(@RequestParam(value = "id") int id) {
+    return boardService.removeBbs(id);
+  }
+
+  @RequestMapping("/notice/removeList")
+  public boolean removeBbsList(@RequestParam(value = "chkList") List<String> chkList) {
+    for (int i = 0; i < chkList.size(); i++) {
+      boardService.removeBbs(Integer.parseInt(chkList.get(i)));
+    }
+    return true;
+  }
+
+  @RequestMapping("/comment/remove")
+  public boolean removeComment(@RequestParam(value = "id") int id) {
+    return commentService.removeComment(id);
   }
 
 }
