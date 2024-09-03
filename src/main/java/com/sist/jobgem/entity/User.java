@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
 import jakarta.persistence.Column;
@@ -33,6 +34,7 @@ public class User {
     @Column(name = "us_pw", nullable = false, length = 100)
     private String usPw;
 
+    @CreationTimestamp
     @Column(name = "us_join_date")
     private Instant usJoinDate;
 
