@@ -10,6 +10,8 @@ import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.JobseekerDto;
 import com.sist.jobgem.dto.UserDto;
 import com.sist.jobgem.entity.User;
+import com.sist.jobgem.mapper.CompanyMapper;
+import com.sist.jobgem.mapper.JobseekerMapper;
 import com.sist.jobgem.mapper.UserMapper;
 import com.sist.jobgem.repository.CompanyRepository;
 import com.sist.jobgem.repository.JobseekerRepository;
@@ -37,7 +39,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    private int addUser(UserDto userDto, int userType) {
+    private User addUser(UserDto userDto, int userType) {
         userDto.setUsPw(passwordEncoder.encode(userDto.getUsPw()));
         userDto.setUsJoinDate(Instant.now());
         userDto.setUsType(userType);
@@ -46,21 +48,25 @@ public class UserService {
         User addUserResult = userRepository.save(userEntity);
 
         if(addUserResult != null) {
-            return addUserResult.getId();
+            return addUserResult;
         }
 
-        return 0;
+        return null;
     }
 
     public int addJobseeker(UserDto userDto, JobseekerDto jobseekerDto) {
-        int userIdx = addUser(userDto, USER_TYPE_JOBSEEKER);
-        
-        return userIdx;
+        User user = addUser(userDto, USER_TYPE_JOBSEEKER);
+        jobseekerDto.setUser(user);
+        int jobseekerIdx = jobseekerRepository.save(JobseekerMapper.INSTANCE.toEntity(jobseekerDto)).getId();
+
+        return jobseekerIdx;
     }
 
-    public String addCompany(UserDto userDto, CompanyDto companyDto) {
-        int userIdx = addUser(userDto, USER_TYPE_COMPANY);
-        return "success";
+    public int addCompany(UserDto userDto, CompanyDto companyDto) {
+        User user = addUser(userDto, USER_TYPE_COMPANY);
+        companyDto.setUser(user);
+        int companyIdx = companyRepository.save(CompanyMapper.INSTANCE.toEntity(companyDto)).getId();
+        
+        return companyIdx;
     }
-    
 }
