@@ -1,7 +1,13 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 
 @Getter
@@ -13,10 +19,10 @@ public class Comment {
     @Column(name = "comm_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "bo_idx", nullable = false)
+    @Column(name = "bo_idx", nullable = false ,insertable=false, updatable=false)
     private Integer boIdx;
 
-    @Column(name = "us_idx", nullable = false)
+    @Column(name = "us_idx", nullable = false, insertable=false, updatable=false)
     private Integer usIdx;
 
     @Column(name = "comm_content", nullable = false, length = 100)
@@ -26,10 +32,10 @@ public class Comment {
     private Integer commStatus;
 
     @ManyToOne
-    @JoinColumn(name = "bo_idx")
+    @JoinColumn(name = "bo_idx", insertable = false, updatable = false)
     private Board board;
 
     @ManyToOne
-    @JoinColumn(name = "us_idx")
+    @JoinColumn(name = "us_idx" , insertable = false, updatable = false)
     private User user;
 }
