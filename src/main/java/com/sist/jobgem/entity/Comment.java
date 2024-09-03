@@ -19,10 +19,10 @@ public class Comment {
     @Column(name = "comm_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "bo_idx", nullable = false)
+    @Column(name = "bo_idx", nullable = false ,insertable=false, updatable=false)
     private Integer boIdx;
 
-    @Column(name = "us_idx", nullable = false)
+    @Column(name = "us_idx", nullable = false, insertable=false, updatable=false)
     private Integer usIdx;
 
     @Column(name = "comm_content", nullable = false, length = 100)
