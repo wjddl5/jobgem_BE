@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.jobgem.dto.CommentDto;
 import com.sist.jobgem.entity.Comment;
+import com.sist.jobgem.mapper.CommentMapper;
 import com.sist.jobgem.repository.CommentRepository;
 
 @Service
@@ -40,4 +41,17 @@ public class CommentService {
     else
       return false;
   }
+
+  public boolean writeComment(int boIdx, int usIdx, String content) {
+    CommentDto cDto = new CommentDto();
+    cDto.setBoIdx(boIdx);
+    cDto.setUsIdx(usIdx);
+    cDto.setCommContent(content);
+    cDto.setCommStatus(1);
+
+    Comment comment = CommentMapper.INSTANCE.dtoToEntity(cDto);
+    Comment comm = commentRepository.save(comment);
+    return comm != null;
+  }
+
 }

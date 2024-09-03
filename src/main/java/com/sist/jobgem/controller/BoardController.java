@@ -48,7 +48,6 @@ public class BoardController {
 
   @RequestMapping(value = { "/notice/view", "/qna/view" })
   public Map<String, Object> getView(@RequestParam(value = "id") int id) {
-    System.out.println("Aaaaaaaaaaaaaaaaaaaaaa");
     Map<String, Object> map = new HashMap<>();
     BoardDto vo = boardService.getView(id);
     List<CommentDto> commentList = commentService.getCommList(id);
@@ -71,10 +70,4 @@ public class BoardController {
     }
     return true;
   }
-
-  @RequestMapping("/comment/remove")
-  public boolean removeComment(@RequestParam(value = "id") int id) {
-    return commentService.removeComment(id);
-  }
-
 }
