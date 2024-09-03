@@ -1,5 +1,9 @@
 package com.sist.jobgem.entity;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,8 +12,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Entity
 @Table(name = "comments")
@@ -19,10 +28,11 @@ public class Comment {
     @Column(name = "comm_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "bo_idx", nullable = false)
+
+    @Column(name = "bo_idx")
     private Integer boIdx;
 
-    @Column(name = "us_idx", nullable = false)
+    @Column(name = "us_idx")
     private Integer usIdx;
 
     @Column(name = "comm_content", nullable = false, length = 100)
@@ -32,10 +42,12 @@ public class Comment {
     private Integer commStatus;
 
     @ManyToOne
-    @JoinColumn(name = "bo_idx", insertable = false, updatable = false)
+
+    @JoinColumn(name = "bo_idx", nullable = false, insertable = false, updatable = false)
     private Board board;
 
     @ManyToOne
-    @JoinColumn(name = "us_idx" , insertable = false, updatable = false)
+    @JoinColumn(name = "us_idx", nullable = false, insertable = false, updatable = false)
+
     private User user;
 }

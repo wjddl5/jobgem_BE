@@ -14,7 +14,7 @@ public class Post {
     @Column(name = "po_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "co_idx", nullable = false)
+    @Column(name = "co_idx", nullable = false, updatable = false, insertable = false)
     private Integer coIdx;
 
     @Column(name = "po_title", nullable = false, length = 50)
@@ -53,4 +53,7 @@ public class Post {
     @Column(name = "po_state", nullable = false)
     private Integer poState;
 
+    @ManyToOne
+    @JoinColumn(name = "co_idx", nullable = false)
+    private Company company;
 }
