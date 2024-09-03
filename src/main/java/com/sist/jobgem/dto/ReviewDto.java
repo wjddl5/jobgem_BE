@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.sist.jobgem.entity.Company;
 import com.sist.jobgem.entity.Review;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
