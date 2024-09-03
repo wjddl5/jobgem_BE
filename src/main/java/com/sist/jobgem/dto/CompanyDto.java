@@ -1,12 +1,14 @@
 package com.sist.jobgem.dto;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import com.sist.jobgem.entity.User;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -42,7 +44,7 @@ public class CompanyDto {
     LocalDate coOpen;
     Integer coScore;
     Integer coState;
-
+    private User user;
     List<PostDto> posts;
 
 }
