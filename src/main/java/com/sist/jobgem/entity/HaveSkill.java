@@ -1,11 +1,6 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
@@ -14,16 +9,24 @@ import lombok.Getter;
 public class HaveSkill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ce_idx", nullable = false)
+    @Column(name = "hs_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "j_idx", nullable = false)
-    private Integer jIdx;
+    @Column(name = "jo_idx", nullable = false, updatable = false, insertable = false)
+    private Integer joIdx;
 
-    @Column(name = "sk_idx", nullable = false)
+    @Column(name = "sk_idx", nullable = false, updatable = false, insertable = false)
     private Integer skIdx;
 
     @Column(name = "sk_name", nullable = false, length = 10)
     private String skName;
+
+    @ManyToOne
+    @JoinColumn(name = "jo_idx", nullable = false)
+    private Jobseeker jobseeker;
+
+    @ManyToOne
+    @JoinColumn(name = "sk_idx", nullable = false)
+    private Skill skill;
 
 }

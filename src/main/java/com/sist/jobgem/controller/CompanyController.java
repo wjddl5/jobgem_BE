@@ -1,6 +1,5 @@
 package com.sist.jobgem.controller;
 
-import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.CompanyIndexDto;
 import com.sist.jobgem.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ public class CompanyController {
     private CompanyService companyService;
 
     @GetMapping("")
-    public ResponseEntity<CompanyIndexDto> Index(int id) {
-        return ResponseEntity.ok(companyService.getCompany(id));
+    public ResponseEntity<CompanyIndexDto> Index(int id, int blockPage) {
+        return ResponseEntity.ok(companyService.getCompany(id, blockPage));
     }
 }

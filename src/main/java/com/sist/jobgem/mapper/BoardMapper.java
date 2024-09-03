@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import org.springframework.data.domain.Page;
 
 import com.sist.jobgem.dto.BoardDto;
 import com.sist.jobgem.entity.Board;

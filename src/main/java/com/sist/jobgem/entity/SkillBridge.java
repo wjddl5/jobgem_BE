@@ -1,11 +1,6 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
@@ -17,10 +12,18 @@ public class SkillBridge {
     @Column(name = "sb_bridge", nullable = false)
     private Integer id;
 
-    @Column(name = "sk_idx", nullable = false)
+    @Column(name = "sk_idx", nullable = false, updatable = false, insertable = false)
     private Integer skIdx;
 
-    @Column(name = "po_idx", nullable = false)
+    @Column(name = "po_idx", nullable = false, updatable = false, insertable = false)
     private Integer poIdx;
+
+    @ManyToOne
+    @JoinColumn(name = "po_idx", nullable = false)
+    private Post post;
+
+    @ManyToOne
+    @JoinColumn(name = "sk_idx", nullable = false)
+    private Skill skill;
 
 }

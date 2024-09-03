@@ -1,6 +1,7 @@
 package com.sist.jobgem.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +22,9 @@ public class Board {
     @Column(name = "bo_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "us_idx", nullable = false)
+
+    @Column(name = "us_idx", nullable = false, insertable = false, updatable = false)
+
     private Integer usIdx;
 
     @Column(name = "bo_type", nullable = false)
@@ -54,4 +57,7 @@ public class Board {
     @ManyToOne
     @JoinColumn(name = "us_idx", insertable = false, updatable = false)
     private User user;
+
+    @OneToMany(mappedBy = "board")
+    private List<Comment> commList;
 }
