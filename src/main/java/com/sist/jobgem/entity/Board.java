@@ -14,7 +14,7 @@ public class Board {
     @Column(name = "bo_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "us_idx", nullable = false)
+    @Column(name = "us_idx", nullable = false , insertable=false, updatable=false)
     private Integer usIdx;
 
     @Column(name = "bo_type", nullable = false)
