@@ -17,7 +17,5 @@ public interface JobseekerMapper {
     JobseekerDto toDto(Jobseeker jobseeker);
 
     Jobseeker toEntity(JobseekerDto jobseekerDto);
-
-
     List<JobseekerDto> toDtoList(List<Jobseeker> list);
 }
