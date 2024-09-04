@@ -42,6 +42,7 @@ public class CommentService {
       return false;
   }
 
+  // 댓글 입력
   public boolean writeComment(int boIdx, int usIdx, String content) {
     CommentDto cDto = new CommentDto();
     cDto.setBoIdx(boIdx);
