@@ -1,22 +1,20 @@
 package com.sist.jobgem.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "jobseekers")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Jobseeker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,4 +49,11 @@ public class Jobseeker {
     @Column(name = "jo_sal", length = 10)
     private String joSal;
 
+    @ManyToMany
+    @JoinTable(
+        name = "have_skills",
+        joinColumns = @JoinColumn(name = "jo_idx"),
+        inverseJoinColumns = @JoinColumn(name = "sk_idx")
+    )
+    private List<Skill> skills;
 }
