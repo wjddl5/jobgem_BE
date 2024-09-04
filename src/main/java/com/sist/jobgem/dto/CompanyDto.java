@@ -1,11 +1,22 @@
 package com.sist.jobgem.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+
 import java.time.LocalDate;
+import java.util.List;
+
+import com.sist.jobgem.entity.User;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CompanyDto {
     Integer id;
     Integer usIdx;
@@ -21,5 +32,9 @@ public class CompanyDto {
     LocalDate coOpen;
     Integer coScore;
     Integer coState;
+    String coManagerName;
+    String coManagerTel;
 
+    private User user;
+    List<PostDto> posts;
 }
