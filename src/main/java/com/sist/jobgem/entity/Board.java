@@ -39,7 +39,7 @@ public class Board {
     @Column(name = "bo_title", nullable = false, length = 50)
     private String boTitle;
 
-    @Column(name = "bo_content", nullable = false, length = 100)
+    @Column(name = "bo_content", nullable = false, length = 500)
     private String boContent;
 
     @Column(name = "bo_writedate", nullable = false)

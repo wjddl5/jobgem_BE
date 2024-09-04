@@ -27,6 +27,7 @@ public class CommentDto {
         .id(comment.getId())
         .commContent(comment.getCommContent())
         .usId(comment.getUser().getUsId())
+        .usIdx(comment.getUser().getId())
         .build();
   }
 
