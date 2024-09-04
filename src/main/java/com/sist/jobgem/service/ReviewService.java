@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.ReviewDto;
 import com.sist.jobgem.entity.Company;
@@ -31,7 +32,7 @@ public class ReviewService {
         Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
                 Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<Review> reviewList = reviewRepository.findByJoIdx(id, pageable2);
+        Page<Review> reviewList = reviewRepository.findByJoIdxAndReState(id, 1, pageable2);
 
         // Review -> ReviewDto 변환
         List<ReviewDto> reviewDtoList = reviewList.getContent().stream()
@@ -58,21 +59,16 @@ public class ReviewService {
     }
 
     public ReviewDto getReview(int id) {
-        // 1. Find the review by ID
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));
 
-        // 2. Convert the review entity to a DTO
         return ReviewMapper.INSTANCE.toDto(review);
     }
 
     public Review updateReview(ReviewDto reviewDto) {
-        // 1. Find the existing review by ID
         Review existingReview = reviewRepository.findById(reviewDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));
 
-        // 2. Update the fields of the existing review
-        // Note: Ensure that the entity has appropriate setters or modify via builder
         Review updatedReview = Review.builder()
                 .id(existingReview.getId())
                 .joIdx(reviewDto.getJoIdx())
@@ -80,12 +76,16 @@ public class ReviewService {
                 .reTitle(reviewDto.getReTitle())
                 .reContent(reviewDto.getReContent())
                 .reScore(reviewDto.getReScore())
-                .reWriteDate(existingReview.getReWriteDate()) // Preserve the original write date
+                .reWriteDate(LocalDate.now())
                 .reState(1)
-                .company(existingReview.getCompany()) // Preserving the original relationship
+                .company(existingReview.getCompany())
                 .build();
 
-        // 3. Save the updated review
         return reviewRepository.save(updatedReview);
     }
+
+    public int deleteReview(int id) {
+        return reviewRepository.deleteReview(id);
+    }
+
 }
