@@ -55,4 +55,14 @@ public class CommentService {
     return comm != null;
   }
 
+  // 댓글 수정
+  @Transactional
+  public boolean editComment(int id, String content) {
+    int chk = commentRepository.editComment(id, content);
+    if (chk == 1)
+      return true;
+    else
+      return false;
+  }
+
 }
