@@ -78,11 +78,13 @@ public class BoardController {
   @RequestMapping("/notice/write")
   public boolean writeBbs(@RequestParam(value = "title") String title, @RequestParam(value = "content") String content,
       @RequestParam(value = "boType") int boType, @RequestParam(value = "usIdx") int usIdx) {
-    System.out.println(title);
-    System.out.println(content);
-    System.out.println(boType);
-    System.out.println(usIdx);
     return boardService.writeBbs(boType, usIdx, title, content);
+  }
+
+  @RequestMapping("/notice/edit")
+  public boolean editBbs(@RequestParam(value = "title") String title, @RequestParam(value = "content") String content,
+      @RequestParam(value = "boId") int boId) {
+    return boardService.editBbs(title, content, boId);
   }
 
 }

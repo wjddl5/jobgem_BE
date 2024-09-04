@@ -89,10 +89,10 @@ public class BoardService {
     bDto.setBoStatus(1);
 
     switch (boType) {
-      case 0:
+      case 1: // 공지사항
         bDto.setBoAnswer(null);
         break;
-      case 1:
+      case 2: // QnA
         bDto.setBoAnswer(0);
         break;
     }
@@ -103,5 +103,15 @@ public class BoardService {
     Board b = boardRepository.save(board);
 
     return b != null;
+  }
+
+  // 게시물 수정
+  @Transactional
+  public boolean editBbs(String boTitle, String boContent, int boId) {
+    int chk = boardRepository.editBoard(boTitle, boContent, boId);
+    if (chk == 1)
+      return true;
+    else
+      return false;
   }
 }
