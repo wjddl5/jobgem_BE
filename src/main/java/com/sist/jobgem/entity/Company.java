@@ -1,21 +1,38 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-
 import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "companies")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "co_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "us_idx", nullable = false)
+    @Column(name = "us_idx", nullable = false, insertable = false, updatable = false)
     private Integer usIdx;
+
+    @OneToOne
+    @JoinColumn(name = "us_idx", nullable = false)
+    private User user;
 
     @Column(name = "co_name", nullable = false, length = 20)
     private String coName;
