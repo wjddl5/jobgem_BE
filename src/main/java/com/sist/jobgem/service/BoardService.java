@@ -1,5 +1,6 @@
 package com.sist.jobgem.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.jobgem.dto.BoardDto;
 import com.sist.jobgem.entity.Board;
+import com.sist.jobgem.mapper.BoardMapper;
 import com.sist.jobgem.repository.BoardRepository;
 
 @Service
@@ -69,6 +71,44 @@ public class BoardService {
   @Transactional
   public boolean removeBbs(int id) {
     int chk = boardRepository.updateBoardStatus(id);
+    if (chk == 1)
+      return true;
+    else
+      return false;
+  }
+
+  // 게시글 저장
+  public boolean writeBbs(int boType, int usIdx, String title, String content) {
+    BoardDto bDto = new BoardDto();
+    bDto.setBoType(boType);
+    bDto.setUsIdx(usIdx);
+    bDto.setBoTitle(title);
+    bDto.setBoContent(content);
+    bDto.setBoHit(0);
+    bDto.setBoLike(0);
+    bDto.setBoStatus(1);
+
+    switch (boType) {
+      case 1: // 공지사항
+        bDto.setBoAnswer(null);
+        break;
+      case 2: // QnA
+        bDto.setBoAnswer(0);
+        break;
+    }
+    bDto.setBoWritedate(LocalDate.now());
+
+    Board board = BoardMapper.INSTANCE.dtoToEntity(bDto);
+
+    Board b = boardRepository.save(board);
+
+    return b != null;
+  }
+
+  // 게시물 수정
+  @Transactional
+  public boolean editBbs(String boTitle, String boContent, int boId) {
+    int chk = boardRepository.editBoard(boTitle, boContent, boId);
     if (chk == 1)
       return true;
     else

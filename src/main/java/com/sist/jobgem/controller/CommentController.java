@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sist.jobgem.dto.CommentDto;
 import com.sist.jobgem.service.CommentService;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequestMapping("/api/comment")
@@ -24,6 +25,11 @@ public class CommentController {
   public boolean writeComment(@RequestParam(value = "boIdx") int boIdx, @RequestParam(value = "usIdx") int usIdx,
       @RequestParam(value = "content") String content) {
     return commentService.writeComment(boIdx, usIdx, content);
+  }
+
+  @RequestMapping("/edit")
+  public boolean editComment(@RequestParam(value = "id") int id, @RequestParam(value = "content") String content) {
+    return commentService.editComment(id, content);
   }
 
 }
