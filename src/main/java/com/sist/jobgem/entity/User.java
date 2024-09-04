@@ -3,6 +3,8 @@ package com.sist.jobgem.entity;
 import java.time.Instant;
 import java.time.LocalDate;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -20,6 +22,8 @@ import lombok.Getter;
 @Entity
 @Table(name = "users")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @DynamicInsert
 public class User {
     
