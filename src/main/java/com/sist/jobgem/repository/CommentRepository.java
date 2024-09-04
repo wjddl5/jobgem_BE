@@ -18,4 +18,8 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
   @Query("UPDATE Comment c SET c.commStatus = 0 WHERE c.id = :id")
   int updateCommentStatus(@Param("id") int id);
 
+  @Modifying
+  @Query("UPDATE Comment c SET c.commContent = :content WHERE c.id = :id")
+  int editComment(@Param("id") int id, @Param("content") String content);
+
 }
