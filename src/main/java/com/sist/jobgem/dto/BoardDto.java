@@ -48,6 +48,7 @@ public class BoardDto {
         .boLike(board.getBoLike())
         .boAnswer(board.getBoAnswer())
         .usId(board.getUser().getUsId())
+        .usIdx(board.getUser().getId())
         .commCount(list2.size())
         .build();
   }

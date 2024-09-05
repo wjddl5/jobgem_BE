@@ -42,6 +42,7 @@ public class CommentService {
       return false;
   }
 
+  // 댓글 입력
   public boolean writeComment(int boIdx, int usIdx, String content) {
     CommentDto cDto = new CommentDto();
     cDto.setBoIdx(boIdx);
@@ -52,6 +53,16 @@ public class CommentService {
     Comment comment = CommentMapper.INSTANCE.dtoToEntity(cDto);
     Comment comm = commentRepository.save(comment);
     return comm != null;
+  }
+
+  // 댓글 수정
+  @Transactional
+  public boolean editComment(int id, String content) {
+    int chk = commentRepository.editComment(id, content);
+    if (chk == 1)
+      return true;
+    else
+      return false;
   }
 
 }

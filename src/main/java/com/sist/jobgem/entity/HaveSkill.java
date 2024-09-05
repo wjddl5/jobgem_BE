@@ -12,21 +12,18 @@ public class HaveSkill {
     @Column(name = "hs_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "jo_idx", nullable = false, updatable = false, insertable = false)
+    @Column(name = "jo_idx", nullable = false)
     private Integer joIdx;
 
-    @Column(name = "sk_idx", nullable = false, updatable = false, insertable = false)
+    @Column(name = "sk_idx", nullable = false)
     private Integer skIdx;
 
-    @Column(name = "sk_name", nullable = false, length = 10)
-    private String skName;
-
     @ManyToOne
-    @JoinColumn(name = "jo_idx", nullable = false)
+    @JoinColumn(name = "jo_idx", nullable = false, updatable = false, insertable = false)
     private Jobseeker jobseeker;
 
     @ManyToOne
-    @JoinColumn(name = "sk_idx", nullable = false)
+    @JoinColumn(name = "sk_idx", nullable = false, updatable = false, insertable = false)
     private Skill skill;
 
 }

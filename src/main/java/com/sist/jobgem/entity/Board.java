@@ -12,8 +12,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Entity
 @Table(name = "boards")
@@ -23,8 +29,7 @@ public class Board {
     @Column(name = "bo_idx", nullable = false)
     private Integer id;
 
-
-    @Column(name = "us_idx", nullable = false, insertable = false, updatable = false)
+    @Column(name = "us_idx", nullable = false)
 
     private Integer usIdx;
 
@@ -34,7 +39,7 @@ public class Board {
     @Column(name = "bo_title", nullable = false, length = 50)
     private String boTitle;
 
-    @Column(name = "bo_content", nullable = false, length = 100)
+    @Column(name = "bo_content", nullable = false, length = 500)
     private String boContent;
 
     @Column(name = "bo_writedate", nullable = false)
