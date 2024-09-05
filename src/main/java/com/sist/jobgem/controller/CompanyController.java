@@ -38,7 +38,7 @@ public class CompanyController {
         PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "joName"));
         return ResponseEntity.ok(jobseekerService.fitJobseekerList(id, pageable));
     }
-    //기업 리스트 조회
+    
     @GetMapping("/list")
     public Page<CompanyDto> getCompanyList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
         return companyService.getCompanyList(pageable, value, type);
