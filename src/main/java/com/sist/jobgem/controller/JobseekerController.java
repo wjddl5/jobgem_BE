@@ -99,5 +99,9 @@ public class JobseekerController {
     public int deleteInterview(int id) {
         return interviewService.deleteInterview(id);
     }
-
+    
+    @GetMapping("/userlist")
+    public Page<JobseekerDto> getJobseekerList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
+        return jobseekerService.getJobseekerList(pageable, value, type);
+    }
 }

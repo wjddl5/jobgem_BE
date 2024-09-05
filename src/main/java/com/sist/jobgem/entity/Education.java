@@ -1,11 +1,17 @@
 package com.sist.jobgem.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@Builder
 @Table(name = "education")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,5 +20,4 @@ public class Education {
 
     @Column(name = "ed_name", length = 30)
     private String edName;
-
 }

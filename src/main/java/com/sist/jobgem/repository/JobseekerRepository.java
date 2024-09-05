@@ -1,6 +1,8 @@
 package com.sist.jobgem.repository;
 
 import com.sist.jobgem.dto.JobseekerDto;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,4 +44,14 @@ public interface JobseekerRepository extends JpaRepository<Jobseeker, Integer> {
             "    HAVING COUNT(DISTINCT h.skill.id) >= 5" +
             ")")
     Slice<JobseekerDto> findByWithfitJobseeker(@Param("companyId") int id, Pageable pageable);
+
+    @Query("SELECT j " +
+            "FROM Jobseeker j " +
+            "WHERE CAST(j.user.usLeaveDate AS string) LIKE %:value% OR " +
+            "CAST(j.user.usJoinDate AS string) LIKE %:value% OR " +
+            "j.joName LIKE %:value% OR j.joTel LIKE %:value% OR " +
+            "j.joAddress LIKE %:value% OR j.joGender LIKE %:value% OR " +
+            "j.joEdu LIKE %:value% OR j.joSal LIKE %:value% OR " +
+            "CAST(j.joBirth AS string) LIKE %:value%")
+    Page<Jobseeker> findByValueContaining(@Param("value") String value, Pageable pageable);
 }
