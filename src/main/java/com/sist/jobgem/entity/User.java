@@ -32,7 +32,7 @@ public class User {
     @Column(name = "us_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "us_id", nullable = false, length = 20)
+    @Column(name = "us_id", nullable = false, length = 50)
     private String usId;
 
     @Column(name = "us_pw", nullable = false, length = 100)
