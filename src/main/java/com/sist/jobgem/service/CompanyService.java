@@ -1,10 +1,15 @@
 package com.sist.jobgem.service;
 
+import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.CompanyIndexDto;
+import com.sist.jobgem.dto.JobseekerDto;
 import com.sist.jobgem.mapper.CompanyMapper;
+import com.sist.jobgem.mapper.JobseekerMapper;
 import com.sist.jobgem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +45,35 @@ public class CompanyService {
                 .blockList(blockRepository.findAllByCoIdx(id, blockList))
                 .build();
     }
-
-
+    public Page<CompanyDto> getCompanyList(Pageable pageable, String value, String type) {
+        if (value == null && type == null) {
+            return companyRepository.findAll(pageable).map(CompanyMapper.INSTANCE::toDto);
+        }
+        switch (type) {
+            case "name":
+            return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            case "number":
+            return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            case "address":
+                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            case "tel":
+                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            case "type":
+                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            case "open":
+                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            case "employee":
+                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            case "sales":
+                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            case "score":
+                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            case "managerName":
+                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            case "managerTel":
+                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
+            default:
+                return companyRepository.findAll(pageable).map(CompanyMapper.INSTANCE::toDto);
+        }
+    }
 }
