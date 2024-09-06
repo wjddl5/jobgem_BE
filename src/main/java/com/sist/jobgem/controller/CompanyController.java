@@ -45,6 +45,11 @@ public class CompanyController {
         return ResponseEntity.ok(talentService.addTalent(request));
     }
 
+    @PostMapping("/wish/remove")
+    public void removeWishJobseeker(@RequestBody int id) {
+        talentService.removeTalent(id);
+    }
+
     @GetMapping("/list")
     public Page<CompanyDto> getCompanyList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
         return companyService.getCompanyList(pageable, value, type);
