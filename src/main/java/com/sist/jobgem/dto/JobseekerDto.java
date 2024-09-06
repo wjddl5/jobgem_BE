@@ -2,11 +2,13 @@ package com.sist.jobgem.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.sist.jobgem.entity.Jobseeker;
 import com.sist.jobgem.entity.Skill;
 import com.sist.jobgem.entity.User;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,8 +25,6 @@ public class JobseekerDto {
     private Integer id;
 
     private User user;
-
-    private Integer hcIdx;
 
     private String joName;
 
@@ -46,6 +46,8 @@ public class JobseekerDto {
 
     private List<Skill> skills;
 
+    private List<Integer> skillIds; // 스킬 ID 목록 추가
+
     public JobseekerDto(Jobseeker jobseeker) {
         this.id = jobseeker.getId();
         this.user = jobseeker.getUser();
@@ -56,7 +58,10 @@ public class JobseekerDto {
         this.joGender = jobseeker.getJoGender();
         this.joEdu = jobseeker.getJoEdu();
         this.joSal = jobseeker.getJoSal();
-        this.skills = jobseeker.getSkills();
+        this.joImgurl = jobseeker.getJoImgUrl();
+        this.skillIds = jobseeker.getSkills().stream()
+                .map(Skill::getId)
+                .collect(Collectors.toList()); // Skill ID 목록 추출
         this.joAge = LocalDate.now().getYear() - joBirth.getYear();
     }
 
