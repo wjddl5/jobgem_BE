@@ -6,12 +6,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Entity
 @Table(name = "education")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+
+
 
 public class Education {
     @Id
