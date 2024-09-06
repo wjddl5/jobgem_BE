@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BlockRepository extends JpaRepository<Block, Integer> {
-    @Query("SELECT new com.sist.jobgem.dto.BlockDto(b.jobseeker.joName, b.blDate, b.blContent) FROM Block b WHERE b.coIdx = :coIdx")
+    @Query("SELECT new com.sist.jobgem.dto.BlockDto(b) FROM Block b WHERE b.coIdx = :coIdx")
     Page<BlockDto> findAllByCoIdx(@Param("coIdx") int coIdx, Pageable pageable);
     
     @Query("SELECT b FROM Block b " +
