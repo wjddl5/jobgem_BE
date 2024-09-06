@@ -43,4 +43,8 @@ public class EducationService {
   public boolean editEdu(int id, String editItemName) {
     return educationRepository.editEdu(id, editItemName) > 0;
   }
+  
+  public List<Education> findByIdIn(List<Integer> edIdx) {
+      return educationRepository.findByIdIn(edIdx);
+  }
 }

@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Entity
+@Builder
 @Table(name = "education")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +23,4 @@ public class Education {
 
     @Column(name = "ed_name", length = 30)
     private String edName;
-
 }
