@@ -1,10 +1,13 @@
 package com.sist.jobgem.service;
 
+import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.CompanyIndexDto;
 import com.sist.jobgem.mapper.CompanyMapper;
 import com.sist.jobgem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +43,11 @@ public class CompanyService {
                 .blockList(blockRepository.findAllByCoIdx(id, blockList))
                 .build();
     }
-
-
+    public Page<CompanyDto> getCompanyList(Pageable pageable, String value, String type) {
+        if (value == null && type == null) {
+            return companyRepository.findAll(pageable).map(CompanyMapper.INSTANCE::toDto);
+        }
+        return companyRepository.findByTypeAndValueContaining(type, value, pageable)
+                .map(CompanyMapper.INSTANCE::toDto);
+    }
 }

@@ -6,24 +6,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "skills")
-public class Skill {
+@Table(name = "work_days")
+@Getter
+@Setter
+public class WorkDay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sk_idx", nullable = false)
+    @Column(name = "wd_idx")
     private Integer id;
 
-    @Column(name = "sk_name", nullable = false, length = 30)
-    private String skName;
-
+    @Column(name = "day_name")
+    private String dayName;
 }
