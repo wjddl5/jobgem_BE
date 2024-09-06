@@ -17,7 +17,10 @@ import com.sist.jobgem.dto.ResumeDto;
 import com.sist.jobgem.dto.ReviewDto;
 import com.sist.jobgem.dto.SkillDto;
 import com.sist.jobgem.entity.Interview;
+
+
 import com.sist.jobgem.entity.Jobseeker;
+
 
 import com.sist.jobgem.entity.Resume;
 import com.sist.jobgem.entity.Review;
@@ -133,6 +136,7 @@ public class JobseekerController {
     public Resume updateResume(@RequestBody ResumeDto dto) {
         return resumeService.updateResume(dto);
     }
+
 
     @GetMapping("/updateMypage")
     public Jobseeker updateJobseekerDetails(@RequestParam int id, @RequestBody JobseekerDto jobseekerDto) {
