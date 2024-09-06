@@ -13,13 +13,16 @@ import com.sist.jobgem.dto.BlockDto;
 import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.InterviewDto;
 import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.dto.ResumeDto;
 import com.sist.jobgem.dto.ReviewDto;
 import com.sist.jobgem.entity.Interview;
+import com.sist.jobgem.entity.Resume;
 import com.sist.jobgem.entity.Review;
 import com.sist.jobgem.service.BlockService;
 import com.sist.jobgem.service.CompanyService;
 import com.sist.jobgem.service.InterviewService;
 import com.sist.jobgem.service.JobseekerService;
+import com.sist.jobgem.service.ResumeService;
 import com.sist.jobgem.service.ReviewService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -43,6 +46,9 @@ public class JobseekerController {
     InterviewService interviewService;
 
     @Autowired
+    ResumeService resumeService;
+
+    @Autowired
     BlockService blockService;
 
     @GetMapping("/jobseeker")
@@ -60,6 +66,11 @@ public class JobseekerController {
         return interviewService.getInterviewist(id, pageable);
     }
 
+    @GetMapping("/resumeList")
+    public Page<ResumeDto> getresumeList(int id, Pageable pageable) {
+        return resumeService.getResumeList(id, pageable);
+    }
+
     @GetMapping("/companyList")
     public List<CompanyDto> getCompanyList() {
         return reviewService.getCompanyList();
@@ -75,6 +86,11 @@ public class JobseekerController {
         return interviewService.addInterview(dto);
     }
 
+    @GetMapping("/addResume")
+    public Resume addResume(@RequestBody ResumeDto dto) {
+        return resumeService.addResume(dto);
+    }
+
     @GetMapping("/getReview")
     public ReviewDto getReview(int id) {
         return reviewService.getReview(id);
@@ -83,6 +99,11 @@ public class JobseekerController {
     @GetMapping("/getInterview")
     public InterviewDto getInterview(int id) {
         return interviewService.getInterview(id);
+    }
+
+    @GetMapping("/getResume")
+    public ResumeDto getResume(int id) {
+        return resumeService.getResume(id);
     }
 
     @GetMapping("/updateReview")
@@ -95,6 +116,11 @@ public class JobseekerController {
         return interviewService.updateInterview(dto);
     }
 
+    @GetMapping("/updateResume")
+    public Resume updateResume(@RequestBody ResumeDto dto) {
+        return resumeService.updateResume(dto);
+    }
+
     @GetMapping("/deleteReview")
     public int deleteReview(int id) {
         return reviewService.deleteReview(id);
@@ -104,13 +130,21 @@ public class JobseekerController {
     public int deleteInterview(int id) {
         return interviewService.deleteInterview(id);
     }
-    
+
+    @GetMapping("/deleteResume")
+    public int deleteResume(int id) {
+        return resumeService.deleteResume(id);
+    }
+
     @GetMapping("/userlist")
-    public Page<JobseekerDto> getJobseekerList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
+    public Page<JobseekerDto> getJobseekerList(@RequestBody Pageable pageable,
+            @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
         return jobseekerService.getJobseekerList(pageable, value, type);
     }
+
     @GetMapping("/blocklist")
-    public Page<BlockDto> getBlockList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
+    public Page<BlockDto> getBlockList(@RequestBody Pageable pageable, @RequestParam(required = false) String value,
+            @RequestParam(required = false) String type) {
         return blockService.getblackList(pageable, value, type);
     }
 }

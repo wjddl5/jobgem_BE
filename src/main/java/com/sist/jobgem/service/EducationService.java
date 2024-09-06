@@ -18,7 +18,7 @@ public class EducationService {
 
   public List<EducationDto> getEdu() {
     List<Education> list = educationRepository.findAll();
-    return EducationMapper.INSTANCE.toDto(list);
+    return EducationMapper.INSTANCE.toDtoList(list);
   }
 
   public boolean addEdu(String itemName) {
@@ -43,8 +43,8 @@ public class EducationService {
   public boolean editEdu(int id, String editItemName) {
     return educationRepository.editEdu(id, editItemName) > 0;
   }
-  
+
   public List<Education> findByIdIn(List<Integer> edIdx) {
-      return educationRepository.findByIdIn(edIdx);
+    return educationRepository.findByIdIn(edIdx);
   }
 }
