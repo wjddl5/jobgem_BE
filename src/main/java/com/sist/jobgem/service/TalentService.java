@@ -17,4 +17,8 @@ public class TalentService {
         return talentRepository.save(talent).getId();
     }
 
+    public void removeTalent(int id) {
+        talentRepository.deleteById(id);
+    }
+
 }
