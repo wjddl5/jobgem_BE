@@ -9,12 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sist.jobgem.dto.BlockDto;
 import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.InterviewDto;
 import com.sist.jobgem.dto.JobseekerDto;
 import com.sist.jobgem.dto.ReviewDto;
 import com.sist.jobgem.entity.Interview;
 import com.sist.jobgem.entity.Review;
+import com.sist.jobgem.service.BlockService;
 import com.sist.jobgem.service.CompanyService;
 import com.sist.jobgem.service.InterviewService;
 import com.sist.jobgem.service.JobseekerService;
@@ -39,6 +41,9 @@ public class JobseekerController {
 
     @Autowired
     InterviewService interviewService;
+
+    @Autowired
+    BlockService blockService;
 
     @GetMapping("/jobseeker")
     public ResponseEntity<JobseekerDto> getJobseeker(int id) {
@@ -103,5 +108,9 @@ public class JobseekerController {
     @GetMapping("/userlist")
     public Page<JobseekerDto> getJobseekerList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
         return jobseekerService.getJobseekerList(pageable, value, type);
+    }
+    @GetMapping("/blocklist")
+    public Page<BlockDto> getBlockList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
+        return blockService.getblackList(pageable, value, type);
     }
 }
