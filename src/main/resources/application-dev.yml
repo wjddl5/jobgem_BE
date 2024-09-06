@@ -1,25 +1,25 @@
 ## 개발용
 server:
-  port: 8080
+    port: 8080
 
 spring:
-  output:
-    ansi:
-      enabled: always
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/jobgem_db
-    username: test
-    password: 1111
+    output:
+        ansi:
+            enabled: always
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/jobgem_db
+        username: test
+        password: 1111
 
 springdoc:
-  api-docs:
-    path: '/my-api'
-  swagger-ui:
-    path: '/my-swagger/index.html'
-    groups-order: DESC
-    doc-expansion: none
-    tags-sorter: alpha
-    operationsSorter: method
-    disable-swagger-default-url: true
-    display-request-duration: true
+    api-docs:
+        path: "/my-api"
+    swagger-ui:
+        path: "/my-swagger/index.html"
+        groups-order: DESC
+        doc-expansion: none
+        tags-sorter: alpha
+        operationsSorter: method
+        disable-swagger-default-url: true
+        display-request-duration: true

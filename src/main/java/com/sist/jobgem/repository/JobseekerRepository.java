@@ -27,6 +27,11 @@ public interface JobseekerRepository extends JpaRepository<Jobseeker, Integer> {
             "    WHERE c.id = :companyId " +
             "    GROUP BY h.jobseeker.id " +
             "    HAVING COUNT(DISTINCT h.skill.id) >= 5" +
+            ") AND j.user.usState = 1" +
+            "AND j.id NOT IN (" +
+            "    SELECT t.joIdx " +
+            "    FROM Talent t " +
+            "    WHERE t.coIdx = :companyId" +
             ")")
     int countByWithfitJobseeker(@Param("companyId") int id);
 
@@ -42,16 +47,25 @@ public interface JobseekerRepository extends JpaRepository<Jobseeker, Integer> {
             "    WHERE c.id = :companyId " +
             "    GROUP BY h.jobseeker.id " +
             "    HAVING COUNT(DISTINCT h.skill.id) >= 5" +
+            ") AND j.user.usState = 1 " +
+            "AND j.id NOT IN (" +
+            "    SELECT t.joIdx " +
+            "    FROM Talent t " +
+            "    WHERE t.coIdx = :companyId" +
             ")")
     Slice<JobseekerDto> findByWithfitJobseeker(@Param("companyId") int id, Pageable pageable);
 
     @Query("SELECT j " +
             "FROM Jobseeker j " +
-            "WHERE CAST(j.user.usLeaveDate AS string) LIKE %:value% OR " +
-            "CAST(j.user.usJoinDate AS string) LIKE %:value% OR " +
-            "j.joName LIKE %:value% OR j.joTel LIKE %:value% OR " +
-            "j.joAddress LIKE %:value% OR j.joGender LIKE %:value% OR " +
-            "j.joEdu LIKE %:value% OR j.joSal LIKE %:value% OR " +
-            "CAST(j.joBirth AS string) LIKE %:value%")
-    Page<Jobseeker> findByValueContaining(@Param("value") String value, Pageable pageable);
+            "WHERE (:type = 'leaveDate' AND CAST(j.user.usLeaveDate AS string) LIKE %:value%) OR " +
+            "(:type = 'joinDate' AND CAST(j.user.usJoinDate AS string) LIKE %:value%) OR " +
+            "(:type = 'name' AND j.joName LIKE %:value%) OR " +
+            "(:type = 'tel' AND j.joTel LIKE %:value%) OR " +
+            "(:type = 'address' AND j.joAddress LIKE %:value%) OR " +
+            "(:type = 'gender' AND j.joGender LIKE %:value%) OR " +
+            "(:type = 'edu' AND j.joEdu LIKE %:value%) OR " +
+            "(:type = 'sal' AND j.joSal LIKE %:value%) OR " +
+            "(:type = 'birth' AND CAST(j.joBirth AS string) LIKE %:value%)")
+    Page<Jobseeker> findByTypeAndValueContaining(@Param("type") String type, @Param("value") String value,
+                                                 Pageable pageable);
 }

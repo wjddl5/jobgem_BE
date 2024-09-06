@@ -1,16 +1,12 @@
 package com.sist.jobgem.service;
 
-import com.sist.jobgem.dto.CompanyDto;
-import com.sist.jobgem.dto.CompanyIndexDto;
-import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.dto.*;
 import com.sist.jobgem.mapper.CompanyMapper;
-import com.sist.jobgem.mapper.JobseekerMapper;
 import com.sist.jobgem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,9 +27,7 @@ public class CompanyService {
     @Autowired
     private BlockRepository blockRepository;
 
-    public CompanyIndexDto getCompany(int id, int blockPage) {
-        PageRequest blockList = PageRequest.of(blockPage, 1, Sort.by(Sort.Direction.DESC, "blDate"));
-
+    public CompanyIndexDto getCompany(int id, Pageable pageable) {
         return CompanyIndexDto.builder()
                 .company(CompanyMapper.INSTANCE.toDto(companyRepository.findById(id).orElseThrow()))
                 .postCount(postRepository.countByCoIdxAndPoState(id, 1))
@@ -42,38 +36,32 @@ public class CompanyService {
                 .interviewCount(interviewRepository.countByCoIdxAndInState(id, 1))
                 .talentCount(talentRepository.countByCoIdx(id))
                 .fitJobseekerCount(jobseekerRepository.countByWithfitJobseeker(id))
-                .blockList(blockRepository.findAllByCoIdx(id, blockList))
+                .blockList(blockRepository.findAllByCoIdx(id, pageable))
                 .build();
     }
     public Page<CompanyDto> getCompanyList(Pageable pageable, String value, String type) {
         if (value == null && type == null) {
             return companyRepository.findAll(pageable).map(CompanyMapper.INSTANCE::toDto);
         }
-        switch (type) {
-            case "name":
-            return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            case "number":
-            return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            case "address":
-                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            case "tel":
-                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            case "type":
-                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            case "open":
-                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            case "employee":
-                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            case "sales":
-                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            case "score":
-                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            case "managerName":
-                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            case "managerTel":
-                return companyRepository.findByValueContaining(value, pageable).map(CompanyMapper.INSTANCE::toDto);
-            default:
-                return companyRepository.findAll(pageable).map(CompanyMapper.INSTANCE::toDto);
-        }
+        return companyRepository.findByTypeAndValueContaining(type, value, pageable)
+                .map(CompanyMapper.INSTANCE::toDto);
     }
+
+    public FitJobseekerDto getFitJobseekerList(int id, Pageable pageable) {
+        FitJobseekerDto fitJobseeker = FitJobseekerDto.builder()
+                .fitJobseekers(jobseekerRepository.findByWithfitJobseeker(id, pageable))
+                .build();
+        return fitJobseeker;
+    }
+
+    public TalentResponseDto getWishjobseekerList(int id, Pageable pageable) {
+        Slice<TalentDto> byCoIdx = talentRepository.findByCoIdx(id, pageable);
+
+        TalentResponseDto wishJobseeker = new TalentResponseDto(byCoIdx);
+
+        return wishJobseeker;
+    }
+
+
+
 }
