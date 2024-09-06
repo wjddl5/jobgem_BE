@@ -47,4 +47,9 @@ public class SkillService {
     public List<Skill> findByIdIn(List<Integer> skIdx) {
         return skillRepository.findByIdIn(skIdx);
     }
+
+    public List<SkillDto> getSkillList() {
+        return SkillMapper.INSTANCE.toDtoList(skillRepository.findAll());
+    }
+
 }

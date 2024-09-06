@@ -15,7 +15,13 @@ import com.sist.jobgem.dto.InterviewDto;
 import com.sist.jobgem.dto.JobseekerDto;
 import com.sist.jobgem.dto.ResumeDto;
 import com.sist.jobgem.dto.ReviewDto;
+import com.sist.jobgem.dto.SkillDto;
 import com.sist.jobgem.entity.Interview;
+
+
+import com.sist.jobgem.entity.Jobseeker;
+
+
 import com.sist.jobgem.entity.Resume;
 import com.sist.jobgem.entity.Review;
 import com.sist.jobgem.service.BlockService;
@@ -24,12 +30,14 @@ import com.sist.jobgem.service.InterviewService;
 import com.sist.jobgem.service.JobseekerService;
 import com.sist.jobgem.service.ResumeService;
 import com.sist.jobgem.service.ReviewService;
+import com.sist.jobgem.service.SkillService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -50,6 +58,9 @@ public class JobseekerController {
 
     @Autowired
     BlockService blockService;
+
+    @Autowired
+    SkillService skillService;
 
     @GetMapping("/jobseeker")
     public ResponseEntity<JobseekerDto> getJobseeker(int id) {
@@ -74,6 +85,11 @@ public class JobseekerController {
     @GetMapping("/companyList")
     public List<CompanyDto> getCompanyList() {
         return reviewService.getCompanyList();
+    }
+
+    @GetMapping("/skillList")
+    public List<SkillDto> getSkillList() {
+        return skillService.getSkillList();
     }
 
     @GetMapping("/addReview")
@@ -119,6 +135,12 @@ public class JobseekerController {
     @GetMapping("/updateResume")
     public Resume updateResume(@RequestBody ResumeDto dto) {
         return resumeService.updateResume(dto);
+    }
+
+
+    @GetMapping("/updateMypage")
+    public Jobseeker updateJobseekerDetails(@RequestParam int id, @RequestBody JobseekerDto jobseekerDto) {
+        return jobseekerService.updateJobseekerDetails(id, jobseekerDto);
     }
 
     @GetMapping("/deleteReview")

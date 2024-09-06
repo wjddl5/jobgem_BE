@@ -50,10 +50,19 @@ public class Jobseeker {
     private String joSal;
 
     @ManyToMany
-    @JoinTable(
-        name = "have_skills",
-        joinColumns = @JoinColumn(name = "jo_idx"),
-        inverseJoinColumns = @JoinColumn(name = "sk_idx")
-    )
+    @JoinTable(name = "have_skills", joinColumns = @JoinColumn(name = "jo_idx"), inverseJoinColumns = @JoinColumn(name = "sk_idx"))
     private List<Skill> skills;
+
+    // 필드 업데이트 메서드 추가
+    public void updateFields(String joName, LocalDate joBirth, String joAddress, String joTel,
+            String joGender, String joEdu, String joSal, String joImgUrl) {
+        this.joName = joName;
+        this.joBirth = joBirth;
+        this.joAddress = joAddress;
+        this.joTel = joTel;
+        this.joGender = joGender;
+        this.joEdu = joEdu;
+        this.joSal = joSal;
+        this.joImgUrl = joImgUrl;
+    }
 }

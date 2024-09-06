@@ -36,5 +36,4 @@ public class CompanyDto {
     String coManagerTel;
 
     private User user;
-    List<PostDto> posts;
 }
