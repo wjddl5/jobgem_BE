@@ -1,6 +1,7 @@
 package com.sist.jobgem.service;
 
 import com.sist.jobgem.dto.FitJobseekerDto;
+import com.sist.jobgem.repository.HaveSkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,9 @@ import jakarta.transaction.Transactional;
 @Service
 public class JobseekerService {
     @Autowired
-    JobseekerRepository jobseekerRepository;
+    private JobseekerRepository jobseekerRepository;
+    @Autowired
+    private HaveSkillRepository haveSkillRepository;
 
     @Autowired
     SkillRepository skillRepository;

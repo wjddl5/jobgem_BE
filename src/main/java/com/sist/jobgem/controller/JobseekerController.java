@@ -18,6 +18,7 @@ import com.sist.jobgem.dto.ReviewDto;
 import com.sist.jobgem.dto.SkillDto;
 import com.sist.jobgem.entity.Interview;
 import com.sist.jobgem.entity.Jobseeker;
+
 import com.sist.jobgem.entity.Resume;
 import com.sist.jobgem.entity.Review;
 import com.sist.jobgem.service.BlockService;
