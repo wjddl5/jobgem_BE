@@ -27,8 +27,8 @@ public class JobseekerService {
 
     public FitJobseekerDto fitJobseekerList(int id, Pageable pageable) {
         FitJobseekerDto fitJobseeker = FitJobseekerDto.builder()
-                        .fitJobseekers(jobseekerRepository.findByWithfitJobseeker(id, pageable))
-                        .build();
+                .fitJobseekers(jobseekerRepository.findByWithfitJobseeker(id, pageable))
+                .build();
         return fitJobseeker;
     }
 
