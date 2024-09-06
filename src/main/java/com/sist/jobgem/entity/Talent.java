@@ -2,16 +2,17 @@ package com.sist.jobgem.entity;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "talents")
 public class Talent {
     @Id
@@ -27,5 +28,20 @@ public class Talent {
 
     @Column(name = "ta_date", nullable = false)
     private LocalDate taDate;
+
+    // 엔티티가 처음 저장될 때 현재 날짜 설정
+    @PrePersist
+    @PreUpdate
+    public void prePersist() {
+        this.taDate = LocalDate.now();  // 업데이트 시 현재 날짜 설정
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "co_idx", insertable = false, updatable = false)
+    private Company company;
+
+    @OneToOne
+    @JoinColumn(name = "jo_idx", insertable = false, updatable = false)
+    private Jobseeker jobseeker;
 
 }
