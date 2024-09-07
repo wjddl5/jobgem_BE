@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "education")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+
+
 
 public class Education {
     @Id
