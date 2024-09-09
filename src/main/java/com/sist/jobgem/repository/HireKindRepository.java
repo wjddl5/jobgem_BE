@@ -14,6 +14,5 @@ public interface HireKindRepository extends JpaRepository<HireKind, Integer> {
     @Modifying
     @Query("UPDATE HireKind h SET h.hkName = :editItemName WHERE h.id = :id")
     int editHir(@Param("id") int id, @Param("editItemName") String editItemName);
-
     List<HireKind> findByIdIn(List<Integer> hkIdx);
 }

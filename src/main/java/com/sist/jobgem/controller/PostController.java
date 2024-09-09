@@ -14,6 +14,7 @@ import com.sist.jobgem.dto.PostWriteDto;
 import com.sist.jobgem.dto.WorkSchedulesDto;
 import com.sist.jobgem.entity.WorkDay;
 import com.sist.jobgem.service.PostService;
+import com.sist.jobgem.dto.PostCountApplyDto;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.sist.jobgem.service.WorkDayService;
@@ -34,7 +35,8 @@ public class PostController {
     private WorkSchedulesService workSchedulesService;
 
     @RequestMapping("")
-    public ResponseEntity<List<PostDto>> writePost() {
+
+    public ResponseEntity<List<PostCountApplyDto>> writePost() {
         return ResponseEntity.ok(postService.getPosts());
     }
 
