@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ApplymentRepository extends JpaRepository<Applyment, Integer> {
-    
+    int countByPoIdx(int poIdx);
 }

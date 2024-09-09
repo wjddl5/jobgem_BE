@@ -45,6 +45,7 @@ public class HireKindService {
         return hireKindRepository.editHir(id, editItemName) > 0;
     }
 
+
     public List<HireKind> findByIdIn(List<Integer> hkIdx) {
         return hireKindRepository.findByIdIn(hkIdx);
     }

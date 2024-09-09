@@ -8,10 +8,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface BlockRepository extends JpaRepository<Block, Integer> {
-    @Query("SELECT new com.sist.jobgem.dto.BlockDto(b) FROM Block b WHERE b.coIdx = :coIdx")
-    Page<BlockDto> findAllByCoIdx(@Param("coIdx") int coIdx, Pageable pageable);
+
+    @Query("SELECT new com.sist.jobgem.dto.BlockDto(b) FROM Block b WHERE b.coIdx = :coIdx ORDER BY b.blDate DESC LIMIT 3")
+    List<BlockDto> findAllByCoIdx(@Param("coIdx") int coIdx);
+
+    @Query("SELECT new com.sist.jobgem.dto.BlockDto(b) FROM Block b " +
+            "WHERE b.coIdx = :coIdx " +
+            "AND (:name IS NULL OR b.jobseeker.joName LIKE %:name%)")
+    Page<BlockDto> findAllByCoIdxAndJoName(@Param("coIdx") int coIdx,
+                                         @Param("name") String name,
+                                         Pageable pageable);
+
     
     @Query("SELECT b FROM Block b " +
            "WHERE (:type = 'bldate' AND cast(b.blDate as string) LIKE %:value%) " +
