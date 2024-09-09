@@ -62,6 +62,7 @@ public class JobseekerDto {
         this.joEdu = jobseeker.getJoEdu();
         this.joSal = jobseeker.getJoSal();
         this.joImgurl = jobseeker.getJoImgUrl();
+        this.skills = jobseeker.getSkills();
         this.skillIds = jobseeker.getSkills().stream()
                 .map(Skill::getId)
                 .collect(Collectors.toList()); // Skill ID 목록 추출

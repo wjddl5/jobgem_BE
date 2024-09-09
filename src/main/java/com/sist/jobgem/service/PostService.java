@@ -3,7 +3,10 @@ package com.sist.jobgem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.sist.jobgem.repository.PostRepository;
@@ -16,6 +19,7 @@ import com.sist.jobgem.repository.HireKindRepository;
 import com.sist.jobgem.dto.IdNameDto;
 import com.sist.jobgem.dto.PostCountApplyDto;
 import com.sist.jobgem.dto.PostDto;
+import com.sist.jobgem.dto.PostListDto;
 import com.sist.jobgem.dto.PostSetDto;
 import com.sist.jobgem.entity.Post;
 import com.sist.jobgem.mapper.LocationDoMapper;
@@ -47,9 +51,12 @@ public class PostService {
     @Autowired
     private HireKindRepository hireKindRepository;
 
-
-    public List<PostCountApplyDto> getPosts() {
-        return postRepository.findAllWithApplyCount(1);
+    public PostListDto getPosts(Map<String, Object> map, int coIdx) {
+        PostListDto postListDto = new PostListDto();
+        List<PostCountApplyDto> postList = postRepository.findByFilterWithApplyCount(map);
+        postListDto.setPostList(postList);
+        setPostList(postListDto, coIdx);
+        return postListDto;
     }
 
     public int create(PostDto postDto) {
@@ -100,5 +107,12 @@ public class PostService {
         dto.setLocationGuSi(locationGuSiRepository.findAll());
         
         return dto;
+    }
+
+    public void setPostList(PostListDto postListDto, int coIdx) {
+        postListDto.setProgress(postRepository.countByPoStateAndCoIdx(1, coIdx));
+        postListDto.setAll(postRepository.countByCoIdx(coIdx));
+        postListDto.setComplete(postRepository.countByPoStateAndCoIdx(2, coIdx));
+        postListDto.setDeadline(postRepository.countByCoIdxAndPoDeadline(coIdx, LocalDate.now()));
     }
 }
