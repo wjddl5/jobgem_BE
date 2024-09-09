@@ -1,16 +1,14 @@
 package com.sist.jobgem.controller;
 
 import com.sist.jobgem.dto.*;
+import com.sist.jobgem.service.BlockService;
 import com.sist.jobgem.service.CompanyService;
 
 import com.sist.jobgem.service.TalentService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,21 +19,22 @@ public class CompanyController {
     private CompanyService companyService;
     @Autowired
     private TalentService talentService;
+    @Autowired
+    private BlockService blockService;
 
     @GetMapping("")
-    public ResponseEntity<CompanyIndexDto> Index(@RequestParam int id,@RequestParam int blockPage) {
-        PageRequest pageable = PageRequest.of(blockPage, 2, Sort.by(Sort.Direction.DESC, "blDate"));
-        return ResponseEntity.ok(companyService.getCompany(id, pageable));
+    public ResponseEntity<CompanyIndexDto> Index(@RequestParam int id) {
+        return ResponseEntity.ok(companyService.getCompany(id));
     }
 
     @GetMapping("/fit")
-    public ResponseEntity<FitJobseekerDto> getFitCompany(int id, int loadPage) {
+    public ResponseEntity<FitJobseekerDto> getFitJobseekerList(int id, int loadPage) {
         PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "joName"));
         return ResponseEntity.ok(companyService.getFitJobseekerList(id, pageable));
     }
 
     @GetMapping("/wish")
-    public ResponseEntity<TalentResponseDto> getWishJobseekerList(@RequestParam int id, @RequestParam int loadPage) {
+    public ResponseEntity<Slice<TalentDto>> getWishJobseekerList(@RequestParam int id, @RequestParam int loadPage) {
         PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "joIdx"));
         return ResponseEntity.ok(companyService.getWishjobseekerList(id, pageable));
     }
@@ -45,9 +44,20 @@ public class CompanyController {
         return ResponseEntity.ok(talentService.addTalent(request));
     }
 
-    @PostMapping("/wish/remove")
+    @PostMapping("/wish/delete")
     public void removeWishJobseeker(@RequestBody int id) {
         talentService.removeTalent(id);
+    }
+
+    @GetMapping("/block")
+    public Page<BlockDto> getBlockListbyCoIdxAndJoName(@RequestParam int id, @RequestParam String name,@RequestParam int loadPage) {
+        PageRequest pageable = PageRequest.of(loadPage, 5, Sort.by(Sort.Direction.DESC, "blDate"));
+        return blockService.getBlockListByCoIdxAndJoName(id, name, pageable);
+    }
+
+    @PostMapping("/block/delete")
+    public void deleteBlock(@RequestBody int[] selectList) {
+        blockService.deleteBlock(selectList);
     }
 
     @GetMapping("/list")

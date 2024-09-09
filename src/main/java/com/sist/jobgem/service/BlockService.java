@@ -9,6 +9,8 @@ import com.sist.jobgem.dto.BlockDto;
 import com.sist.jobgem.mapper.BlockMapper;
 import com.sist.jobgem.repository.BlockRepository;
 
+import java.util.List;
+
 @Service
 public class BlockService {
     @Autowired
@@ -20,5 +22,22 @@ public class BlockService {
         }
         return blockRepository.findByTypeAndValueContaining(type, value, pageable)
                 .map(BlockMapper.INSTANCE::toDto);
+    }
+
+    // 그냥 리스트
+    public List<BlockDto> getBlockListByCoIdx(int coIdx) {
+        return blockRepository.findAllByCoIdx(coIdx);
+    }
+
+    // 이름 검색있는 리스트
+    public Page<BlockDto> getBlockListByCoIdxAndJoName(int coIdx, String name, Pageable pagable) {
+        return blockRepository.findAllByCoIdxAndJoName(coIdx, name, pagable);
+    }
+
+    // 차단 삭제
+    public void deleteBlock(int[] blockList) {
+        for(int id : blockList){
+            blockRepository.deleteById(id);
+        }
     }
 }
