@@ -2,9 +2,9 @@ package com.sist.jobgem.enums;
 
 public enum LoginStatusEnum {
     
-    LOGIN_SUCCESS("로그인에 성공하였습니다."),
-    LOGIN_WRONG_EMAIL("이메일이 존재하지 않습니다."),
-    LOGIN_WRONG_PW("비밀번호를 확인해주세요.");
+    LOGIN_SUCCESS("success"),
+    LOGIN_WRONG_EMAIL("email_not_found"),
+    LOGIN_WRONG_PW("password_not_match");
 
     private String message;
 
@@ -15,5 +15,4 @@ public enum LoginStatusEnum {
     public String getMessage() {
         return message;
     }
-
 }
