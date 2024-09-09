@@ -11,6 +11,7 @@ import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.JobseekerDto;
 import com.sist.jobgem.dto.UserDto;
 import com.sist.jobgem.entity.User;
+import com.sist.jobgem.enums.LoginStatusEnum;
 import com.sist.jobgem.mapper.CompanyMapper;
 import com.sist.jobgem.mapper.JobseekerMapper;
 import com.sist.jobgem.mapper.UserMapper;
@@ -38,6 +39,18 @@ public class UserService {
 
     public User getUser(int id) {
         return userRepository.findById(id);
+    }
+
+    public LoginStatusEnum login(String usId, String usPw) {
+        Optional<User> user = userRepository.findByUsId(usId);
+        
+        if (user.isPresent()) {
+            if (passwordEncoder.matches(usPw, user.get().getUsPw())) {
+                return LoginStatusEnum.LOGIN_SUCCESS;
+            }
+            return LoginStatusEnum.LOGIN_WRONG_PW;
+        }
+        return LoginStatusEnum.LOGIN_WRONG_EMAIL;
     }
 
     private User addUser(UserDto userDto, int userType) {
