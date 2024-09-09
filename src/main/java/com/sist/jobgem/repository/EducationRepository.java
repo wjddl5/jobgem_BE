@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface EducationRepository extends JpaRepository<Education, Integer> {
-
   @Modifying
   @Query("UPDATE Education e SET e.edName = :editItemName WHERE e.id = :id")
   int editEdu(@Param("id") int id, @Param("editItemName") String editItemName);
