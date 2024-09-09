@@ -1,11 +1,14 @@
 package com.sist.jobgem.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sist.jobgem.dto.CompanyJoinRequest;
@@ -14,6 +17,7 @@ import com.sist.jobgem.entity.User;
 import com.sist.jobgem.service.UserService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 
 @RestController
 @RequestMapping("/api")
@@ -26,19 +30,27 @@ public class UserController {
     public ResponseEntity<User> all(int id) {
         return ResponseEntity.ok(userService.getUser(id));
     }
-
-    @PostMapping("/join/emailcheck")
-    public String postMethodName(@RequestBody String entity) {
-        return entity;
+    
+    @GetMapping("/join/check/email")
+    public ResponseEntity<Boolean> checkEmail(@Email @RequestParam String email) {
+        return ResponseEntity.ok(userService.checkEmail(email));
     }
     
     @PostMapping("/join/jobseeker")
     public ResponseEntity<Integer> joinJobseeker(@Valid @RequestBody JobseekerJoinRequest request) {
-        return ResponseEntity.ok(userService.addJobseeker(request.getUser(), request.getJobseeker()));
+        int result = userService.addJobseeker(request.getUser(), request.getJobseeker());
+        if (result == 0) {
+            return ResponseEntity.badRequest().body(0);
+        }
+        return ResponseEntity.created(URI.create("/api/join/jobseeker")).body(result);
     }
 
     @PostMapping("/join/company")
     public ResponseEntity<Integer> joinCompany(@Valid @RequestBody CompanyJoinRequest request) {
-        return ResponseEntity.ok(userService.addCompany(request.getUser(), request.getCompany()));
+        int result = userService.addCompany(request.getUser(), request.getCompany());
+        if (result == 0) {
+            return ResponseEntity.badRequest().body(0);
+        }
+        return ResponseEntity.created(URI.create("/api/join/company")).body(result);
     }
 }

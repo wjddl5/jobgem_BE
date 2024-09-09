@@ -1,11 +1,15 @@
 package com.sist.jobgem.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocationDoDto {
     private int id;
-    private String Name;
+    private String name;
 }

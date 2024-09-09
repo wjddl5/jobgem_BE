@@ -13,6 +13,9 @@ import com.sist.jobgem.entity.LocationDo;
 public interface LocationDoMapper {
     LocationDoMapper INSTANCE = Mappers.getMapper(LocationDoMapper.class);
 
+    @Mapping(target = "ldName", source = "name")
+    LocationDo toEntity(LocationDoDto locationDoDto);
+
     @Mapping(target = "name", source = "ldName")
     LocationDoDto toDto(LocationDo locationDo);
 
