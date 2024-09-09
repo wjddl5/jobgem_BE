@@ -1,6 +1,7 @@
 package com.sist.jobgem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +47,7 @@ public class PostService {
     @Autowired
     private HireKindRepository hireKindRepository;
 
+
     public List<PostCountApplyDto> getPosts() {
         return postRepository.findAllWithApplyCount(1);
     }
@@ -55,6 +57,11 @@ public class PostService {
         Post post = PostMapper.INSTANCE.toEntity(postDto);
         Post savedPost = postRepository.save(post);
         return savedPost.getId();
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void updatePostState() {
+        postRepository.updateStateByDeadline();
     }
 
     public PostSetDto getPostSet() {
