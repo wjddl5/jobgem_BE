@@ -2,17 +2,18 @@ package com.sist.jobgem.repository;
 
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sist.jobgem.dto.PostCountApplyDto;
-import com.sist.jobgem.entity.Post;
 import com.sist.jobgem.entity.QApplyment;
 import com.sist.jobgem.entity.QPost;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.QueryByExampleExecutor;
+
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -29,6 +30,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         QPost post = QPost.post;
         QApplyment applyment = QApplyment.applyment;
         BooleanBuilder builder = new BooleanBuilder();
+        OrderSpecifier<?> sort = post.poDate.desc(); // 기본 정렬 설정
+
         if (map.get("coIdx") != null) {
             builder.and(post.coIdx.eq(Integer.parseInt(map.get("coIdx").toString())));
         }
@@ -41,12 +44,24 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         }
         if (map.get("searchType") != null) {
             if(map.get("searchType").toString().equals("title")){
-                builder.and(post.poTitle.contains(map.get("searchWord").toString()));
+                System.err.println("search: " + map.get("search"));
+                builder.and(post.poTitle.contains(map.get("search").toString()));
             }else if(map.get("searchType").toString().equals("content")){
-                builder.and(post.poContent.contains(map.get("searchWord").toString()));
+                builder.and(post.poContent.contains(map.get("search").toString()));
             }
         }
-        return queryFactory
+        if (map.get("sort") != null) {
+            if(map.get("sort").toString().equals("poDateDesc")){
+                sort = post.poDate.desc();
+            }else if(map.get("sort").toString().equals("poDeadlineAsc")){
+                sort = post.poDeadline.asc();
+            }else if(map.get("sort").toString().equals("applyCountDesc")){
+                sort = applyment.count().desc();
+            }else if(map.get("sort").toString().equals("poDateAsc")){
+                sort = post.poDate.asc();
+            }
+        }
+        List<PostCountApplyDto> result = queryFactory
             .select(Projections.constructor(PostCountApplyDto.class,
                 post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
                 post.poImgurl, post.poSal, post.poWorkhour, post.poSubType, post.poAddr,
@@ -59,6 +74,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
             .groupBy(post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
                 post.poImgurl, post.poSal, post.poWorkhour, post.poSubType, post.poAddr,
                 post.poEmail, post.poFax, post.poState)
+            .orderBy(sort)
             .fetch();
+        return result;
     }
 }
