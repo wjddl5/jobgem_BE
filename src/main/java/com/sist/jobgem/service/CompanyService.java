@@ -27,7 +27,7 @@ public class CompanyService {
     @Autowired
     private BlockRepository blockRepository;
 
-    public CompanyIndexDto getCompany(int id, Pageable pageable) {
+    public CompanyIndexDto getCompany(int id) {
         return CompanyIndexDto.builder()
                 .company(CompanyMapper.INSTANCE.toDto(companyRepository.findById(id).orElseThrow()))
                 .postCount(postRepository.countByCoIdxAndPoState(id, 1))
@@ -36,7 +36,7 @@ public class CompanyService {
                 .interviewCount(interviewRepository.countByCoIdxAndInState(id, 1))
                 .talentCount(talentRepository.countByCoIdx(id))
                 .fitJobseekerCount(jobseekerRepository.countByWithfitJobseeker(id))
-                .blockList(blockRepository.findAllByCoIdx(id, pageable))
+                .blockList(blockRepository.findAllByCoIdx(id))
                 .build();
     }
     public Page<CompanyDto> getCompanyList(Pageable pageable, String value, String type) {
@@ -54,12 +54,9 @@ public class CompanyService {
         return fitJobseeker;
     }
 
-    public TalentResponseDto getWishjobseekerList(int id, Pageable pageable) {
-        Slice<TalentDto> byCoIdx = talentRepository.findByCoIdx(id, pageable);
-
-        TalentResponseDto wishJobseeker = new TalentResponseDto(byCoIdx);
-
-        return wishJobseeker;
+    public Slice<TalentDto> getWishjobseekerList(int id, Pageable pageable) {
+        Slice<TalentDto> talentList = talentRepository.findByCoIdx(id, pageable);
+        return talentList;
     }
 
 
