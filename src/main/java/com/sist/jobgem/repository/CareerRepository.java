@@ -11,9 +11,9 @@ import java.util.List;
 @Repository
 public interface CareerRepository extends JpaRepository<Career, Integer> {
 
+
     @Modifying
     @Query("UPDATE Career c SET c.crName = :editItemName WHERE c.id = :id")
     int editCar(@Param("id") int id, @Param("editItemName") String editItemName);
-
     List<Career> findByIdIn(List<Integer> crIdx);
 }

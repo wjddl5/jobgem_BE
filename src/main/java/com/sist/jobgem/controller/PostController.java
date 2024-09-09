@@ -5,21 +5,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import java.util.HashMap;
 
 import com.sist.jobgem.dto.PostDto;
+import com.sist.jobgem.dto.PostListDto;
 import com.sist.jobgem.dto.PostSetDto;
 import com.sist.jobgem.dto.PostWriteDto;
 import com.sist.jobgem.dto.WorkSchedulesDto;
 import com.sist.jobgem.entity.WorkDay;
 import com.sist.jobgem.service.PostService;
+import com.sist.jobgem.dto.PostCountApplyDto;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.sist.jobgem.service.WorkDayService;
 import com.sist.jobgem.service.WorkSchedulesService;
 
-import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/post")
 public class PostController {
@@ -34,8 +39,9 @@ public class PostController {
     private WorkSchedulesService workSchedulesService;
 
     @RequestMapping("")
-    public ResponseEntity<List<PostDto>> writePost() {
-        return ResponseEntity.ok(postService.getPosts());
+    public ResponseEntity<PostListDto> getPosts(@RequestParam Map<String, Object> map) {
+        int coIdx = 1;
+        return ResponseEntity.ok(postService.getPosts(map, coIdx));
     }
 
     @RequestMapping(value = "/write", method = RequestMethod.POST)

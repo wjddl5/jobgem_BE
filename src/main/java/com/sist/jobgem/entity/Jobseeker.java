@@ -3,7 +3,16 @@ package com.sist.jobgem.entity;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,6 +61,10 @@ public class Jobseeker {
     @ManyToMany
     @JoinTable(name = "have_skills", joinColumns = @JoinColumn(name = "jo_idx"), inverseJoinColumns = @JoinColumn(name = "sk_idx"))
     private List<Skill> skills;
+
+    @ManyToMany
+    @JoinTable(name = "offers", joinColumns = @JoinColumn(name = "jo_idx"), inverseJoinColumns = @JoinColumn(name = "co_idx"))
+    private List<Offer> offers;
 
     // 필드 업데이트 메서드 추가
     public void updateFields(String joName, LocalDate joBirth, String joAddress, String joTel,

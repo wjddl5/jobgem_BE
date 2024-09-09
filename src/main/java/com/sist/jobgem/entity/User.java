@@ -3,8 +3,6 @@ package com.sist.jobgem.entity;
 import java.time.Instant;
 import java.time.LocalDate;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -15,8 +13,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
@@ -32,7 +32,7 @@ public class User {
     @Column(name = "us_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "us_id", nullable = false, length = 20)
+    @Column(name = "us_id", nullable = false, length = 50)
     private String usId;
 
     @Column(name = "us_pw", nullable = false, length = 100)
