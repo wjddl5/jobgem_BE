@@ -25,9 +25,10 @@ public class LocationGuSiService {
         return LocationGuSiMapper.INSTANCE.toDtoList(list);
     }
 
-    public boolean addLocGuSi(String itemName) {
+    public boolean addLocGuSi(String itemName, int ldIdx) {
         LocationGuSiDto lDto = new LocationGuSiDto();
         lDto.setLgName(itemName);
+        lDto.setLdIdx(ldIdx);
 
         LocationGuSi e = LocationGuSiMapper.INSTANCE.toEntity(lDto);
 

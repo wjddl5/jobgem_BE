@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-
 import com.sist.jobgem.dto.LocationGuSiDto;
 import com.sist.jobgem.entity.LocationGuSi;
 
@@ -19,7 +18,7 @@ public interface LocationGuSiMapper {
     @Mapping(target = "lgName", source = "lgName")
     LocationGuSiDto toDto(LocationGuSi locationGuSi);
 
-    @Mapping(target = "name", source = "lgName")
+    @Mapping(target = "lgName", source = "lgName")
     List<LocationGuSiDto> toDtoList(List<LocationGuSi> locationGuSi);
 
     @Mapping(target = "lgIdx", source = "lgIdx")
