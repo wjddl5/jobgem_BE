@@ -8,6 +8,8 @@ import com.sist.jobgem.dto.LocationDoDto;
 import com.sist.jobgem.entity.LocationDo;
 import com.sist.jobgem.mapper.LocationDoMapper;
 import com.sist.jobgem.repository.LocationDoRepository;
+import com.sist.jobgem.repository.LocationGuSiRepository;
+
 import java.util.List;
 
 @Service
@@ -15,6 +17,9 @@ public class LocationDoService {
 
   @Autowired
   private LocationDoRepository locationDoRepository;
+
+  @Autowired
+  LocationGuSiRepository locationGuSiRepository;
 
   public List<LocationDoDto> getLoc() {
     List<LocationDo> list = locationDoRepository.findAll();
@@ -30,9 +35,11 @@ public class LocationDoService {
     return locationDoRepository.save(e) != null;
   }
 
+  @Transactional
   public boolean removeLoc(int id) {
     try {
       locationDoRepository.deleteById(id);
+      locationGuSiRepository.deleteByLdIdx(id);
       return true;
     } catch (Exception e) {
       return false;

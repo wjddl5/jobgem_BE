@@ -163,30 +163,26 @@ public class CategoryController {
   }
 
   @RequestMapping("removeLoc")
-  public boolean removeLoc(@RequestParam(value = "chkList") List<String> chkList) {
-    for (int i = 0; i < chkList.size(); i++) {
-      Boolean chk = locationDoService.removeLoc(Integer.parseInt(chkList.get(i)));
-      if (!chk)
-        return false;
-    }
-    return true;
+  public boolean removeLoc(@RequestParam(value = "id") int id) {
+    return locationDoService.removeLoc(id);
   }
 
   @RequestMapping("editLoc")
   public boolean editLoc(@RequestParam(value = "id") int id,
-      @RequestParam(value = "editItemName") String editItemName) {
-    return locationDoService.editLoc(id, editItemName);
+      @RequestParam(value = "editDoName") String editDoName) {
+    return locationDoService.editLoc(id, editDoName);
   }
 
   // 지역 (구, 시)
   @RequestMapping("/locGuSi")
-  public List<LocationGuSiDto> getLocGuSi(int idIdx) {
-    return locationGuSiService.getLocGuSi(idIdx);
+  public List<LocationGuSiDto> getLocGuSi(@RequestParam(value = "ldIdx") int ldIdx) {
+    return locationGuSiService.getLocGuSi(ldIdx);
   }
 
   @RequestMapping("/addLocGuSi")
-  public boolean addLocGuSi(@RequestParam(value = "itemName") String itemName) {
-    return locationGuSiService.addLocGuSi(itemName);
+  public boolean addLocGuSi(@RequestParam(value = "itemName") String itemName,
+      @RequestParam(value = "ldIdx") int ldIdx) {
+    return locationGuSiService.addLocGuSi(itemName, ldIdx);
   }
 
   @RequestMapping("removeLocGuSi")
