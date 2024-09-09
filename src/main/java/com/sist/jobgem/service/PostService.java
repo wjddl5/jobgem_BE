@@ -1,6 +1,7 @@
 package com.sist.jobgem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import com.sist.jobgem.repository.LocationDoRepository;
 import com.sist.jobgem.repository.LocationGuSiRepository;
 import com.sist.jobgem.repository.HireKindRepository;
 import com.sist.jobgem.dto.IdNameDto;
+import com.sist.jobgem.dto.PostCountApplyDto;
 import com.sist.jobgem.dto.PostDto;
 import com.sist.jobgem.dto.PostSetDto;
 import com.sist.jobgem.entity.Post;
@@ -45,14 +47,9 @@ public class PostService {
     @Autowired
     private HireKindRepository hireKindRepository;
 
-    public List<PostDto> getPosts() {
-        List<Post> posts = postRepository.findAll();
-        List<PostDto> postDtos=null;
-        if (!posts.isEmpty()) {
-            postDtos = PostMapper.INSTANCE.toDtoList(posts);
 
-        }
-        return postDtos;
+    public List<PostCountApplyDto> getPosts() {
+        return postRepository.findAllWithApplyCount(1);
     }
 
     public int create(PostDto postDto) {
@@ -60,6 +57,11 @@ public class PostService {
         Post post = PostMapper.INSTANCE.toEntity(postDto);
         Post savedPost = postRepository.save(post);
         return savedPost.getId();
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void updatePostState() {
+        postRepository.updateStateByDeadline();
     }
 
     public PostSetDto getPostSet() {

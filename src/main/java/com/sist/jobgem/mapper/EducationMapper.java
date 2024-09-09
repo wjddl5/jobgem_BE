@@ -6,7 +6,6 @@ import java.util.List;
 import org.mapstruct.ReportingPolicy;
 import com.sist.jobgem.dto.EducationDto;
 import com.sist.jobgem.entity.Education;
-
 @Mapper
 public interface EducationMapper {
     EducationMapper INSTANCE = Mappers.getMapper(EducationMapper.class);

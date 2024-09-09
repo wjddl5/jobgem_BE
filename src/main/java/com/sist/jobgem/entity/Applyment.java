@@ -35,4 +35,7 @@ public class Applyment {
     @Column(name = "ap_state", nullable = false)
     private Integer apState;
 
+    @ManyToOne
+    @JoinColumn(name = "po_idx", referencedColumnName = "po_idx", insertable = false, updatable = false)
+    private Post post;
 }
