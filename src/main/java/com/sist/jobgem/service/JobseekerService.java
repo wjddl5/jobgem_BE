@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.dto.UserDto;
 import com.sist.jobgem.entity.Jobseeker;
 import com.sist.jobgem.entity.Skill;
 import com.sist.jobgem.entity.User;
 import com.sist.jobgem.mapper.JobseekerMapper;
+import com.sist.jobgem.mapper.UserMapper;
 import com.sist.jobgem.repository.JobseekerRepository;
 import com.sist.jobgem.repository.SkillRepository;
 import com.sist.jobgem.repository.UserRepository;
@@ -88,4 +90,60 @@ public class JobseekerService {
         return jobseekerRepository.save(existingJobseeker);
     }
 
+    // 비밀번호 체크 함수
+    public boolean checkPwd(int id, String chkPw) {
+        // DB에서 유저 정보 가져오기 (usId로 가져온다고 가정)
+        Jobseeker jobseeker = jobseekerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. ID: " + id));
+
+        String usPw = jobseeker.getUser().getUsPw(); // DB에 저장된 비밀번호
+
+        // 비밀번호가 해시로 저장된 경우 해시 비교 (예: BCrypt 사용)
+        return usPw.equals(chkPw);
+        // return passwordEncoder.matches(chkPw, usPw);
+    }
+
+    // 비밀번호 업데이트 서비스
+    public boolean updatePassword(int id, String newPwd) {
+        // Jobseeker를 ID로 조회
+        Jobseeker jobseeker = jobseekerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. ID: " + id));
+        // Jobseeker와 연관된 User 객체 가져오기
+        User user = jobseeker.getUser();
+        if (user == null) {
+            throw new IllegalArgumentException("해당 사용자의 유저 정보가 없습니다.");
+        }
+
+        UserDto uDto = UserMapper.INSTANCE.toDto(user);
+
+        // String encodedPassword = passwordEncoder.encode(newPwd);
+        uDto.setUsPw(newPwd); // 새로운 비밀번호 설정
+
+        // DTO를 다시 엔티티로 변환
+        User updatedUser = UserMapper.INSTANCE.toEntity(uDto);
+
+        userRepository.save(updatedUser); // User 엔티티를 저장
+        return true; // 성공적으로 비밀번호 변경
+    }
+
+    // 회원 탈퇴
+    public boolean deleteUser(int id) {
+        // Jobseeker를 ID로 조회
+        Jobseeker jobseeker = jobseekerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. ID: " + id));
+        // Jobseeker와 연관된 User 객체 가져오기
+        User user = jobseeker.getUser();
+        if (user == null) {
+            throw new IllegalArgumentException("해당 사용자의 유저 정보가 없습니다.");
+        }
+
+        UserDto uDto = UserMapper.INSTANCE.toDto(user);
+
+        uDto.setUsState(0);
+
+        User updatedUser = UserMapper.INSTANCE.toEntity(uDto);
+
+        userRepository.save(updatedUser);
+        return true;
+    }
 }

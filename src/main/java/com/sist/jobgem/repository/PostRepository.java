@@ -8,7 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
+
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -29,10 +29,10 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
     int countByPoStateAndCoIdx(int poState, int coIdx);
     int countByCoIdx(int coIdx);
     int countByCoIdxAndPoDeadline(int coIdx, LocalDate poDeadline);
-    
+
     @Modifying
     @Transactional
     @Query("UPDATE Post p SET p.poState = 2 WHERE p.poDeadline <= CURRENT_DATE")
     void updateStateByDeadline();
-    
+
 }

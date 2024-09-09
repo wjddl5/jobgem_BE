@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.sist.jobgem.entity.Jobseeker;
+import com.sist.jobgem.entity.Offer;
 import com.sist.jobgem.entity.Skill;
 import com.sist.jobgem.entity.User;
 
@@ -46,6 +47,8 @@ public class JobseekerDto {
 
     private List<Skill> skills;
 
+    private List<Offer> offers;
+
     private List<Integer> skillIds; // 스킬 ID 목록 추가
 
     public JobseekerDto(Jobseeker jobseeker) {
@@ -59,6 +62,7 @@ public class JobseekerDto {
         this.joEdu = jobseeker.getJoEdu();
         this.joSal = jobseeker.getJoSal();
         this.joImgurl = jobseeker.getJoImgUrl();
+        this.skills = jobseeker.getSkills();
         this.skillIds = jobseeker.getSkills().stream()
                 .map(Skill::getId)
                 .collect(Collectors.toList()); // Skill ID 목록 추출
