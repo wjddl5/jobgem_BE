@@ -7,7 +7,6 @@ import com.sist.jobgem.dto.WorkSchedulesDto;
 import com.sist.jobgem.entity.WorkSchedules;
 import com.sist.jobgem.mapper.WorkSchedulesMapper;
 import com.sist.jobgem.repository.WorkSchedulesRepository;
-import java.util.List;
 @Service
 public class WorkSchedulesService {
     @Autowired

@@ -35,6 +35,7 @@ public class PostController {
     private WorkSchedulesService workSchedulesService;
 
     @RequestMapping("")
+
     public ResponseEntity<List<PostCountApplyDto>> writePost() {
         return ResponseEntity.ok(postService.getPosts());
     }

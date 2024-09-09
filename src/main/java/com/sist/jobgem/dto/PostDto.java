@@ -20,12 +20,12 @@ import com.sist.jobgem.mapper.HireKindMapper;
 import com.sist.jobgem.mapper.LocationGuSiMapper;
 import com.sist.jobgem.mapper.SkillMapper;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import java.util.List;
 
 @Getter
@@ -34,7 +34,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostDto {
-    
     public PostDto(PostWriteDto postDto) {
         this.coIdx = postDto.getCoIdx();
         this.poTitle = postDto.getPoTitle();
@@ -67,7 +66,6 @@ public class PostDto {
     private String poEmail;
     private String poFax;
     private Integer poState;
-
     
     private List<Education> education;
     private List<LocationGuSi> locationGuSi;

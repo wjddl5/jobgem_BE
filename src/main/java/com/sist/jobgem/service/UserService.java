@@ -19,7 +19,7 @@ import com.sist.jobgem.repository.UserRepository;
 
 @Service
 public class UserService {
-    
+
     private final int USER_TYPE_JOBSEEKER = 1;
     private final int USER_TYPE_COMPANY = 2;
 
@@ -47,7 +47,7 @@ public class UserService {
         User userEntity = UserMapper.INSTANCE.toEntity(userDto);
         User addUserResult = userRepository.save(userEntity);
 
-        if(addUserResult != null) {
+        if (addUserResult != null) {
             return addUserResult;
         }
 
@@ -66,7 +66,7 @@ public class UserService {
         User user = addUser(userDto, USER_TYPE_COMPANY);
         companyDto.setUser(user);
         int companyIdx = companyRepository.save(CompanyMapper.INSTANCE.toEntity(companyDto)).getId();
-        
+
         return companyIdx;
     }
 }
