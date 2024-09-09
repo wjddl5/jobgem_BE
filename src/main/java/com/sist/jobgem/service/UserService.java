@@ -53,6 +53,11 @@ public class UserService {
         return LoginStatusEnum.LOGIN_WRONG_EMAIL;
     }
 
+    public boolean isEmailExist(String email) {
+        Optional<User> user = userRepository.findByUsId(email);
+        return user.isPresent();
+    }
+
     private User addUser(UserDto userDto, int userType) {
         userDto.setUsPw(passwordEncoder.encode(userDto.getUsPw()));
         userDto.setUsJoinDate(Instant.now());
@@ -68,10 +73,6 @@ public class UserService {
         return null;
     }
 
-    public boolean checkEmail(String email) {
-        Optional<User> user = userRepository.findByUsId(email);
-        return user.isPresent();
-    }
 
     public int addJobseeker(UserDto userDto, JobseekerDto jobseekerDto) {
         User user = addUser(userDto, USER_TYPE_JOBSEEKER);

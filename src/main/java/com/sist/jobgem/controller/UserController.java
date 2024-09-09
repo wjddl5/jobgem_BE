@@ -44,7 +44,7 @@ public class UserController {
     
     @GetMapping("/join/check/email")
     public ResponseEntity<Boolean> checkEmail(@Email @RequestParam String email) {
-        return ResponseEntity.ok(userService.checkEmail(email));
+        return ResponseEntity.ok(userService.isEmailExist(email));
     }
     
     @PostMapping("/join/jobseeker")
