@@ -14,7 +14,6 @@ import com.sist.jobgem.dto.CommentDto;
 import com.sist.jobgem.service.BoardService;
 import com.sist.jobgem.service.CommentService;
 
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,18 +35,6 @@ public class BoardController {
     return boardService.getBbsList(1, 1, pageable, searchType, searchValue); // boType 1 : 공지사항
   }
 
-  // @RequestMapping("/qna/list")
-  // public Map<String, Object> getQnaList(Pageable pageable) {
-  // Map<String, Object> map = new HashMap<>();
-  // List<BoardDto> ar = boardService.getBbsList(2, 1, pageable); // boType 2 :
-  // Q&A
-
-  // map.put("ar", ar);
-  // map.put("length", ar.size());
-
-  // return map;
-  // }
-
   @RequestMapping(value = { "/notice/view", "/qna/view" })
   public Map<String, Object> getView(@RequestParam(value = "id") int id) {
     Map<String, Object> map = new HashMap<>();
@@ -60,12 +47,12 @@ public class BoardController {
     return map;
   }
 
-  @RequestMapping("/notice/remove")
+  @RequestMapping("/remove")
   public boolean removeBbs(@RequestParam(value = "id") int id) {
     return boardService.removeBbs(id);
   }
 
-  @RequestMapping("/notice/removeList")
+  @RequestMapping("/removeList")
   public boolean removeBbsList(@RequestParam(value = "chkList") List<String> chkList) {
     for (int i = 0; i < chkList.size(); i++) {
       Boolean chk = boardService.removeBbs(Integer.parseInt(chkList.get(i)));
@@ -85,6 +72,23 @@ public class BoardController {
   public boolean editBbs(@RequestParam(value = "title") String title, @RequestParam(value = "content") String content,
       @RequestParam(value = "boId") int boId) {
     return boardService.editBbs(title, content, boId);
+  }
+
+  @RequestMapping("/qna/list")
+  public Page<BoardDto> getQnAList(Pageable pageable,
+      @RequestParam(value = "searchType", required = false) String searchType,
+      @RequestParam(value = "searchValue", required = false) String searchValue) {
+    return boardService.getBbsList(2, 1, pageable, searchType, searchValue); // boType 2 : QnA
+  }
+
+  @RequestMapping("/answerYes")
+  public void updateAnswerStatusYes(@RequestParam(value = "id") int id) {
+    boardService.updateAnswerStatusYes(id);
+  }
+
+  @RequestMapping("/answerNo")
+  public void updateAnswerStatusNo(@RequestParam(value = "id") int id) {
+    boardService.updateAnswerStatusNo(id);
   }
 
 }
