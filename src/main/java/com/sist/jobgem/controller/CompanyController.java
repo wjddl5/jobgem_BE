@@ -4,6 +4,7 @@ import com.sist.jobgem.dto.*;
 import com.sist.jobgem.service.BlockService;
 import com.sist.jobgem.service.CompanyService;
 
+import com.sist.jobgem.service.ReviewService;
 import com.sist.jobgem.service.TalentService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/company")
@@ -21,6 +24,8 @@ public class CompanyController {
     private TalentService talentService;
     @Autowired
     private BlockService blockService;
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping("")
     public ResponseEntity<CompanyIndexDto> Index(@RequestParam int id) {
@@ -50,9 +55,9 @@ public class CompanyController {
     }
 
     @GetMapping("/block")
-    public Page<BlockDto> getBlockListbyCoIdxAndJoName(@RequestParam int id, @RequestParam String name,@RequestParam int loadPage) {
+    public ResponseEntity<Page<BlockDto>> getBlockListbyCoIdxAndJoName(@RequestParam int id, @RequestParam String name,@RequestParam int loadPage) {
         PageRequest pageable = PageRequest.of(loadPage, 5, Sort.by(Sort.Direction.DESC, "blDate"));
-        return blockService.getBlockListByCoIdxAndJoName(id, name, pageable);
+        return ResponseEntity.ok(blockService.getBlockListByCoIdxAndJoName(id, name, pageable));
     }
 
     @PostMapping("/block/delete")
@@ -63,5 +68,10 @@ public class CompanyController {
     @GetMapping("/list")
     public Page<CompanyDto> getCompanyList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
         return companyService.getCompanyList(pageable, value, type);
+    }
+
+    @GetMapping("/review")
+    public ResponseEntity<List<ReviewDto>> getReviewListByCoIdx(int coIdx) {
+        return ResponseEntity.ok(reviewService.getReviewListByCoIdx(coIdx));
     }
 }
