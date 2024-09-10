@@ -107,8 +107,10 @@ public class JobseekerController {
     }
 
     @GetMapping("/applymentList")
-    public Page<ApplymentDto> getApplymentList(int id, Pageable pageable) {
-        return applymentService.getApplymentList(id, pageable);
+    public ResponseEntity<Page<ApplymentDto>> getApplymentList(int joIdx, @RequestParam int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5,
+                Sort.by(Sort.Direction.DESC, "id"));
+        return ResponseEntity.ok(applymentService.getApplymentList(joIdx, pageable));
     }
 
     @GetMapping("/offerList")
@@ -120,13 +122,6 @@ public class JobseekerController {
     public ResponseEntity<Slice<PostDto>> getPostList(@RequestParam int loadPage) {
         PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "id"));
         return ResponseEntity.ok(postService.getPostList(pageable));
-    }
-
-    @GetMapping("/applymentList")
-    public ResponseEntity<Page<ApplymentDto>> getApplymentList(int joIdx, @RequestParam int curPage) {
-        PageRequest pageable = PageRequest.of(curPage, 5,
-                Sort.by(Sort.Direction.DESC, "id"));
-        return ResponseEntity.ok(applymentService.getApplymentList(joIdx, pageable));
     }
 
     @GetMapping("/companyList")
