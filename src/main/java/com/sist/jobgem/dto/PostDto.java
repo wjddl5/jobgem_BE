@@ -10,6 +10,7 @@ import lombok.ToString;
 import java.time.LocalDate;
 
 import com.sist.jobgem.entity.Career;
+import com.sist.jobgem.entity.Company;
 import com.sist.jobgem.entity.Education;
 import com.sist.jobgem.entity.HireKind;
 import com.sist.jobgem.entity.LocationGuSi;
@@ -67,6 +68,7 @@ public class PostDto {
     private String poFax;
     private Integer poState;
     
+    private Company company;
     private List<Education> education;
     private List<LocationGuSi> locationGuSi;
     private List<HireKind> hireKind;

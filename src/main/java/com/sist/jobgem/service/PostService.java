@@ -4,7 +4,6 @@ package com.sist.jobgem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
@@ -25,8 +24,6 @@ import com.sist.jobgem.dto.PostDto;
 import com.sist.jobgem.dto.PostListDto;
 import com.sist.jobgem.dto.PostSetDto;
 import com.sist.jobgem.entity.Post;
-import com.sist.jobgem.mapper.LocationDoMapper;
-import com.sist.jobgem.mapper.LocationGuSiMapper;
 import com.sist.jobgem.mapper.PostMapper;
 
 
@@ -56,11 +53,16 @@ public class PostService {
 
     public PostListDto getPosts(Map<String, Object> map, int coIdx) {
         PostListDto postListDto = new PostListDto();
-        Pageable pageable = PageRequest.of(0, 10);
         List<PostCountApplyDto> postList = postRepository.findByFilterWithApplyCount(map);
         postListDto.setPostList(postList);
         setPostList(postListDto, coIdx);
         return postListDto;
+    }
+
+    public PostDto getPost(int poIdx) {
+        Post post = postRepository.findById(poIdx);
+        System.out.println("company: " + post.getCompany().getCoName());
+        return PostMapper.INSTANCE.toDto(post);
     }
 
     public int create(PostDto postDto) {

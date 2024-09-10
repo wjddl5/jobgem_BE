@@ -62,4 +62,9 @@ public class PostController {
     public ResponseEntity<PostSetDto> getPostSet() {
         return ResponseEntity.ok(postService.getPostSet());
     }
+
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
+    public ResponseEntity<PostDto> getPost(@RequestParam(value = "poIdx", required = true) int poIdx) {
+        return ResponseEntity.ok(postService.getPost(poIdx));
+    }
 }
