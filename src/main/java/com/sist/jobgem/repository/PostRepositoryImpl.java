@@ -1,6 +1,5 @@
 package com.sist.jobgem.repository;
 
-
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -19,11 +18,11 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
 @Repository
 @RequiredArgsConstructor
 public class PostRepositoryImpl implements PostRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-    
 
     @Override
     public List<PostCountApplyDto> findByFilterWithApplyCount(Map<String, Object> map) {

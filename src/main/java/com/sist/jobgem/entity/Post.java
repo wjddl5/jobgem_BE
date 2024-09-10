@@ -81,7 +81,7 @@ public class Post {
     @ManyToMany
     @JoinTable(name = "careers_bridge", joinColumns = @JoinColumn(name = "po_idx"), inverseJoinColumns = @JoinColumn(name = "cr_idx"))
     private List<Career> career;
-    
+
     @ManyToMany
     @JoinTable(name = "skill_bridge", joinColumns = @JoinColumn(name = "po_idx"), inverseJoinColumns = @JoinColumn(name = "sk_idx"))
     private List<Skill> skill;

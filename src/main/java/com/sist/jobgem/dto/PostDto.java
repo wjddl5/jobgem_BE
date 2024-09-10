@@ -14,13 +14,13 @@ import com.sist.jobgem.entity.Company;
 import com.sist.jobgem.entity.Education;
 import com.sist.jobgem.entity.HireKind;
 import com.sist.jobgem.entity.LocationGuSi;
+import com.sist.jobgem.entity.Post;
 import com.sist.jobgem.entity.Skill;
 import com.sist.jobgem.mapper.CareerMapper;
 import com.sist.jobgem.mapper.EducationMapper;
 import com.sist.jobgem.mapper.HireKindMapper;
 import com.sist.jobgem.mapper.LocationGuSiMapper;
 import com.sist.jobgem.mapper.SkillMapper;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -29,12 +29,40 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import java.util.List;
 
+import org.springframework.data.domain.Slice;
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostDto {
+
+    public PostDto(Post post) {
+        this.id = post.getId();
+        this.coIdx = post.getCoIdx();
+        this.poTitle = post.getPoTitle();
+        this.poContent = post.getPoContent();
+        this.poDate = post.getPoDate();
+        this.poDeadline = post.getPoDeadline();
+        this.poImgurl = post.getPoImgurl();
+        this.poSal = post.getPoSal();
+        this.poWorkhour = post.getPoWorkhour();
+        this.poSubType = post.getPoSubType();
+        this.poAddr = post.getPoAddr();
+        this.poEmail = post.getPoEmail();
+        this.poFax = post.getPoFax();
+        this.company = post.getCompany();
+        this.poState = post.getPoState();
+
+        // 리스트 매핑 - 필요하다면 매퍼를 통해 변환
+        this.education = post.getEducation();
+        this.locationGuSi = post.getLocationGuSi();
+        this.hireKind = post.getHireKind();
+        this.career = post.getCareer();
+        this.skill = post.getSkill();
+    }
+
     public PostDto(PostWriteDto postDto) {
         this.coIdx = postDto.getCoIdx();
         this.poTitle = postDto.getPoTitle();
@@ -66,8 +94,7 @@ public class PostDto {
     private String poAddr;
     private String poEmail;
     private String poFax;
-    private Integer poState;
-    
+    private Integer poState;    
     private Company company;
     private List<Education> education;
     private List<LocationGuSi> locationGuSi;
