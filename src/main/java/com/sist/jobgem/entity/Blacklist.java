@@ -7,12 +7,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "blacklist")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Blacklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,5 +47,17 @@ public class Blacklist {
 
     @Column(name = "bl_state", nullable = false)
     private Integer blState;
+
+    @ManyToOne
+    @JoinColumn(name = "us_idx", insertable = false, updatable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "co_idx", insertable = false, updatable = false)
+    private Company company;
+
+    @ManyToOne
+    @JoinColumn(name = "jo_idx", insertable = false, updatable = false)
+    private Jobseeker jobseeker;
 
 }
