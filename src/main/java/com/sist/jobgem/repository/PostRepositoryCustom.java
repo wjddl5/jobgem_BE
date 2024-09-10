@@ -9,4 +9,5 @@ import com.sist.jobgem.dto.PostCountApplyDto;
 @Repository
 public interface PostRepositoryCustom {
     List<PostCountApplyDto> findByFilterWithApplyCount(Map<String, Object> map);
+
 }
