@@ -52,7 +52,6 @@ public class PostDto {
         this.poAddr = post.getPoAddr();
         this.poEmail = post.getPoEmail();
         this.poFax = post.getPoFax();
-        this.company = post.getCompany();
         this.poState = post.getPoState();
 
         // 리스트 매핑 - 필요하다면 매퍼를 통해 변환
@@ -79,6 +78,7 @@ public class PostDto {
         this.hireKind = HireKindMapper.INSTANCE.toEntityList(postDto.getHireKind());
         this.career = CareerMapper.INSTANCE.toEntityList(postDto.getCareer());
         this.skill = SkillMapper.INSTANCE.toEntityList(postDto.getSkill());
+        this.poSal = postDto.getSalary().toString();
     }
 
     private Integer id;
@@ -94,7 +94,7 @@ public class PostDto {
     private String poAddr;
     private String poEmail;
     private String poFax;
-    private Integer poState;    
+    private Integer poState;
     private Company company;
     private List<Education> education;
     private List<LocationGuSi> locationGuSi;
