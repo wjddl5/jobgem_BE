@@ -51,13 +51,6 @@ public class BoardService {
     return new PageImpl<>(boardDtoList, pageable2, boardPage.getTotalElements());
   }
 
-  // public List<BoardDto> getBbsList(int boType, int boStatus, Pageable pageable)
-  // {
-  // List<Board> list = boardRepository.findByBoTypeAndBoStatus(boType, boStatus,
-  // pageable);
-  // List<BoardDto> dto_list = BoardMapper.INSTANCE.toDtoList(list);
-  // return dto_list;
-  // }
   // =============
 
   // 게시글 상세보기
@@ -113,5 +106,16 @@ public class BoardService {
       return true;
     else
       return false;
+  }
+
+  // 게시글 답변상태 업데이트
+  @Transactional
+  public void updateAnswerStatusYes(int id) {
+    boardRepository.updateAnswerStatusYes(id);
+  }
+
+  @Transactional
+  public void updateAnswerStatusNo(int id) {
+    boardRepository.updateAnswerStatusNo(id);
   }
 }
