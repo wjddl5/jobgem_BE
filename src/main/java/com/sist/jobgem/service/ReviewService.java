@@ -88,4 +88,8 @@ public class ReviewService {
         return reviewRepository.deleteReview(id);
     }
 
+    public List<ReviewDto> getReviewListByCoIdx(int coIdx) {
+        return ReviewMapper.INSTANCE.toDtoList(reviewRepository.findByCoIdxAndReState(coIdx, 1));
+    }
+
 }

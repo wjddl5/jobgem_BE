@@ -2,6 +2,8 @@ package com.sist.jobgem.dto;
 
 import java.time.LocalDate;
 
+import com.sist.jobgem.entity.Company;
+import com.sist.jobgem.entity.Jobseeker;
 import com.sist.jobgem.entity.Review;
 
 import lombok.Builder;
@@ -30,6 +32,10 @@ public class ReviewDto {
     private Integer reState;
 
     private String coName;
+
+    private Company company;
+
+    private Jobseeker jobseeker;
 
     public static ReviewDto fromEntity(Review review) {
         return ReviewDto.builder()
