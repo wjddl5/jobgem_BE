@@ -5,7 +5,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +18,7 @@ import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.InterviewDto;
 import com.sist.jobgem.dto.JobseekerDto;
 import com.sist.jobgem.dto.OfferDto;
+import com.sist.jobgem.dto.PostDto;
 import com.sist.jobgem.dto.ResumeDto;
 import com.sist.jobgem.dto.ReviewDto;
 import com.sist.jobgem.dto.SkillDto;
@@ -31,6 +35,7 @@ import com.sist.jobgem.service.CompanyService;
 import com.sist.jobgem.service.InterviewService;
 import com.sist.jobgem.service.JobseekerService;
 import com.sist.jobgem.service.OfferService;
+import com.sist.jobgem.service.PostService;
 import com.sist.jobgem.service.ResumeService;
 import com.sist.jobgem.service.ReviewService;
 import com.sist.jobgem.service.SkillService;
@@ -72,6 +77,9 @@ public class JobseekerController {
     @Autowired
     OfferService offerService;
 
+    @Autowired
+    PostService postService;
+
     @GetMapping("/jobseeker")
     public ResponseEntity<JobseekerDto> getJobseeker(int id) {
         return ResponseEntity.ok(jobseekerService.getJobseeker(id));
@@ -95,6 +103,12 @@ public class JobseekerController {
     @GetMapping("/offerList")
     public Page<OfferDto> getOfferList(int id, Pageable pageable) {
         return offerService.getOfferList(id, pageable);
+    }
+
+    @GetMapping("/postList")
+    public ResponseEntity<Slice<PostDto>> getPostList(@RequestParam int loadPage) {
+        PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "id"));
+        return ResponseEntity.ok(postService.getPostList(pageable));
     }
 
     @GetMapping("/companyList")
