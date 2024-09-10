@@ -52,6 +52,9 @@ public class Resume {
         }
     }
 
+    @Column(name = "re_default", nullable = false)
+    private Integer reDefault;
+
     @ColumnDefault("1")
     @Column(name = "re_state", nullable = false)
     private Integer reState;

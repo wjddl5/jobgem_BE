@@ -13,7 +13,10 @@ import com.sist.jobgem.dto.ResumeDto;
 import com.sist.jobgem.entity.Resume;
 import com.sist.jobgem.mapper.ResumeMapper;
 import com.sist.jobgem.repository.ResumeRepository;
-import java.util.List;
+
+import jakarta.transaction.Transactional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,6 +75,21 @@ public class ResumeService {
 
     public int deleteResume(int id) {
         return resumeRepository.deleteResume(id);
+    }
+
+    public Integer getReDefaultResumeIdx(Integer joIdx) {
+        return resumeRepository.findByJoIdxAndReDefault(joIdx, 1)
+                .map(Resume::getId) // re_idx 반환
+                .orElseThrow(() -> new RuntimeException("기본 이력서를 찾을 수 없습니다."));
+    }
+
+    @Transactional
+    public void updateDefaultResume(int resumeId, int joIdx) {
+        // 1. joIdx에 해당하는 모든 이력서의 reDefault 값을 0으로 설정
+        resumeRepository.resetDefaultResume(joIdx);
+
+        // 2. resumeId에 해당하는 이력서를 reDefault = 1로 설정
+        resumeRepository.setDefaultResume(resumeId);
     }
 
 }
