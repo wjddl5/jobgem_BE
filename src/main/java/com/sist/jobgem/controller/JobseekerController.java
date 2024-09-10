@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sist.jobgem.dto.ApplymentDto;
 import com.sist.jobgem.dto.BlockDto;
 import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.InterviewDto;
@@ -23,6 +24,7 @@ import com.sist.jobgem.dto.ResumeDto;
 import com.sist.jobgem.dto.ReviewDto;
 import com.sist.jobgem.dto.SkillDto;
 import com.sist.jobgem.dto.UserDto;
+import com.sist.jobgem.entity.Applyment;
 import com.sist.jobgem.entity.Interview;
 
 import com.sist.jobgem.entity.Jobseeker;
@@ -30,6 +32,7 @@ import com.sist.jobgem.entity.Jobseeker;
 import com.sist.jobgem.entity.Resume;
 import com.sist.jobgem.entity.Review;
 import com.sist.jobgem.mapper.UserMapper;
+import com.sist.jobgem.service.ApplymentService;
 import com.sist.jobgem.service.BlockService;
 import com.sist.jobgem.service.CompanyService;
 import com.sist.jobgem.service.InterviewService;
@@ -80,6 +83,9 @@ public class JobseekerController {
     @Autowired
     PostService postService;
 
+    @Autowired
+    ApplymentService applymentService;
+
     @GetMapping("/jobseeker")
     public ResponseEntity<JobseekerDto> getJobseeker(int id) {
         return ResponseEntity.ok(jobseekerService.getJobseeker(id));
@@ -98,6 +104,11 @@ public class JobseekerController {
     @GetMapping("/resumeList")
     public Page<ResumeDto> getresumeList(int id, Pageable pageable) {
         return resumeService.getResumeList(id, pageable);
+    }
+
+    @GetMapping("/applymentList")
+    public Page<ApplymentDto> getApplymentList(int id, Pageable pageable) {
+        return applymentService.getApplymentList(id, pageable);
     }
 
     @GetMapping("/offerList")
@@ -136,6 +147,12 @@ public class JobseekerController {
         return resumeService.addResume(dto);
     }
 
+    @GetMapping("/addApplyment")
+    public ResponseEntity<Applyment> addApplyment(@RequestBody ApplymentDto applymentDto, @RequestParam int joIdx) {
+        Applyment applyment = applymentService.addApplyment(applymentDto, joIdx);
+        return ResponseEntity.ok(applyment);
+    }
+
     @GetMapping("/getReview")
     public ReviewDto getReview(int id) {
         return reviewService.getReview(id);
@@ -169,6 +186,17 @@ public class JobseekerController {
     @GetMapping("/updateMypage")
     public Jobseeker updateJobseekerDetails(@RequestParam int id, @RequestBody JobseekerDto jobseekerDto) {
         return jobseekerService.updateJobseekerDetails(id, jobseekerDto);
+    }
+
+    @GetMapping("/updateDefaultResume")
+    public ResponseEntity<String> updateDefaultResume(@RequestParam("id") int resumeId,
+            @RequestParam("joIdx") int joIdx) {
+        try {
+            resumeService.updateDefaultResume(resumeId, joIdx); // 서비스에서 대표 이력서 업데이트 로직 실행
+            return ResponseEntity.ok("1");
+        } catch (Exception e) {
+            return ResponseEntity.ok("0");
+        }
     }
 
     @GetMapping("/deleteReview")

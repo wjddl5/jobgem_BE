@@ -23,6 +23,8 @@ public class ResumeDto {
 
     private LocalDate reWriteDate;
 
+    private Integer reDefault;
+
     private Integer reState;
 
     public static ResumeDto fromEntity(Resume resume) {
@@ -33,6 +35,7 @@ public class ResumeDto {
                 .reContent(resume.getReContent())
                 .reFileUrl(resume.getReFileUrl())
                 .reWriteDate(resume.getReWriteDate())
+                .reDefault(resume.getReDefault())
                 .reState(resume.getReState())
                 .build();
     }
