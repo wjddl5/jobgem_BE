@@ -3,17 +3,12 @@ package com.sist.jobgem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.sist.jobgem.dto.ApplymentDto;
-import com.sist.jobgem.dto.ReviewDto;
 import com.sist.jobgem.entity.Applyment;
-import com.sist.jobgem.entity.Review;
 import com.sist.jobgem.mapper.ApplymentMapper;
-import com.sist.jobgem.mapper.ReviewMapper;
 import com.sist.jobgem.repository.ApplymentRepository;
 import java.util.stream.Collectors;
 
@@ -28,17 +23,15 @@ public class ApplymentService {
     private ResumeService resumeService;
 
     public Page<ApplymentDto> getApplymentList(int id, Pageable pageable) {
-        Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<Applyment> applymentList = applymentRepository.findByJoIdxAndApState(id, 1, pageable2);
+        Page<Applyment> applymentList = applymentRepository.findByJoIdxAndApState(id, 1, pageable);
 
         List<ApplymentDto> applymentDtoList = applymentList.getContent().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
 
         // 변환된 DtoList를 사용하여 새로운 Page<ReviewDto> 객체를 생성
-        return new PageImpl<>(applymentDtoList, pageable2, applymentList.getTotalElements());
+        return new PageImpl<>(applymentDtoList, pageable, applymentList.getTotalElements());
     }
 
     private ApplymentDto convertToDto(Applyment applyment) {

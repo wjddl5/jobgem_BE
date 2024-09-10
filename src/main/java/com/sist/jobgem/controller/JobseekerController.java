@@ -122,6 +122,13 @@ public class JobseekerController {
         return ResponseEntity.ok(postService.getPostList(pageable));
     }
 
+    @GetMapping("/applymentList")
+    public ResponseEntity<Page<ApplymentDto>> getApplymentList(int joIdx, @RequestParam int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5,
+                Sort.by(Sort.Direction.DESC, "id"));
+        return ResponseEntity.ok(applymentService.getApplymentList(joIdx, pageable));
+    }
+
     @GetMapping("/companyList")
     public List<CompanyDto> getCompanyList() {
         return reviewService.getCompanyList();
