@@ -1,6 +1,5 @@
 package com.sist.jobgem.repository;
 
-
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,11 +17,11 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
 @Repository
 @RequiredArgsConstructor
 public class PostRepositoryImpl implements PostRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-    
 
     @Override
     public List<PostCountApplyDto> findByFilterWithApplyCount(Map<String, Object> map) {
@@ -40,25 +39,25 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
             builder.and(post.poState.eq(Integer.parseInt(map.get("state").toString())));
         }
         if (map.get("searchType") != null) {
-            if(map.get("searchType").toString().equals("title")){
+            if (map.get("searchType").toString().equals("title")) {
                 builder.and(post.poTitle.contains(map.get("searchWord").toString()));
-            }else if(map.get("searchType").toString().equals("content")){
+            } else if (map.get("searchType").toString().equals("content")) {
                 builder.and(post.poContent.contains(map.get("searchWord").toString()));
             }
         }
         return queryFactory
-            .select(Projections.constructor(PostCountApplyDto.class,
-                post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
-                post.poImgurl, post.poSal, post.poWorkhour, post.poSubType, post.poAddr,
-                post.poEmail, post.poFax, post.poState,
-                applyment.count().intValue().as("applyCount")))
-            .from(post)
-            .leftJoin(applyment).on(post.id.eq(applyment.poIdx))
-            
-            .where(builder)
-            .groupBy(post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
-                post.poImgurl, post.poSal, post.poWorkhour, post.poSubType, post.poAddr,
-                post.poEmail, post.poFax, post.poState)
-            .fetch();
+                .select(Projections.constructor(PostCountApplyDto.class,
+                        post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
+                        post.poImgurl, post.poSal, post.poWorkhour, post.poSubType, post.poAddr,
+                        post.poEmail, post.poFax, post.poState,
+                        applyment.count().intValue().as("applyCount")))
+                .from(post)
+                .leftJoin(applyment).on(post.id.eq(applyment.poIdx))
+
+                .where(builder)
+                .groupBy(post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
+                        post.poImgurl, post.poSal, post.poWorkhour, post.poSubType, post.poAddr,
+                        post.poEmail, post.poFax, post.poState)
+                .fetch();
     }
 }
