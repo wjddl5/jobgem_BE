@@ -18,6 +18,7 @@ import com.sist.jobgem.mapper.ReviewMapper;
 import com.sist.jobgem.repository.CompanyRepository;
 import com.sist.jobgem.repository.ReviewRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +56,25 @@ public class ReviewService {
 
     public Review addReview(ReviewDto review) {
         review.setReState(1);
-        return reviewRepository.save(ReviewMapper.INSTANCE.toEntity(review));
+        Review newReview =reviewRepository.save(ReviewMapper.INSTANCE.toEntity(review));
+        updateCoScore(review.getCoIdx());
+        return newReview;
+    }
+
+    // 리뷰 추가 및 수정시 기업 평균별점 수정
+    public void updateCoScore(int coIdx) {
+        List<Review> list = reviewRepository.findByCoIdxAndReState(coIdx, 1);
+        double sum = 0;
+        for(Review r : list) {
+            sum += r.getReScore();
+        }
+        double avg = sum / list.size();
+        Optional<Company> company = companyRepository.findById(coIdx);
+        company.ifPresent(value -> {
+            CompanyDto companyDto = CompanyMapper.INSTANCE.toDto(value);
+            companyDto.setCoScore(avg);
+            companyRepository.save(CompanyMapper.INSTANCE.toEntity(companyDto));
+        });
     }
 
     public ReviewDto getReview(int id) {
@@ -80,12 +99,21 @@ public class ReviewService {
                 .reState(1)
                 .company(existingReview.getCompany())
                 .build();
-
-        return reviewRepository.save(updatedReview);
+        Review newReview = reviewRepository.save(updatedReview);
+        updateCoScore(reviewDto.getCoIdx());
+        return newReview;
     }
 
     public int deleteReview(int id) {
-        return reviewRepository.deleteReview(id);
+        int result = reviewRepository.deleteReview(id);
+
+        Optional<Review> review = reviewRepository.findById(id);
+        review.ifPresent(value -> updateCoScore(value.getCoIdx()));
+        return result;
+    }
+
+    public List<ReviewDto> getReviewListByCoIdx(int coIdx) {
+        return ReviewMapper.INSTANCE.toDtoList(reviewRepository.findByCoIdxAndReState(coIdx, 1));
     }
 
 }

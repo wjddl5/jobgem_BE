@@ -5,20 +5,26 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sist.jobgem.dto.ApplymentDto;
 import com.sist.jobgem.dto.BlockDto;
 import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.InterviewDto;
 import com.sist.jobgem.dto.JobseekerDto;
 import com.sist.jobgem.dto.OfferDto;
+import com.sist.jobgem.dto.PostDto;
 import com.sist.jobgem.dto.ResumeDto;
 import com.sist.jobgem.dto.ReviewDto;
 import com.sist.jobgem.dto.SkillDto;
 import com.sist.jobgem.dto.UserDto;
+import com.sist.jobgem.entity.Applyment;
 import com.sist.jobgem.entity.Interview;
 
 import com.sist.jobgem.entity.Jobseeker;
@@ -26,11 +32,13 @@ import com.sist.jobgem.entity.Jobseeker;
 import com.sist.jobgem.entity.Resume;
 import com.sist.jobgem.entity.Review;
 import com.sist.jobgem.mapper.UserMapper;
+import com.sist.jobgem.service.ApplymentService;
 import com.sist.jobgem.service.BlockService;
 import com.sist.jobgem.service.CompanyService;
 import com.sist.jobgem.service.InterviewService;
 import com.sist.jobgem.service.JobseekerService;
 import com.sist.jobgem.service.OfferService;
+import com.sist.jobgem.service.PostService;
 import com.sist.jobgem.service.ResumeService;
 import com.sist.jobgem.service.ReviewService;
 import com.sist.jobgem.service.SkillService;
@@ -72,6 +80,12 @@ public class JobseekerController {
     @Autowired
     OfferService offerService;
 
+    @Autowired
+    PostService postService;
+
+    @Autowired
+    ApplymentService applymentService;
+
     @GetMapping("/jobseeker")
     public ResponseEntity<JobseekerDto> getJobseeker(int id) {
         return ResponseEntity.ok(jobseekerService.getJobseeker(id));
@@ -92,9 +106,22 @@ public class JobseekerController {
         return resumeService.getResumeList(id, pageable);
     }
 
+    @GetMapping("/applymentList")
+    public ResponseEntity<Page<ApplymentDto>> getApplymentList(int joIdx, @RequestParam int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5,
+                Sort.by(Sort.Direction.DESC, "id"));
+        return ResponseEntity.ok(applymentService.getApplymentList(joIdx, pageable));
+    }
+
     @GetMapping("/offerList")
     public Page<OfferDto> getOfferList(int id, Pageable pageable) {
         return offerService.getOfferList(id, pageable);
+    }
+
+    @GetMapping("/postList")
+    public ResponseEntity<Slice<PostDto>> getPostList(@RequestParam int loadPage) {
+        PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "id"));
+        return ResponseEntity.ok(postService.getPostList(pageable));
     }
 
     @GetMapping("/companyList")
@@ -120,6 +147,12 @@ public class JobseekerController {
     @GetMapping("/addResume")
     public Resume addResume(@RequestBody ResumeDto dto) {
         return resumeService.addResume(dto);
+    }
+
+    @GetMapping("/addApplyment")
+    public ResponseEntity<Applyment> addApplyment(@RequestBody ApplymentDto applymentDto, @RequestParam int joIdx) {
+        Applyment applyment = applymentService.addApplyment(applymentDto, joIdx);
+        return ResponseEntity.ok(applyment);
     }
 
     @GetMapping("/getReview")
@@ -155,6 +188,17 @@ public class JobseekerController {
     @GetMapping("/updateMypage")
     public Jobseeker updateJobseekerDetails(@RequestParam int id, @RequestBody JobseekerDto jobseekerDto) {
         return jobseekerService.updateJobseekerDetails(id, jobseekerDto);
+    }
+
+    @GetMapping("/updateDefaultResume")
+    public ResponseEntity<String> updateDefaultResume(@RequestParam("id") int resumeId,
+            @RequestParam("joIdx") int joIdx) {
+        try {
+            resumeService.updateDefaultResume(resumeId, joIdx); // 서비스에서 대표 이력서 업데이트 로직 실행
+            return ResponseEntity.ok("1");
+        } catch (Exception e) {
+            return ResponseEntity.ok("0");
+        }
     }
 
     @GetMapping("/deleteReview")

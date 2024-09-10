@@ -66,7 +66,7 @@ public class Company {
     private String coSales;
 
     @Column(name = "co_score")
-    private Integer coScore;
+    private Double coScore;
 
     @Column(name = "co_manager_name", nullable = false, length = 20)
     private String coManagerName;

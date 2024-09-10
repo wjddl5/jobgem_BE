@@ -66,4 +66,8 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "co_idx", insertable = false, updatable = false)
     private Company company;
+
+    @ManyToOne
+    @JoinColumn(name = "jo_idx", insertable = false, updatable = false)
+    private Jobseeker jobseeker;
 }

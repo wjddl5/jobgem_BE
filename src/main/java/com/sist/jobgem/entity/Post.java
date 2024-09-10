@@ -62,7 +62,7 @@ public class Post {
     @Column(name = "po_state", nullable = false)
     private Integer poState;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "co_idx", nullable = false, insertable = false, updatable = false)
     private Company company;
 
@@ -81,7 +81,7 @@ public class Post {
     @ManyToMany
     @JoinTable(name = "careers_bridge", joinColumns = @JoinColumn(name = "po_idx"), inverseJoinColumns = @JoinColumn(name = "cr_idx"))
     private List<Career> career;
-    
+
     @ManyToMany
     @JoinTable(name = "skill_bridge", joinColumns = @JoinColumn(name = "po_idx"), inverseJoinColumns = @JoinColumn(name = "sk_idx"))
     private List<Skill> skill;

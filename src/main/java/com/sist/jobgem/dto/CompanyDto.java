@@ -30,7 +30,7 @@ public class CompanyDto {
     String coThumbimgUrl;
     String coSales;
     LocalDate coOpen;
-    Integer coScore;
+    Double coScore;
     Integer coState;
     String coManagerName;
     String coManagerTel;
