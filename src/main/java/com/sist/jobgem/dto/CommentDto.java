@@ -20,6 +20,7 @@ public class CommentDto {
   private String commContent;
   private Integer commStatus;
   private String usId;
+  private int usType;
   private BoardDto boardDto;
 
   public static CommentDto toDto(Comment comment) {
@@ -28,6 +29,7 @@ public class CommentDto {
         .commContent(comment.getCommContent())
         .usId(comment.getUser().getUsId())
         .usIdx(comment.getUser().getId())
+        .usType(comment.getUser().getUsType())
         .build();
   }
 
