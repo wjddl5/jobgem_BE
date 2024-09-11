@@ -30,10 +30,8 @@ public class ReviewService {
     CompanyRepository companyRepository;
 
     public Page<ReviewDto> getReviewList(int id, Pageable pageable) {
-        Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<Review> reviewList = reviewRepository.findByJoIdxAndReState(id, 1, pageable2);
+        Page<Review> reviewList = reviewRepository.findByJoIdxAndReState(id, 1, pageable);
 
         // Review -> ReviewDto 변환
         List<ReviewDto> reviewDtoList = reviewList.getContent().stream()
@@ -41,7 +39,7 @@ public class ReviewService {
                 .collect(Collectors.toList());
 
         // 변환된 DtoList를 사용하여 새로운 Page<ReviewDto> 객체를 생성
-        return new PageImpl<>(reviewDtoList, pageable2, reviewList.getTotalElements());
+        return new PageImpl<>(reviewDtoList, pageable, reviewList.getTotalElements());
     }
 
     // review 엔티티를 reviewDto로 변환하는 메소드
@@ -56,7 +54,7 @@ public class ReviewService {
 
     public Review addReview(ReviewDto review) {
         review.setReState(1);
-        Review newReview =reviewRepository.save(ReviewMapper.INSTANCE.toEntity(review));
+        Review newReview = reviewRepository.save(ReviewMapper.INSTANCE.toEntity(review));
         updateCoScore(review.getCoIdx());
         return newReview;
     }
@@ -65,7 +63,7 @@ public class ReviewService {
     public void updateCoScore(int coIdx) {
         List<Review> list = reviewRepository.findByCoIdxAndReState(coIdx, 1);
         double sum = 0;
-        for(Review r : list) {
+        for (Review r : list) {
             sum += r.getReScore();
         }
         double avg = sum / list.size();
