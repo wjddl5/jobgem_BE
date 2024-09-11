@@ -7,12 +7,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sist.jobgem.dto.ApplymentDto;
+import com.sist.jobgem.dto.ApplymentSearchDto;
 import com.sist.jobgem.entity.Applyment;
 import com.sist.jobgem.mapper.ApplymentMapper;
 import com.sist.jobgem.repository.ApplymentRepository;
 import java.util.stream.Collectors;
-
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ApplymentService {
@@ -45,4 +48,22 @@ public class ApplymentService {
         return applymentRepository.save(ApplymentMapper.INSTANCE.toEntity(applymentDto));
     }
 
+    public Map<String, Object> applymentCount(int id) {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("지원완료", applymentRepository.countByJoIdxAndApState(id, 1));
+        map.put("열람", applymentRepository.countByJoIdxAndApReadAndApState(id, 1, 1));
+        map.put("미열람", applymentRepository.countByJoIdxAndApReadAndApState(id, 0, 1));
+
+        return map;
+    }
+
+    public Page<ApplymentDto> searchApplyment(ApplymentSearchDto dto, Pageable pageable) {
+        return applymentRepository.searchApplyments(
+                dto.getJoIdx(),
+                dto.getApRead(),
+                dto.getStartDate(),
+                dto.getEndDate(),
+                pageable);
+    }
 }

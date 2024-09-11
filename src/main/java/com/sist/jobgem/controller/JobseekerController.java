@@ -1,5 +1,6 @@
 package com.sist.jobgem.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sist.jobgem.dto.ApplymentDto;
+import com.sist.jobgem.dto.ApplymentSearchDto;
 import com.sist.jobgem.dto.BlockDto;
 import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.InterviewDto;
@@ -48,6 +50,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -107,10 +110,21 @@ public class JobseekerController {
     }
 
     @GetMapping("/applymentList")
-    public ResponseEntity<Page<ApplymentDto>> getApplymentList(int joIdx, @RequestParam int curPage) {
+    public ResponseEntity<Page<ApplymentDto>> getApplymentList(@RequestParam int id, @RequestParam int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5,
                 Sort.by(Sort.Direction.DESC, "id"));
-        return ResponseEntity.ok(applymentService.getApplymentList(joIdx, pageable));
+        return ResponseEntity.ok(applymentService.getApplymentList(id, pageable));
+    }
+
+    @GetMapping("/applymentSearch")
+    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto, int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
+        return applymentService.searchApplyment(dto, pageable);
+    }
+
+    @GetMapping("/applymentCount")
+    public Map<String, Object> getApplymentCount(@RequestParam int id) {
+        return applymentService.applymentCount(id);
     }
 
     @GetMapping("/offerList")
@@ -258,4 +272,5 @@ public class JobseekerController {
             return ResponseEntity.ok("0"); // 실패 시 "0" 반환
         }
     }
+
 }
