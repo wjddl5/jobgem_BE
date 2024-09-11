@@ -42,11 +42,18 @@ public class Interview {
     @Column(name = "in_write_date", nullable = false)
     private LocalDate inWriteDate;
 
+    @Column(name = "in_level")
+    private Integer inLevel;
+
     @Column(name = "in_state")
     private Integer inState;
 
     @ManyToOne
     @JoinColumn(name = "co_idx", insertable = false, updatable = false)
     private Company company;
+
+    @ManyToOne
+    @JoinColumn(name = "jo_idx", insertable = false, updatable = false)
+    private Jobseeker jobseeker;
 
 }

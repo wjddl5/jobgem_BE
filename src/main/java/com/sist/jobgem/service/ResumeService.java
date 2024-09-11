@@ -25,10 +25,8 @@ public class ResumeService {
     ResumeRepository resumeRepository;
 
     public Page<ResumeDto> getResumeList(int id, Pageable pageable) {
-        Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<Resume> resumeList = resumeRepository.findByJoIdxAndReState(id, 1, pageable2);
+        Page<Resume> resumeList = resumeRepository.findByJoIdxAndReState(id, 1, pageable);
 
         // Review -> ReviewDto 변환
         List<ResumeDto> resumeDtoList = resumeList.getContent().stream()
@@ -36,7 +34,7 @@ public class ResumeService {
                 .collect(Collectors.toList());
 
         // 변환된 DtoList를 사용하여 새로운 Page<ReviewDto> 객체를 생성
-        return new PageImpl<>(resumeDtoList, pageable2, resumeList.getTotalElements());
+        return new PageImpl<>(resumeDtoList, pageable, resumeList.getTotalElements());
     }
 
     // review 엔티티를 reviewDto로 변환하는 메소드
