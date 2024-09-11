@@ -21,16 +21,14 @@ public class OfferService {
     OfferRepository offerRepository;
 
     public Page<OfferDto> getOfferList(int id, Pageable pageable) {
-        Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<Offer> offerList = offerRepository.findByJoIdxAndOfState(id, 1, pageable2);
+        Page<Offer> offerList = offerRepository.findByJoIdxAndOfState(id, 1, pageable);
 
         List<OfferDto> offerDtoList = offerList.getContent().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(offerDtoList, pageable2, offerList.getTotalElements());
+        return new PageImpl<>(offerDtoList, pageable, offerList.getTotalElements());
     }
 
     private OfferDto convertToDto(Offer offer) {

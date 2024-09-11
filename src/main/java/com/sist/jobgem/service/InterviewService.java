@@ -29,15 +29,13 @@ public class InterviewService {
     CompanyRepository companyRepository;
 
     public Page<InterviewDto> getInterviewist(int id, Pageable pageable) {
-        Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "id"));
-        Page<Interview> interviewList = interviewRepository.findByJoIdxAndInState(id, 1, pageable2);
+        Page<Interview> interviewList = interviewRepository.findByJoIdxAndInState(id, 1, pageable);
 
         List<InterviewDto> interviewDtoList = interviewList.getContent().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(interviewDtoList, pageable2, interviewList.getTotalElements());
+        return new PageImpl<>(interviewDtoList, pageable, interviewList.getTotalElements());
     }
 
     // 로그인한 기업의 면접리뷰

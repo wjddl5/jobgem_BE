@@ -95,17 +95,20 @@ public class JobseekerController {
     }
 
     @GetMapping("/reviewList")
-    public Page<ReviewDto> getReviewList(int id, Pageable pageable) {
+    public Page<ReviewDto> getReviewList(int id, int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return reviewService.getReviewList(id, pageable);
     }
 
     @GetMapping("/interviewList")
-    public Page<InterviewDto> getInterviewist(int id, Pageable pageable) {
+    public Page<InterviewDto> getInterviewist(int id, int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return interviewService.getInterviewist(id, pageable);
     }
 
     @GetMapping("/resumeList")
-    public Page<ResumeDto> getresumeList(int id, Pageable pageable) {
+    public Page<ResumeDto> getresumeList(int id, int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return resumeService.getResumeList(id, pageable);
     }
 
@@ -128,7 +131,8 @@ public class JobseekerController {
     }
 
     @GetMapping("/offerList")
-    public Page<OfferDto> getOfferList(int id, Pageable pageable) {
+    public Page<OfferDto> getOfferList(int id, int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return offerService.getOfferList(id, pageable);
     }
 
