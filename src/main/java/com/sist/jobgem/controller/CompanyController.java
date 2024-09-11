@@ -1,11 +1,8 @@
 package com.sist.jobgem.controller;
 
 import com.sist.jobgem.dto.*;
-import com.sist.jobgem.service.BlockService;
-import com.sist.jobgem.service.CompanyService;
+import com.sist.jobgem.service.*;
 
-import com.sist.jobgem.service.ReviewService;
-import com.sist.jobgem.service.TalentService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,8 @@ public class CompanyController {
     private BlockService blockService;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private InterviewService interviewService;
 
     @GetMapping("")
     public ResponseEntity<CompanyIndexDto> Index(@RequestParam int id) {
@@ -33,7 +32,7 @@ public class CompanyController {
     }
 
     @GetMapping("/fit")
-    public ResponseEntity<FitJobseekerDto> getFitJobseekerList(int id, int loadPage) {
+    public ResponseEntity<FitJobseekerDto> getFitJobseekerList(@RequestParam int id,@RequestParam int loadPage) {
         PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "joName"));
         return ResponseEntity.ok(companyService.getFitJobseekerList(id, pageable));
     }
@@ -74,4 +73,11 @@ public class CompanyController {
     public ResponseEntity<List<ReviewDto>> getReviewListByCoIdx(int coIdx) {
         return ResponseEntity.ok(reviewService.getReviewListByCoIdx(coIdx));
     }
+
+    @GetMapping("/interview")
+    public ResponseEntity<Page<InterviewDto>> getInterviewListByCoIdx(@RequestParam int id, @RequestParam int loadPage, @RequestParam String sortBy) {
+        PageRequest pageable = PageRequest.of(loadPage, 3, Sort.by(Sort.Direction.DESC, sortBy));
+        return ResponseEntity.ok(interviewService.getInterviewListByCoIdx(id, pageable));
+    }
+
 }
