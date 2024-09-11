@@ -65,4 +65,13 @@ public class JwtProvider {
     public String getRefreshToken(RefreshTokenClaims claims) {
         return genToken(claims.toMap(), REFRESH_TOKEN_EXPIRES_IN);
     }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
