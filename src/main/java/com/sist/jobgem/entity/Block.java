@@ -20,10 +20,10 @@ public class Block {
     @Column(name = "bl_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "co_idx", nullable = false , insertable=true, updatable=true)
+    @Column(name = "co_idx", nullable = true, insertable = true, updatable = true)
     private Integer coIdx;
 
-    @Column(name = "jo_idx", nullable = false, insertable=true, updatable=true)
+    @Column(name = "jo_idx", nullable = true, insertable = true, updatable = true)
     private Integer joIdx;
 
     @Column(name = "bl_date", nullable = false)
@@ -33,10 +33,10 @@ public class Block {
     private String blContent;
 
     @OneToOne
-    @JoinColumn(name = "jo_idx",nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "jo_idx", nullable = false, insertable = false, updatable = false)
     private Jobseeker jobseeker;
 
     @OneToOne
-    @JoinColumn(name = "co_idx",nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "co_idx", nullable = false, insertable = false, updatable = false)
     private Company company;
 }

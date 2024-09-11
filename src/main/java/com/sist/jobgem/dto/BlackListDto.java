@@ -30,15 +30,17 @@ public class BlackListDto {
 
     if (blacklist.getCompany() != null) {
       String coName = blacklist.getCompany().getCoName();
-      if (coName != null)
+      if (coName != null){
         bDto.coName(coName);
-      bDto.coIdx(blacklist.getCoIdx());
+        bDto.coIdx(blacklist.getCoIdx());
+      }
     }
     if (blacklist.getJobseeker() != null) {
       String joName = blacklist.getJobseeker().getJoName();
-      if (joName != null)
+      if (joName != null){
         bDto.joName(joName);
-      bDto.joIdx(blacklist.getJoIdx());
+        bDto.joIdx(blacklist.getJoIdx());
+      }
     }
     bDto
         .id(blacklist.getId())
