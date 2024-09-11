@@ -73,4 +73,8 @@ public class ApplymentService {
                 .collect(Collectors.toList());
         return new PageImpl<>(applymentDtoList, pageable, applymentList.getTotalElements());
     }
+
+    public void view(int id) {
+        applymentRepository.view(id);
+    }
 }
