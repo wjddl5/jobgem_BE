@@ -1,5 +1,6 @@
 package com.sist.jobgem.service;
 
+import java.util.List;
 import com.sist.jobgem.dto.*;
 import com.sist.jobgem.mapper.CompanyMapper;
 import com.sist.jobgem.repository.*;
@@ -39,6 +40,7 @@ public class CompanyService {
                 .blockList(blockRepository.findAllByCoIdx(id))
                 .build();
     }
+
     public Page<CompanyDto> getCompanyList(Pageable pageable, String value, String type) {
         if (value == null && type == null) {
             return companyRepository.findAll(pageable).map(CompanyMapper.INSTANCE::toDto);
@@ -59,6 +61,12 @@ public class CompanyService {
         return talentList;
     }
 
-
+    public List<CompanyDto> notBlack(String type, String value) {
+        if (value == null && type == null) {
+            return CompanyMapper.INSTANCE.toDtoList(companyRepository.findAllcompanysNotInBlock());
+        }else{
+        return CompanyMapper.INSTANCE.toDtoList(companyRepository.findCompanysNotInBlock(type, value));
+        }
+    }
 
 }

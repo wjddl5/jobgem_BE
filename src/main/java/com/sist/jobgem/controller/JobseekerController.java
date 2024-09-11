@@ -240,10 +240,10 @@ public class JobseekerController {
         return jobseekerService.getJobseekerList(pageable, value, type);
     }
 
-    @GetMapping("/blocklist")
-    public Page<BlockDto> getBlockList(@RequestBody Pageable pageable, @RequestParam(required = false) String value,
+    @GetMapping("/blackList")
+    public Page<BlockDto> getBlackList(@RequestBody Pageable pageable, @RequestParam(required = false) String value,
             @RequestParam(required = false) String type) {
-        return blockService.getblackList(pageable, value, type);
+        return blockService.blackjobseekerList(pageable, value, type);
     }
 
     @GetMapping("/checkPwd")
@@ -275,6 +275,25 @@ public class JobseekerController {
         } else {
             return ResponseEntity.ok("0"); // 실패 시 "0" 반환
         }
+    }
+    
+    @GetMapping("/notBlack")
+    public List<JobseekerDto> notBlack(@RequestBody @RequestParam(required = false) String type,
+            @RequestParam(required = false) String value) {
+        return jobseekerService.notBlack(type, value);
+    }
+    
+    @GetMapping("/addjobseekerBlock")
+    public BlockDto addjobseekerBlock(@RequestBody BlockDto dto) {
+        return blockService.addjobseekerBlock(dto);
+    }
+   
+    @RequestMapping("deletejobseekerBlock")
+    public int deletejobseekerBlock(@RequestParam List<String> chkList) {
+        for (int i = 0; i < chkList.size(); i++) {
+            blockService.deletecomjobBlock(Integer.parseInt(chkList.get(i)));
+        }
+        return chkList.size();
     }
 
 }
