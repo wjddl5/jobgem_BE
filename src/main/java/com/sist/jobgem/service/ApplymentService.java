@@ -3,18 +3,18 @@ package com.sist.jobgem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.sist.jobgem.dto.ApplymentDto;
+import com.sist.jobgem.dto.ApplymentSearchDto;
 import com.sist.jobgem.entity.Applyment;
 import com.sist.jobgem.mapper.ApplymentMapper;
 import com.sist.jobgem.repository.ApplymentRepository;
 import java.util.stream.Collectors;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ApplymentService {
@@ -45,6 +45,25 @@ public class ApplymentService {
         applymentDto.setReIdx(reIdx);
         applymentDto.setApState(1);
         return applymentRepository.save(ApplymentMapper.INSTANCE.toEntity(applymentDto));
+    }
+
+    public Map<String, Object> applymentCount(int id) {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("지원완료", applymentRepository.countByJoIdxAndApState(id, 1));
+        map.put("열람", applymentRepository.countByJoIdxAndApReadAndApState(id, 1, 1));
+        map.put("미열람", applymentRepository.countByJoIdxAndApReadAndApState(id, 0, 1));
+
+        return map;
+    }
+
+    public Page<ApplymentDto> searchApplyment(ApplymentSearchDto dto, Pageable pageable) {
+        return applymentRepository.searchApplyments(
+                dto.getJoIdx(),
+                dto.getApRead(),
+                dto.getStartDate(),
+                dto.getEndDate(),
+                pageable);
     }
 
     public Page<ApplymentDto> getApplymentListByPoIdx(int poIdx, Pageable pageable) {
