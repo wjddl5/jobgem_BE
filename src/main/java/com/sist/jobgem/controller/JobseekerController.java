@@ -1,5 +1,6 @@
 package com.sist.jobgem.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sist.jobgem.dto.ApplymentDto;
+import com.sist.jobgem.dto.ApplymentSearchDto;
 import com.sist.jobgem.dto.BlockDto;
 import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.InterviewDto;
@@ -48,6 +50,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -92,29 +95,44 @@ public class JobseekerController {
     }
 
     @GetMapping("/reviewList")
-    public Page<ReviewDto> getReviewList(int id, Pageable pageable) {
+    public Page<ReviewDto> getReviewList(int id, int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return reviewService.getReviewList(id, pageable);
     }
 
     @GetMapping("/interviewList")
-    public Page<InterviewDto> getInterviewist(int id, Pageable pageable) {
+    public Page<InterviewDto> getInterviewist(int id, int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return interviewService.getInterviewist(id, pageable);
     }
 
     @GetMapping("/resumeList")
-    public Page<ResumeDto> getresumeList(int id, Pageable pageable) {
+    public Page<ResumeDto> getresumeList(int id, int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return resumeService.getResumeList(id, pageable);
     }
 
     @GetMapping("/applymentList")
-    public ResponseEntity<Page<ApplymentDto>> getApplymentList(int joIdx, @RequestParam int curPage) {
+    public ResponseEntity<Page<ApplymentDto>> getApplymentList(@RequestParam int id, @RequestParam int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5,
                 Sort.by(Sort.Direction.DESC, "id"));
-        return ResponseEntity.ok(applymentService.getApplymentList(joIdx, pageable));
+        return ResponseEntity.ok(applymentService.getApplymentList(id, pageable));
+    }
+
+    @GetMapping("/applymentSearch")
+    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto, int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
+        return applymentService.searchApplyment(dto, pageable);
+    }
+
+    @GetMapping("/applymentCount")
+    public Map<String, Object> getApplymentCount(@RequestParam int id) {
+        return applymentService.applymentCount(id);
     }
 
     @GetMapping("/offerList")
-    public Page<OfferDto> getOfferList(int id, Pageable pageable) {
+    public Page<OfferDto> getOfferList(int id, int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return offerService.getOfferList(id, pageable);
     }
 
@@ -276,6 +294,6 @@ public class JobseekerController {
             blockService.deletecomjobBlock(Integer.parseInt(chkList.get(i)));
         }
         return chkList.size();
-  }
+    }
 
 }
