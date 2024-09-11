@@ -1,4 +1,4 @@
-package com.sist.jobgem.util;
+package com.sist.jobgem.util.jwt;
 
 import java.util.Base64;
 import java.util.Date;
@@ -18,8 +18,14 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtProvider {
 
+    private final int ACCESS_TOKEN_EXPIRES_IN = 60*60;
+    private final int REFRESH_TOKEN_EXPIRES_IN = 60*60*24*100;
+
     @Value("${custom.jwt.secretKey}")
     private String SECRET_KEY;
+
+    @Value("${custom.jwt.subject}")
+    private String SUBJECT;
 
     private SecretKey secretKey;
 
@@ -37,7 +43,7 @@ public class JwtProvider {
         Date accessTokenExpiresIn = new Date(now + 1000L * seconds);
 
         JwtBuilder jwtBuilder = Jwts.builder()
-                .subject("jwt")
+                .subject(SUBJECT)
                 .expiration(accessTokenExpiresIn);
 
         Set<String> keys = map.keySet();
@@ -52,11 +58,11 @@ public class JwtProvider {
         return jwtBuilder.signWith(getSecretKey()).compact();
     }
 
-    public String getAccessToken(Map<String, Object> map) {
-        return genToken(map, 60*60);
+    public String getAccessToken(AccessTokenClaims claims) {
+        return genToken(claims.toMap(), ACCESS_TOKEN_EXPIRES_IN);
     }
 
-    public String getRefreshToken(Map<String, Object> map) {
-        return genToken(map, 60*60*24*100);
+    public String getRefreshToken(RefreshTokenClaims claims) {
+        return genToken(claims.toMap(), REFRESH_TOKEN_EXPIRES_IN);
     }
 }
