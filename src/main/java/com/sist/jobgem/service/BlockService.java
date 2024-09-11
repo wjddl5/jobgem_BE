@@ -9,6 +9,9 @@ import com.sist.jobgem.dto.BlockDto;
 import com.sist.jobgem.mapper.BlockMapper;
 import com.sist.jobgem.repository.BlockRepository;
 
+import jakarta.transaction.Transactional;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -16,13 +19,13 @@ public class BlockService {
     @Autowired
     private BlockRepository blockRepository;
 
-    public Page<BlockDto> getblackList(Pageable pageable, String value, String type) {
+    public Page<BlockDto> blackjobseekerList(Pageable pageable, String value, String type) {
         if (value == null && type == null) {
-            return blockRepository.findAll(pageable).map(BlockMapper.INSTANCE::toDto);
+            return blockRepository.blackjobseeker(pageable).map(BlockMapper.INSTANCE::toDto);
         }
-        return blockRepository.findByTypeAndValueContaining(type, value, pageable)
-                .map(BlockMapper.INSTANCE::toDto);
+        return blockRepository.findByTypeAndValuejobseekerContaining(type, value, pageable).map(BlockMapper.INSTANCE::toDto);
     }
+
 
     // 그냥 리스트
     public List<BlockDto> getBlockListByCoIdx(int coIdx) {
@@ -40,4 +43,33 @@ public class BlockService {
             blockRepository.deleteById(id);
         }
     }
+
+    public Page<BlockDto> blackcompanyList(Pageable pageable, String value, String type) {
+        if (value == null && type == null) {
+            return blockRepository.blackcompany(pageable).map(BlockMapper.INSTANCE::toDto);
+        }
+        return blockRepository.findByTypeAndValuecompanyContaining(type, value, pageable).map(BlockMapper.INSTANCE::toDto);
+    }
+
+    public BlockDto addjobseekerBlock(BlockDto dto) {
+        dto.setBlDate(LocalDate.now());
+        dto.setJoIdx(dto.getJoIdx());
+        return BlockMapper.INSTANCE.toDto(blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto)));
+    }
+
+    public BlockDto addcompanyBlock(BlockDto dto) {
+        dto.setBlDate(LocalDate.now());
+        dto.setCoIdx(dto.getCoIdx());
+        return BlockMapper.INSTANCE.toDto(blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto)));
+    }
+    
+    @Transactional
+    public boolean deletecomjobBlock(int id) {
+        int chk = blockRepository.deletecomjobBlock(id);
+        if (chk == 1)
+            return true;
+        else
+            return false;
+    }
+
 }
