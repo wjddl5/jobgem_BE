@@ -34,4 +34,5 @@ public interface ResumeRepository extends JpaRepository<Resume, Integer> {
     @Transactional
     @Query("UPDATE Resume r SET r.reDefault = 1 WHERE r.id = :resumeId")
     void setDefaultResume(@Param("resumeId") int resumeId);
+
 }
