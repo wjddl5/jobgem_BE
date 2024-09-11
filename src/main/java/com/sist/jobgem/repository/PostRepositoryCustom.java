@@ -5,9 +5,11 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.sist.jobgem.dto.PostCountApplyDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Repository
 public interface PostRepositoryCustom {
-    List<PostCountApplyDto> findByFilterWithApplyCount(Map<String, Object> map);
+    Page<PostCountApplyDto> findByFilterWithApplyCount(Map<String, Object> map, Pageable pageable);
 
 }

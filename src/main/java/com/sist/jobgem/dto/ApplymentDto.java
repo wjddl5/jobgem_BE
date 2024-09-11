@@ -4,7 +4,7 @@ import com.sist.jobgem.entity.Applyment;
 import com.sist.jobgem.entity.Post;
 
 import lombok.*;
-
+import com.sist.jobgem.entity.Jobseeker;
 import java.time.LocalDate;
 
 @Getter
@@ -22,6 +22,7 @@ public class ApplymentDto {
     private Integer apRead;
     private Integer apState;
     private Post post;
+    private Jobseeker jobseeker;
 
     public static ApplymentDto fromEntity(Applyment applyment) {
         return ApplymentDto.builder()
@@ -34,6 +35,7 @@ public class ApplymentDto {
                 .apRead(applyment.getApRead())
                 .apState(applyment.getApState())
                 .post(applyment.getPost())
+                .jobseeker(applyment.getJobseeker())
                 .build();
     }
 

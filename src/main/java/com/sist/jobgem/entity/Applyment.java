@@ -38,4 +38,8 @@ public class Applyment {
     @ManyToOne
     @JoinColumn(name = "po_idx", referencedColumnName = "po_idx", insertable = false, updatable = false)
     private Post post;
+
+    @ManyToOne
+    @JoinColumn(name = "jo_idx", referencedColumnName = "jo_idx", insertable = false, updatable = false)
+    private Jobseeker jobseeker;
 }

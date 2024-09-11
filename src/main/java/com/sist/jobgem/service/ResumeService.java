@@ -89,5 +89,5 @@ public class ResumeService {
         // 2. resumeId에 해당하는 이력서를 reDefault = 1로 설정
         resumeRepository.setDefaultResume(resumeId);
     }
-
+    
 }
