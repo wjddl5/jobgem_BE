@@ -17,12 +17,9 @@ import java.time.LocalDate;
 public interface ApplymentRepository extends JpaRepository<Applyment, Integer> {
     int countByPoIdx(int poIdx);
 
-
     int countByJoIdxAndApState(int joIdx, int apState);
 
     int countByJoIdxAndApReadAndApState(int joIdx, int apRead, int apState);
-
-    Page<Applyment> findByJoIdxAndApState(int joIdx, int apState, Pageable pageable);
 
     // 공통 조건을 처리하는 메서드
     @Query("SELECT new com.sist.jobgem.dto.ApplymentDto(a) " +
@@ -38,7 +35,6 @@ public interface ApplymentRepository extends JpaRepository<Applyment, Integer> {
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
             Pageable pageable);
-
 
     Page<Applyment> findByJoIdxAndApState(int idx, int apState, Pageable pageable);
 
