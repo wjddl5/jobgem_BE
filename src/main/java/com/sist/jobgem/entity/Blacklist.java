@@ -45,6 +45,9 @@ public class Blacklist {
     @Column(name = "bl_date", nullable = false)
     private LocalDate blDate;
 
+    @Column(name = "bl_process", nullable = false)
+    private Integer blProcess;
+
     @Column(name = "bl_state", nullable = false)
     private Integer blState;
 
@@ -59,5 +62,4 @@ public class Blacklist {
     @ManyToOne
     @JoinColumn(name = "jo_idx", insertable = false, updatable = false)
     private Jobseeker jobseeker;
-
 }
