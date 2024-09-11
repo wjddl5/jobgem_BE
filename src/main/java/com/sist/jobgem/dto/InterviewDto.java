@@ -3,15 +3,16 @@ package com.sist.jobgem.dto;
 import java.time.LocalDate;
 
 import com.sist.jobgem.entity.Interview;
+import com.sist.jobgem.entity.Jobseeker;
 import com.sist.jobgem.entity.Review;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class InterviewDto {
 
     private Integer id;
@@ -24,9 +25,13 @@ public class InterviewDto {
 
     private LocalDate inWriteDate;
 
+    private Integer inLevel;
+
     private Integer inState;
 
     private String coName;
+
+    private Jobseeker jobseeker;
 
     public static InterviewDto fromEntity(Interview interview) {
         return InterviewDto.builder()
@@ -37,5 +42,17 @@ public class InterviewDto {
                 .inWriteDate(interview.getInWriteDate())
                 .coName(interview.getCompany().getCoName())
                 .build();
+    }
+
+    public InterviewDto(Interview interview) {
+        this.id = interview.getId();
+        this.joIdx = interview.getJoIdx();
+        this.coIdx = interview.getCoIdx();
+        this.inContent = interview.getInContent();
+        this.inWriteDate = interview.getInWriteDate();
+        this.coName = interview.getCompany().getCoName();
+        this.inLevel = interview.getInLevel();
+        this.jobseeker = interview.getJobseeker();
+        this.inState = interview.getInState();
     }
 }

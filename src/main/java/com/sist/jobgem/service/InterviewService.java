@@ -40,6 +40,11 @@ public class InterviewService {
         return new PageImpl<>(interviewDtoList, pageable2, interviewList.getTotalElements());
     }
 
+    // 로그인한 기업의 면접리뷰
+    public Page<InterviewDto> getInterviewListByCoIdx(int id, Pageable pageable) {
+        return interviewRepository.findByCoIdx(id, pageable);
+    }
+
     private InterviewDto convertToDto(Interview interview) {
         return InterviewDto.fromEntity(interview);
     }
