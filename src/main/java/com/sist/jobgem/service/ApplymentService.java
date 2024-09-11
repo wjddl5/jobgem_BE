@@ -3,7 +3,9 @@ package com.sist.jobgem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.sist.jobgem.dto.ApplymentDto;
@@ -65,5 +67,13 @@ public class ApplymentService {
                 dto.getStartDate(),
                 dto.getEndDate(),
                 pageable);
+    }
+}
+    public Page<ApplymentDto> getApplymentListByPoIdx(int poIdx, Pageable pageable) {
+        Page<Applyment> applymentList = applymentRepository.findByPoIdxAndApState(poIdx, 1, pageable);
+        List<ApplymentDto> applymentDtoList = applymentList.getContent().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(applymentDtoList, pageable, applymentList.getTotalElements());
     }
 }

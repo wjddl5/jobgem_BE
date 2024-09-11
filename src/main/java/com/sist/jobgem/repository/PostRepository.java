@@ -22,7 +22,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Integer>, PostRepositoryCustom {
     @Query("SELECT new com.sist.jobgem.dto.PostDto(t) FROM Post t WHERE t.poState =  1")
     Slice<PostDto> getPostListSlice(Pageable pageable);
-
+    
     int countByCoIdxAndPoState(int coIdx, int poState);
 
     @Query("SELECT new com.sist.jobgem.dto.PostCountApplyDto(p.id, p.coIdx, p.poTitle, p.poContent, p.poDate, p.poDeadline, p.poImgurl, p.poSal, p.poWorkhour, p.poSubType, p.poAddr, p.poEmail, p.poFax, p.poState, CAST(COUNT(a) AS INTEGER) as applyCount) "
@@ -48,4 +48,5 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
 
     @Query("SELECT p FROM Post p LEFT JOIN FETCH p.company WHERE p.id = :id")
     PostDto findByIdWithCompany(@Param("id") int id);
+    
 }
