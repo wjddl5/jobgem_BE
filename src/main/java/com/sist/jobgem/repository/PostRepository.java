@@ -49,4 +49,6 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
     @Query("SELECT p FROM Post p LEFT JOIN FETCH p.company WHERE p.id = :id")
     PostDto findByIdWithCompany(@Param("id") int id);
     
+    @Query("SELECT p.poTitle FROM Post p WHERE p.id = :id")
+    String findTitleById(@Param("id")  int id);
 }

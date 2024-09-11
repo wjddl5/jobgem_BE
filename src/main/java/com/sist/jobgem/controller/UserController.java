@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sist.jobgem.dto.CompanyJoinRequest;
 import com.sist.jobgem.dto.JobseekerJoinRequest;
+import com.sist.jobgem.dto.LoginRequest;
 import com.sist.jobgem.entity.User;
+import com.sist.jobgem.enums.LoginStatusEnum;
 import com.sist.jobgem.service.UserService;
 
 import jakarta.validation.Valid;
@@ -31,9 +33,18 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(id));
     }
     
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        LoginStatusEnum result = userService.login(request.getUsId(), request.getUsPw());
+        if (result != LoginStatusEnum.LOGIN_SUCCESS) {
+            return ResponseEntity.badRequest().body(result.getMessage());
+        }
+        return ResponseEntity.ok(result.getMessage());
+    }
+    
     @GetMapping("/join/check/email")
     public ResponseEntity<Boolean> checkEmail(@Email @RequestParam String email) {
-        return ResponseEntity.ok(userService.checkEmail(email));
+        return ResponseEntity.ok(userService.isEmailExist(email));
     }
     
     @PostMapping("/join/jobseeker")

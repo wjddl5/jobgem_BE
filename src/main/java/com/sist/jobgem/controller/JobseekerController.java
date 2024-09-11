@@ -90,7 +90,7 @@ public class JobseekerController {
     ApplymentService applymentService;
 
     @GetMapping("/jobseeker")
-    public ResponseEntity<JobseekerDto> getJobseeker(int id) {
+    public ResponseEntity<JobseekerDto> getJobseeker(@RequestParam(value = "id", required = true) int id) {
         return ResponseEntity.ok(jobseekerService.getJobseeker(id));
     }
 
