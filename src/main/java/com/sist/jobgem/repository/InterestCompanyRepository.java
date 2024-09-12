@@ -2,9 +2,13 @@ package com.sist.jobgem.repository;
 
 import com.sist.jobgem.entity.InterestCompany;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InterestCompanyRepository extends JpaRepository<InterestCompany, Integer> {
-    
+    // joIdx로 개수를 세는 쿼리 메서드
+    @Query("SELECT COUNT(i) FROM InterestCompany i WHERE i.joIdx = :joIdx")
+    int countByJoIdx(@Param("joIdx") Integer joIdx);
 }

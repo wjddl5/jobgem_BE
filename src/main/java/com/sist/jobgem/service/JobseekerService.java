@@ -1,7 +1,10 @@
 package com.sist.jobgem.service;
 
 import com.sist.jobgem.dto.FitJobseekerDto;
+import com.sist.jobgem.repository.ApplymentRepository;
 import com.sist.jobgem.repository.HaveSkillRepository;
+import com.sist.jobgem.repository.InterestCompanyRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +19,8 @@ import com.sist.jobgem.entity.User;
 import com.sist.jobgem.mapper.JobseekerMapper;
 import com.sist.jobgem.mapper.UserMapper;
 import com.sist.jobgem.repository.JobseekerRepository;
+import com.sist.jobgem.repository.OfferRepository;
+import com.sist.jobgem.repository.ScrapRepository;
 import com.sist.jobgem.repository.SkillRepository;
 import com.sist.jobgem.repository.UserRepository;
 
@@ -25,14 +30,27 @@ import jakarta.transaction.Transactional;
 public class JobseekerService {
     @Autowired
     private JobseekerRepository jobseekerRepository;
+
     @Autowired
     private HaveSkillRepository haveSkillRepository;
+
+    @Autowired
+    ScrapRepository scrapRepository;
+
+    @Autowired
+    ApplymentRepository applymentRepository;
+
+    @Autowired
+    OfferRepository offerRepository;
 
     @Autowired
     SkillRepository skillRepository;
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    InterestCompanyRepository interestCompanyRepository;
 
     public JobseekerDto getJobseeker(int id) {
         JobseekerDto jobseeker = null;
@@ -150,9 +168,21 @@ public class JobseekerService {
     public List<JobseekerDto> notBlack(String value, String type) {
         if (value == null && type == null) {
             return JobseekerMapper.INSTANCE.toDtoList(jobseekerRepository.findAllJobseekersNotInBlock());
-        }else{
-        return JobseekerMapper.INSTANCE.toDtoList(jobseekerRepository.findJobseekersNotInBlock(value, type));
+        } else {
+            return JobseekerMapper.INSTANCE.toDtoList(jobseekerRepository.findJobseekersNotInBlock(value, type));
         }
+    }
+
+    public Map<String, Object> getMypageCount(int id) {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("지원완료", applymentRepository.countByJoIdx(id));
+        map.put("이력서열람", applymentRepository.countByJoIdxAndApReadIsOne(id));
+        map.put("입사제안", "고민");
+        map.put("스크랩공고", scrapRepository.countByJoIdxAndScStateIsOne(id));
+        map.put("관심기업공고", interestCompanyRepository.countByJoIdx(id));
+
+        return map;
     }
 
 }

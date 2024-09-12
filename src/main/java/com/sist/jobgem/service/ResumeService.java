@@ -65,6 +65,7 @@ public class ResumeService {
                 .reContent(resumeDto.getReContent())
                 .reFileUrl(resumeDto.getReFileUrl())
                 .reWriteDate(LocalDate.now())
+                .reDefault(resumeDto.getReDefault())
                 .reState(1)
                 .build();
 
@@ -72,7 +73,17 @@ public class ResumeService {
     }
 
     public int deleteResume(int id) {
-        return resumeRepository.deleteResume(id);
+        // 삭제할 이력서가 기본 이력서인지 확인
+        Resume resume = resumeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Resume not found"));
+
+        if (resume.getReDefault() == 1) {
+            return 0;
+        } else {
+            resumeRepository.deleteResume(id);
+            return 1;
+        }
+
     }
 
     public Integer getReDefaultResumeIdx(Integer joIdx) {
@@ -89,5 +100,5 @@ public class ResumeService {
         // 2. resumeId에 해당하는 이력서를 reDefault = 1로 설정
         resumeRepository.setDefaultResume(resumeId);
     }
-    
+
 }
