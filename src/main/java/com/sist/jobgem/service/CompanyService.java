@@ -49,11 +49,8 @@ public class CompanyService {
                 .map(CompanyMapper.INSTANCE::toDto);
     }
 
-    public FitJobseekerDto getFitJobseekerList(int id, Pageable pageable) {
-        FitJobseekerDto fitJobseeker = FitJobseekerDto.builder()
-                .fitJobseekers(jobseekerRepository.findByWithfitJobseeker(id, pageable))
-                .build();
-        return fitJobseeker;
+    public Slice<JobseekerDto> getFitJobseekerList(int id, Pageable pageable) {
+        return jobseekerRepository.findByWithfitJobseeker(id, pageable);
     }
 
     public Slice<TalentDto> getWishjobseekerList(int id, Pageable pageable) {

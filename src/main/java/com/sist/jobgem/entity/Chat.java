@@ -1,15 +1,18 @@
 package com.sist.jobgem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Getter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "chats")
 public class Chat {
     @Id
@@ -23,7 +26,16 @@ public class Chat {
     @Column(name = "cm_idx", nullable = false)
     private Integer cmIdx;
 
-    @Column(name = "ch_content", nullable = false, length = 100)
+    @Column(name = "ch_content", nullable = false)
     private String chContent;
+
+    @Column(name = "ch_date", nullable = false)
+    private LocalDate chDate;
+
+    // 엔티티가 처음 저장될 때
+    @PrePersist
+    public void prePersist() {
+        this.chDate = LocalDate.now();
+    }
 
 }

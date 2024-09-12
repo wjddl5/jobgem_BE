@@ -1,5 +1,6 @@
 package com.sist.jobgem.service;
 
+import com.sist.jobgem.dto.BlockResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class BlockService {
 
 
     // 그냥 리스트
-    public List<BlockDto> getBlockListByCoIdx(int coIdx) {
+    public List<BlockResponseDto> getBlockListByCoIdx(int coIdx) {
         return blockRepository.findAllByCoIdx(coIdx);
     }
 
