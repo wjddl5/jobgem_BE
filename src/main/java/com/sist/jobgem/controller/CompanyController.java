@@ -25,6 +25,8 @@ public class CompanyController {
     private ReviewService reviewService;
     @Autowired
     private InterviewService interviewService;
+    @Autowired
+    private OfferService offerService;
 
     @GetMapping("")
     public ResponseEntity<CompanyIndexDto> Index(@RequestParam int id) {
@@ -32,7 +34,7 @@ public class CompanyController {
     }
 
     @GetMapping("/fit")
-    public ResponseEntity<FitJobseekerDto> getFitJobseekerList(@RequestParam int id,@RequestParam int loadPage) {
+    public ResponseEntity<Slice<JobseekerDto>> getFitJobseekerList(@RequestParam int id,@RequestParam int loadPage) {
         PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "joName"));
         return ResponseEntity.ok(companyService.getFitJobseekerList(id, pageable));
     }
@@ -101,6 +103,11 @@ public class CompanyController {
     public ResponseEntity<Page<InterviewDto>> getInterviewListByCoIdx(@RequestParam int id, @RequestParam int loadPage, @RequestParam String sortBy) {
         PageRequest pageable = PageRequest.of(loadPage, 3, Sort.by(Sort.Direction.DESC, sortBy));
         return ResponseEntity.ok(interviewService.getInterviewListByCoIdx(id, pageable));
+    }
+
+    @PostMapping("/offer/add")
+    public ResponseEntity<OfferResponseDto> addOffer(@RequestBody OfferDto offerDto) {
+        return ResponseEntity.ok(offerService.addOffer(offerDto));
     }
 
 }
