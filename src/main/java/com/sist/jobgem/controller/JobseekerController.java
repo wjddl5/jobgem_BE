@@ -125,6 +125,11 @@ public class JobseekerController {
         return applymentService.searchApplyment(dto, pageable);
     }
 
+    @GetMapping("/getMypageCount")
+    public ResponseEntity<Map<String, Object>> getMypageCount(@RequestParam int id) {
+        return ResponseEntity.ok(jobseekerService.getMypageCount(id));
+    }
+
     @GetMapping("/applymentCount")
     public Map<String, Object> getApplymentCount(@RequestParam int id) {
         return applymentService.applymentCount(id);
@@ -276,18 +281,18 @@ public class JobseekerController {
             return ResponseEntity.ok("0"); // 실패 시 "0" 반환
         }
     }
-    
+
     @GetMapping("/notBlack")
     public List<JobseekerDto> notBlack(@RequestBody @RequestParam(required = false) String type,
             @RequestParam(required = false) String value) {
         return jobseekerService.notBlack(type, value);
     }
-    
+
     @GetMapping("/addjobseekerBlock")
     public BlockDto addjobseekerBlock(@RequestBody BlockDto dto) {
         return blockService.addjobseekerBlock(dto);
     }
-   
+
     @RequestMapping("deletejobseekerBlock")
     public int deletejobseekerBlock(@RequestParam List<String> chkList) {
         for (int i = 0; i < chkList.size(); i++) {

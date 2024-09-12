@@ -19,7 +19,7 @@ public interface ResumeRepository extends JpaRepository<Resume, Integer> {
 
     @Modifying
     @Transactional
-    @Query("update Resume r set r.reState = 0 where r.id = :id")
+    @Query("UPDATE Resume r SET r.reState = 0 WHERE r.id = :id AND r.reDefault != 1")
     int deleteResume(@Param("id") int id);
 
     // 특정 유저(joIdx)의 re_default가 1인 이력서를 찾는 쿼리

@@ -91,4 +91,9 @@ public class BoardController {
     boardService.updateAnswerStatusNo(id);
   }
 
+  @RequestMapping("/hitUp")
+  public void hitUp(@RequestParam(value = "id") int id) {
+    boardService.hitUp(id);
+  }
+
 }
