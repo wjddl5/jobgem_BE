@@ -17,6 +17,7 @@ import java.time.LocalDate;
 
 @Repository
 public interface ApplymentRepository extends JpaRepository<Applyment, Integer> {
+
         int countByPoIdx(int poIdx);
 
         int countByJoIdxAndApState(int joIdx, int apState);
@@ -58,4 +59,5 @@ public interface ApplymentRepository extends JpaRepository<Applyment, Integer> {
         // joIdx로 apRead가 1인 Applyment 개수를 세는 쿼리 메서드
         @Query("SELECT COUNT(a) FROM Applyment a WHERE a.joIdx = :joIdx AND a.apRead = 1")
         int countByJoIdxAndApReadIsOne(@Param("joIdx") Integer joIdx);
+
 }
