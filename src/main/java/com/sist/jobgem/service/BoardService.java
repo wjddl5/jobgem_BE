@@ -118,4 +118,9 @@ public class BoardService {
   public void updateAnswerStatusNo(int id) {
     boardRepository.updateAnswerStatusNo(id);
   }
+
+  @Transactional
+  public void hitUp(int id) {
+    boardRepository.hitUp(id);
+  }
 }
