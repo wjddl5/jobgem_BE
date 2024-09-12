@@ -65,6 +65,7 @@ public class ResumeService {
                 .reContent(resumeDto.getReContent())
                 .reFileUrl(resumeDto.getReFileUrl())
                 .reWriteDate(LocalDate.now())
+                .reDefault(resumeDto.getReDefault())
                 .reState(1)
                 .build();
 
