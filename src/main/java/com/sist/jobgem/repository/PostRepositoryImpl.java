@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import lombok.RequiredArgsConstructor;
 
-
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -25,12 +24,11 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<PostCountApplyDto> findByFilterWithApplyCount(Map<String, Object> map) {
+    public Page<PostCountApplyDto> findByFilterWithApplyCount(Map<String, Object> map, Pageable pageable) {
         QPost post = QPost.post;
         QApplyment applyment = QApplyment.applyment;
         BooleanBuilder builder = new BooleanBuilder();
-        OrderSpecifier<?> sort = post.poDate.desc(); // 기본 정렬 설정
-
+        OrderSpecifier<?> sort = post.poDate.desc();
         if (map.get("coIdx") != null) {
             builder.and(post.coIdx.eq(Integer.parseInt(map.get("coIdx").toString())));
         }
@@ -60,7 +58,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 sort = post.poDate.asc();
             }
         }
-        List<PostCountApplyDto> result = queryFactory
+        List<PostCountApplyDto> content = queryFactory
             .select(Projections.constructor(PostCountApplyDto.class,
                 post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
                 post.poImgurl, post.poSal, post.poWorkhour, post.poSubType, post.poAddr,
@@ -74,7 +72,16 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 post.poImgurl, post.poSal, post.poWorkhour, post.poSubType, post.poAddr,
                 post.poEmail, post.poFax, post.poState)
             .orderBy(sort)
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
             .fetch();
-        return result;
+
+        long total = queryFactory
+            .select(post.count())
+            .from(post)
+            .where(builder)
+            .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
     }
 }

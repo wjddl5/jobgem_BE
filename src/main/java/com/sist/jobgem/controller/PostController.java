@@ -7,7 +7,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
-
+import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.service.JobseekerService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,12 @@ import com.sist.jobgem.dto.PostDto;
 import com.sist.jobgem.dto.PostListDto;
 import com.sist.jobgem.dto.PostSetDto;
 import com.sist.jobgem.dto.PostWriteDto;
+import com.sist.jobgem.dto.ResumeDto;
 import com.sist.jobgem.dto.WorkSchedulesDto;
 import com.sist.jobgem.entity.WorkDay;
 import com.sist.jobgem.service.ApplymentService;
 import com.sist.jobgem.service.PostService;
+import com.sist.jobgem.service.ResumeService;
 import com.sist.jobgem.dto.ApplymentDto;
 import com.sist.jobgem.dto.PostCountApplyDto;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,10 +49,21 @@ public class PostController {
     @Autowired
     private WorkSchedulesService workSchedulesService;
 
+    @Autowired
+    private ResumeService resumeService;
+
+    @Autowired
+    private JobseekerService jobseekerService;
+
     @RequestMapping("")
-    public ResponseEntity<PostListDto> getPosts(@RequestParam Map<String, Object> map) {
+    public ResponseEntity<Page<PostCountApplyDto>> getPosts(@RequestParam Map<String, Object> map) {
         int coIdx = 1;
         return ResponseEntity.ok(postService.getPosts(map, coIdx));
+    }
+
+    @RequestMapping("/info")
+    public ResponseEntity<Map<String, Object>> getPostListInfo(@RequestParam(value = "coIdx", required = true) int coIdx) {
+        return ResponseEntity.ok(postService.getPostListInfo(coIdx));
     }
 
     @RequestMapping(value = "/write", method = RequestMethod.POST)
@@ -82,6 +96,19 @@ public class PostController {
                 Sort.by(Sort.Direction.DESC, "id"));
                 
         return ResponseEntity.ok(applymentService.getApplymentListByPoIdx(id, pageable));
-
+    }
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, Object>> getPostDetail(@RequestParam(value = "id", required = true) int id) {
+        return ResponseEntity.ok(postService.getDetail(id));
+    }
+    @RequestMapping(value = "/resume", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, Object>> getResume(@RequestParam(value = "id", required = true) int id) {
+        Map<String, Object> map = new HashMap<>();
+        applymentService.view(id);
+        ResumeDto resume = resumeService.getResume(id);
+        JobseekerDto jobseeker = jobseekerService.getJobseeker(id);
+        map.put("resume", resume);
+        map.put("jobseeker", jobseeker);
+        return ResponseEntity.ok(map);
     }
 }
