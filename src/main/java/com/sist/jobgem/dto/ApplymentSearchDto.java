@@ -18,8 +18,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class ApplymentSearchDto {
-    int joIdx;
-    int apRead;
+    private Integer joIdx;
+    private Integer apRead;
+    private Integer poIdx;
     LocalDate startDate;
     LocalDate endDate;
 

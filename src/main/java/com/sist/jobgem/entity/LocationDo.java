@@ -25,7 +25,7 @@ public class LocationDo {
     @Column(name = "ld_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "ld_name", length = 5)
+    @Column(name = "ld_name", length = 50)
     private String ldName;
 
 }
