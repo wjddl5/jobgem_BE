@@ -24,18 +24,19 @@ public interface ApplymentRepository extends JpaRepository<Applyment, Integer> {
     int countByJoIdxAndApReadAndApState(int joIdx, int apRead, int apState);
 
     // 공통 조건을 처리하는 메서드
-    @Query("SELECT new com.sist.jobgem.dto.ApplymentDto(a) " +
-            "FROM Applyment a " +
-            "WHERE a.joIdx = :joIdx " +
+    @Query("SELECT new com.sist.jobgem.dto.ApplymentDto(a) FROM Applyment a " +
+            "WHERE (:joIdx IS NULL OR a.joIdx = :joIdx) " +
             "AND a.apState = 1 " +
             "AND (:apRead IS NULL OR a.apRead = :apRead) " +
             "AND (:startDate IS NULL OR a.apDate >= :startDate) " +
-            "AND (:endDate IS NULL OR a.apDate <= :endDate)")
+            "AND (:endDate IS NULL OR a.apDate <= :endDate) " +
+            "AND (:poIdx IS NULL OR a.poIdx = :poIdx)")
     Page<ApplymentDto> searchApplyments(
-            @Param("joIdx") int joIdx,
+            @Param("joIdx") Integer joIdx,
             @Param("apRead") Integer apRead, // int -> Integer로 수정하여 null 처리 가능
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
+            @Param("poIdx") Integer poIdx,
             Pageable pageable);
 
     Page<Applyment> findByJoIdxAndApState(int idx, int apState, Pageable pageable);
