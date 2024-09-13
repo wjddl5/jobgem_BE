@@ -25,12 +25,12 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
     
     int countByCoIdxAndPoState(int coIdx, int poState);
 
-    @Query("SELECT new com.sist.jobgem.dto.PostCountApplyDto(p.id, p.coIdx, p.poTitle, p.poContent, p.poDate, p.poDeadline, p.poImgurl, p.poSal, p.poSubType, p.poAddr, p.poEmail, p.poFax, p.poState, CAST(COUNT(a) AS INTEGER) as applyCount) "
+    @Query("SELECT new com.sist.jobgem.dto.PostCountApplyDto(p.id, p.coIdx, p.poTitle, p.poContent, p.poDate, p.poDeadline, p.poImgurl, p.poSal, p.poWorkhour, p.poSubType, p.poAddr, p.poEmail, p.poFax, p.poState, CAST(COUNT(a) AS INTEGER) as applyCount) "
             +
             "FROM Post p LEFT JOIN Applyment a ON p.id = a.poIdx " +
             "WHERE p.coIdx = :coIdx " +
-            "GROUP BY p.id, p.coIdx, p.poTitle, p.poContent, p.poDate, p.poDeadline, p.poImgurl, p.poSal, p.poSubType, p.poAddr, p.poEmail, p.poFax, p.poState")
-    List<PostCountApplyDto> findAllWithApplyCount(@Param("coIdx") int coIdx);
+            "GROUP BY p.id, p.coIdx, p.poTitle, p.poContent, p.poDate, p.poDeadline, p.poImgurl, p.poSal, p.poWorkhour, p.poSubType, p.poAddr, p.poEmail, p.poFax, p.poState")
+    List<PostCountApplyDto> findAllWithApplyCount(@Param("coIdx") Integer coIdx);
 
     int countByPoStateAndCoIdx(int poState, int coIdx);
 
