@@ -34,5 +34,5 @@ public class PostWriteDto {
     private List<CareerDto> career;
     private List<SkillDto> skill;
     private List<LocationGuSiDto> location;
-    private List<Integer> workDay;
+    private List<WorkDayDto> workDay;
 }

@@ -51,4 +51,9 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
     
     @Query("SELECT p.poTitle FROM Post p WHERE p.id = :id")
     String findTitleById(@Param("id")  int id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Post p SET p.poState = 0 WHERE p.id = :id")
+    int updateStateById(@Param("id") int id); 
 }

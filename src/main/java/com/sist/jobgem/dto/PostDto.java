@@ -16,11 +16,13 @@ import com.sist.jobgem.entity.HireKind;
 import com.sist.jobgem.entity.LocationGuSi;
 import com.sist.jobgem.entity.Post;
 import com.sist.jobgem.entity.Skill;
+import com.sist.jobgem.entity.WorkDay;
 import com.sist.jobgem.mapper.CareerMapper;
 import com.sist.jobgem.mapper.EducationMapper;
 import com.sist.jobgem.mapper.HireKindMapper;
 import com.sist.jobgem.mapper.LocationGuSiMapper;
 import com.sist.jobgem.mapper.SkillMapper;
+import com.sist.jobgem.mapper.WorkDayMapper;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -47,7 +49,6 @@ public class PostDto {
         this.poDeadline = post.getPoDeadline();
         this.poImgurl = post.getPoImgurl();
         this.poSal = post.getPoSal();
-        this.poWorkhour = post.getPoWorkhour();
         this.poSubType = post.getPoSubType();
         this.poAddr = post.getPoAddr();
         this.poEmail = post.getPoEmail();
@@ -60,6 +61,7 @@ public class PostDto {
         this.hireKind = post.getHireKind();
         this.career = post.getCareer();
         this.skill = post.getSkill();
+        this.workDays = post.getWorkDays();
     }
 
     public PostDto(PostWriteDto postDto) {
@@ -78,6 +80,7 @@ public class PostDto {
         this.hireKind = HireKindMapper.INSTANCE.toEntityList(postDto.getHireKind());
         this.career = CareerMapper.INSTANCE.toEntityList(postDto.getCareer());
         this.skill = SkillMapper.INSTANCE.toEntityList(postDto.getSkill());
+        this.workDays = WorkDayMapper.INSTANCE.toEntityList(postDto.getWorkDay());
         this.poSal = postDto.getSalary().toString();
     }
 
@@ -89,7 +92,6 @@ public class PostDto {
     private LocalDate poDeadline;
     private String poImgurl;
     private String poSal;
-    private String poWorkhour;
     private String poSubType;
     private String poAddr;
     private String poEmail;
@@ -101,4 +103,5 @@ public class PostDto {
     private List<HireKind> hireKind;
     private List<Career> career;
     private List<Skill> skill;
+    private List<WorkDay> workDays;
 }

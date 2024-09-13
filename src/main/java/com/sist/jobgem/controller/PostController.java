@@ -19,19 +19,21 @@ import com.sist.jobgem.dto.PostListDto;
 import com.sist.jobgem.dto.PostSetDto;
 import com.sist.jobgem.dto.PostWriteDto;
 import com.sist.jobgem.dto.ResumeDto;
-import com.sist.jobgem.dto.WorkSchedulesDto;
+import com.sist.jobgem.dto.WorkDayDto;
 import com.sist.jobgem.entity.WorkDay;
 import com.sist.jobgem.service.ApplymentService;
 import com.sist.jobgem.service.PostService;
 import com.sist.jobgem.service.ResumeService;
 import com.sist.jobgem.dto.ApplymentDto;
+import com.sist.jobgem.dto.ApplymentSearchDto;
 import com.sist.jobgem.dto.PostCountApplyDto;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.sist.jobgem.service.WorkDayService;
-import com.sist.jobgem.service.WorkSchedulesService;
 
 @RestController
 @RequestMapping("/api/post")
@@ -46,8 +48,6 @@ public class PostController {
     @Autowired
     private WorkDayService workDayService;
 
-    @Autowired
-    private WorkSchedulesService workSchedulesService;
 
     @Autowired
     private ResumeService resumeService;
@@ -70,16 +70,8 @@ public class PostController {
     public String writePost(@RequestBody PostWriteDto data) {
         PostDto pvo = new PostDto(data);
         int result = postService.create(pvo);
-        WorkSchedulesDto workSchedulesDto = new WorkSchedulesDto();
-        workSchedulesDto.setPoIdx(result);
-        workSchedulesDto.setWsStartTime(data.getWorkStartTime());
-        workSchedulesDto.setWsEndTime(data.getWorkEndTime());
-        List<WorkDay> workDays = workDayService.getWorkIdIn(data.getWorkDay());
-        workSchedulesDto.setWorkDays(workDays);
-        workSchedulesService.create(workSchedulesDto);
         return "success";
     }
-
     @RequestMapping(value = "/set", method = RequestMethod.GET)
     public ResponseEntity<PostSetDto> getPostSet() {
         return ResponseEntity.ok(postService.getPostSet());
@@ -111,4 +103,22 @@ public class PostController {
         map.put("jobseeker", jobseeker);
         return ResponseEntity.ok(map);
     }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String deletePost(@RequestParam(value = "id", required = true) int id) {
+        int result = postService.delete(id);
+        if (result == 1) {
+            return "success";
+        } else {
+            return "fail";
+        }
+    }
+
+    @GetMapping("/applymentSearch")
+    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto, @RequestParam(value="curPage", required = false)int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
+        return applymentService.searchApplymentwithJobseeker(dto, pageable);
+    }
+
+    
 }

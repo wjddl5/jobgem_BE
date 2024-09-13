@@ -44,8 +44,11 @@ public class Post {
     @Column(name = "po_sal", length = 10)
     private String poSal;
 
-    @Column(name = "po_workhour", length = 15)
-    private String poWorkhour;
+    @Column(name = "ws_start_time")
+    private String wsStartTime;
+
+    @Column(name = "ws_end_time")
+    private String wsEndTime;
 
     @Column(name = "po_sub_type", length = 20)
     private String poSubType;
@@ -85,4 +88,8 @@ public class Post {
     @ManyToMany
     @JoinTable(name = "skill_bridge", joinColumns = @JoinColumn(name = "po_idx"), inverseJoinColumns = @JoinColumn(name = "sk_idx"))
     private List<Skill> skill;
+
+    @ManyToMany
+    @JoinTable(name = "post_schedule_days", joinColumns = @JoinColumn(name = "po_idx"), inverseJoinColumns = @JoinColumn(name = "wd_idx"))
+    private List<WorkDay> workDays;
 }
