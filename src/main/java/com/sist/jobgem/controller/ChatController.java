@@ -37,11 +37,11 @@ public class ChatController {
         return ResponseEntity.ok(chatService.getChatList(id));
     }
 
-    //메시지 송신 및 수신, /pub가 생략된 모습. 클라이언트 단에선 /pub/message로 요청
+    //메시지 송신 및 수신, /pub가 생략된 모습. 클라이언트 단에선 /pub/chat 요청
     @MessageMapping("/chat")
     public ResponseEntity<ChatDto> receiveMessage(@RequestBody ChatDto chat) {
-        ChatDto chatDto = chatService.addChat(chat);
-        if(chatDto == null) template.convertAndSend("/sub/chatroom/"+chat.getCmIdx(), chat);
-        return ResponseEntity.ok(chatDto);
+        template.convertAndSend("/sub/chatroom/"+chat.getCmIdx(), chat);
+        chatService.addChat(chat);
+        return ResponseEntity.ok().build();
     }
 }
