@@ -81,6 +81,11 @@ public class BoardController {
     return boardService.getBbsList(2, 1, pageable, searchType, searchValue); // boType 2 : QnA
   }
 
+  @RequestMapping("/qna/myList")
+  public Page<BoardDto> getMyQnAList(Pageable pageable, @RequestParam(value = "usIdx") int usIdx) {
+    return boardService.getMyBbsList(2, 1, pageable, usIdx); // boType 2 : QnA
+  }
+
   @RequestMapping("/answerYes")
   public void updateAnswerStatusYes(@RequestParam(value = "id") int id) {
     boardService.updateAnswerStatusYes(id);

@@ -51,6 +51,21 @@ public class BoardService {
     return new PageImpl<>(boardDtoList, pageable2, boardPage.getTotalElements());
   }
 
+  public Page<BoardDto> getMyBbsList(int boType, int boStatus, Pageable pageable, int usIdx) {
+    Page<Board> boardPage = null;
+
+    Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+        Sort.by(Sort.Direction.DESC, "id"));
+
+    boardPage = boardRepository.findByBoTypeAndBoStatusAndUsIdx(boType, boStatus, pageable2, usIdx);
+
+    List<BoardDto> boardDtoList = boardPage.getContent().stream()
+        .map(this::convertToDto)
+        .collect(Collectors.toList());
+
+    return new PageImpl<>(boardDtoList, pageable2, boardPage.getTotalElements());
+  }
+
   // =============
 
   // 게시글 상세보기

@@ -63,7 +63,6 @@ public class ApplymentService {
                 dto.getApRead(),
                 dto.getStartDate(),
                 dto.getEndDate(),
-                dto.getPoIdx(),
                 pageable);
     }
 
