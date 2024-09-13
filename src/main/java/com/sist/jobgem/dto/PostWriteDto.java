@@ -14,8 +14,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PostWriteDto {
+    private Integer id;
     private Integer coIdx;
-
     private String poTitle;
     private String poContent;
     private String workStartTime;
@@ -28,6 +28,8 @@ public class PostWriteDto {
     private String email;
     private String fax;
     private Integer poState;
+    private String startDate;
+    private String endDate;
 
     private List<EducationDto> education;
     private List<HireKindDto> hireKind;

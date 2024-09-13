@@ -65,6 +65,7 @@ public class PostDto {
     }
 
     public PostDto(PostWriteDto postDto) {
+        this.id = postDto.getId();
         this.coIdx = postDto.getCoIdx();
         this.poTitle = postDto.getPoTitle();
         this.poContent = postDto.getPoContent();
@@ -82,6 +83,8 @@ public class PostDto {
         this.skill = SkillMapper.INSTANCE.toEntityList(postDto.getSkill());
         this.workDays = WorkDayMapper.INSTANCE.toEntityList(postDto.getWorkDay());
         this.poSal = postDto.getSalary().toString();
+        this.wsStartTime = postDto.getWorkStartTime();
+        this.wsEndTime = postDto.getWorkEndTime();
     }
 
     private Integer id;
@@ -96,6 +99,8 @@ public class PostDto {
     private String poAddr;
     private String poEmail;
     private String poFax;
+    private String wsStartTime;
+    private String wsEndTime;
     private Integer poState;
     private Company company;
     private List<Education> education;
