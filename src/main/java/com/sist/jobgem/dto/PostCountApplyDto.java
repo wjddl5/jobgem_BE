@@ -24,7 +24,6 @@ public class PostCountApplyDto {
     private LocalDate poDeadline;
     private String poImgurl;
     private String poSal;
-    private String poWorkhour;
     private String poSubType;
     private String poAddr;
     private String poEmail;
