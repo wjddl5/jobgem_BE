@@ -59,5 +59,19 @@ public interface ApplymentRepository extends JpaRepository<Applyment, Integer> {
         // joIdx로 apRead가 1인 Applyment 개수를 세는 쿼리 메서드
         @Query("SELECT COUNT(a) FROM Applyment a WHERE a.joIdx = :joIdx AND a.apRead = 1")
         int countByJoIdxAndApReadIsOne(@Param("joIdx") Integer joIdx);
-
+    
+        @Query("SELECT new com.sist.jobgem.dto.ApplymentDto(a) FROM Applyment a " +
+            "WHERE (:joIdx IS NULL OR a.joIdx = :joIdx) " +
+            "AND a.apState = 1 " +
+            "AND (:apRead IS NULL OR a.apRead = :apRead) " +
+            "AND (:startDate IS NULL OR a.apDate >= :startDate) " +
+            "AND (:endDate IS NULL OR a.apDate <= :endDate) " +
+            "AND (:poIdx IS NULL OR a.poIdx = :poIdx)")
+        Page<ApplymentDto> searchApplymentwithJobseeker(
+                @Param("joIdx") Integer joIdx,
+                @Param("apRead") Integer apRead, // int -> Integer로 수정하여 null 처리 가능
+                @Param("startDate") LocalDate startDate,
+                @Param("endDate") LocalDate endDate,
+                @Param("poIdx") Integer poIdx,
+                Pageable pageable);
 }

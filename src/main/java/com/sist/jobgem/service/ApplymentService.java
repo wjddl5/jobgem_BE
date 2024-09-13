@@ -63,7 +63,6 @@ public class ApplymentService {
                 dto.getApRead(),
                 dto.getStartDate(),
                 dto.getEndDate(),
-                dto.getPoIdx(),
                 pageable);
     }
 
@@ -77,5 +76,15 @@ public class ApplymentService {
 
     public void view(int id) {
         applymentRepository.view(id);
+    }
+
+    public Page<ApplymentDto> searchApplymentwithJobseeker(ApplymentSearchDto dto, Pageable pageable) {
+        return applymentRepository.searchApplymentwithJobseeker(
+                dto.getJoIdx(),
+                dto.getApRead(),
+                dto.getStartDate(),
+                dto.getEndDate(),
+                dto.getPoIdx(),
+                pageable);
     }
 }
