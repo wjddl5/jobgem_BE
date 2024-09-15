@@ -25,6 +25,7 @@ import com.sist.jobgem.dto.PostCountApplyDto;
 import com.sist.jobgem.dto.PostDto;
 import com.sist.jobgem.dto.PostListDto;
 import com.sist.jobgem.dto.PostSetDto;
+import com.sist.jobgem.dto.RecruitRequest;
 import com.sist.jobgem.entity.Post;
 import com.sist.jobgem.mapper.PostMapper;
 import com.sist.jobgem.repository.ApplymentRepository;
@@ -161,5 +162,9 @@ public class PostService {
         List<PostDto> postDtos = PostMapper.INSTANCE.toDtoList(posts.getContent());
 
         return new PageImpl<>(postDtos, pageable, posts.getTotalElements());
+    }
+
+    public Page<Post> findByRecruit(RecruitRequest request, Pageable pageable) {
+        return postRepository.findByRecruit(request, pageable);
     }
 }

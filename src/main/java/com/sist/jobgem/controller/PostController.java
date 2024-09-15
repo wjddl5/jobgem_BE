@@ -18,8 +18,10 @@ import com.sist.jobgem.dto.PostDto;
 import com.sist.jobgem.dto.PostListDto;
 import com.sist.jobgem.dto.PostSetDto;
 import com.sist.jobgem.dto.PostWriteDto;
+import com.sist.jobgem.dto.RecruitRequest;
 import com.sist.jobgem.dto.ResumeDto;
 import com.sist.jobgem.dto.WorkDayDto;
+import com.sist.jobgem.entity.Post;
 import com.sist.jobgem.entity.WorkDay;
 import com.sist.jobgem.service.ApplymentService;
 import com.sist.jobgem.service.PostService;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.sist.jobgem.service.WorkDayService;
 
@@ -131,5 +134,12 @@ public class PostController {
         PageRequest pageable = PageRequest.of(curPage, pageSize, Sort.by(Sort.Direction.DESC, "id"));
 
         return ResponseEntity.ok(postService.searchPosts(keyword, pageable));
+    }
+
+    @PostMapping("/recruit")
+    public ResponseEntity<Page<Post>> recruitPost(@RequestBody RecruitRequest recruitRequest) {
+        PageRequest pageable = PageRequest.of(recruitRequest.getCurPage(), 2, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Post> posts = postService.findByRecruit(recruitRequest, pageable);
+        return ResponseEntity.ok(posts);
     }
 }

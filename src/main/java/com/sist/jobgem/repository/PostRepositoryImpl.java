@@ -3,10 +3,21 @@ package com.sist.jobgem.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sist.jobgem.dto.PostCountApplyDto;
+import com.sist.jobgem.dto.RecruitRequest;
+import com.sist.jobgem.entity.Post;
 import com.sist.jobgem.entity.QApplyment;
+import com.sist.jobgem.entity.QCareersBridge;
+import com.sist.jobgem.entity.QEducationBridge;
+import com.sist.jobgem.entity.QHkBridge;
+import com.sist.jobgem.entity.QLocationBridge;
 import com.sist.jobgem.entity.QPost;
+import com.sist.jobgem.entity.QSkillBridge;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -85,5 +96,43 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         return new PageImpl<>(content, pageable, total);
     }
     
-    
+    @Override
+    public Page<Post> findByRecruit(RecruitRequest request, Pageable pageable) {
+        QPost qPost = QPost.post;
+        QCareersBridge qCareersBridge = QCareersBridge.careersBridge;
+        QEducationBridge qEducationBridge = QEducationBridge.educationBridge;
+        QHkBridge qHkBridge = QHkBridge.hkBridge;
+        QLocationBridge qLocationBridge = QLocationBridge.locationBridge;
+        QSkillBridge qSkillBridge = QSkillBridge.skillBridge;
+
+        JPQLQuery<Post> query = queryFactory.select(qPost)
+                .distinct()
+                .from(qPost)
+                .leftJoin(qCareersBridge).on(qPost.id.eq(qCareersBridge.poIdx))
+                .leftJoin(qEducationBridge).on(qPost.id.eq(qEducationBridge.poIdx))
+                .leftJoin(qHkBridge).on(qPost.id.eq(qHkBridge.poIdx))
+                .leftJoin(qLocationBridge).on(qPost.id.eq(qLocationBridge.poIdx))
+                .leftJoin(qSkillBridge).on(qPost.id.eq(qSkillBridge.poIdx))
+                .where(
+                        buildCondition(qCareersBridge.crIdx, request.getCrList())
+                                .and(buildCondition(qEducationBridge.edIdx, request.getEdList()))
+                                .and(buildCondition(qHkBridge.hkIdx, request.getHkList()))
+                                .and(buildCondition(qLocationBridge.lgIdx, request.getLgList()))
+                                .and(buildCondition(qSkillBridge.skIdx, request.getSkList())))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        List<Post> content = query.fetch();
+        long total = query.fetchCount();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression buildCondition(NumberPath<Integer> path, List<Integer> idxList) {
+        if (idxList == null || idxList.isEmpty()) {
+            return null; // Skip this condition if the list is null or empty
+        } else {
+            return path.in(idxList); // Add condition if the list has values
+        }
+    }
 }
