@@ -38,7 +38,7 @@ import com.sist.jobgem.service.WorkDayService;
 @RestController
 @RequestMapping("/api/post")
 public class PostController {
-    
+
     @Autowired
     private PostService postService;
 
@@ -47,7 +47,6 @@ public class PostController {
 
     @Autowired
     private WorkDayService workDayService;
-
 
     @Autowired
     private ResumeService resumeService;
@@ -62,7 +61,8 @@ public class PostController {
     }
 
     @RequestMapping("/info")
-    public ResponseEntity<Map<String, Object>> getPostListInfo(@RequestParam(value = "coIdx", required = true) int coIdx) {
+    public ResponseEntity<Map<String, Object>> getPostListInfo(
+            @RequestParam(value = "coIdx", required = true) int coIdx) {
         return ResponseEntity.ok(postService.getPostListInfo(coIdx));
     }
 
@@ -72,6 +72,7 @@ public class PostController {
         int result = postService.create(pvo);
         return "success";
     }
+
     @RequestMapping(value = "/set", method = RequestMethod.GET)
     public ResponseEntity<PostSetDto> getPostSet() {
         return ResponseEntity.ok(postService.getPostSet());
@@ -83,16 +84,19 @@ public class PostController {
     }
 
     @RequestMapping(value = "/apply", method = RequestMethod.GET)
-    public ResponseEntity<Page<ApplymentDto>> getApply(@RequestParam(value = "id", required = true) int id, @RequestParam(value = "curPage", required = true) int curPage) {
+    public ResponseEntity<Page<ApplymentDto>> getApply(@RequestParam(value = "id", required = true) int id,
+            @RequestParam(value = "curPage", required = true) int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5,
                 Sort.by(Sort.Direction.DESC, "id"));
-                
+
         return ResponseEntity.ok(applymentService.getApplymentListByPoIdx(id, pageable));
     }
+
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> getPostDetail(@RequestParam(value = "id", required = true) int id) {
         return ResponseEntity.ok(postService.getDetail(id));
     }
+
     @RequestMapping(value = "/resume", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> getResume(@RequestParam(value = "id", required = true) int id) {
         Map<String, Object> map = new HashMap<>();
@@ -115,10 +119,17 @@ public class PostController {
     }
 
     @GetMapping("/applymentSearch")
-    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto, @RequestParam(value="curPage", required = false)int curPage) {
+    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto,
+            @RequestParam(value = "curPage", required = false) int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return applymentService.searchApplymentwithJobseeker(dto, pageable);
     }
 
-    
+    @GetMapping("/search")
+    public ResponseEntity<Page<PostDto>> searchPosts(@RequestParam(value = "keyword", required = true) String keyword, @RequestParam(value = "curPage", required = true) int curPage) {
+        int pageSize = 2;
+        PageRequest pageable = PageRequest.of(curPage, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+
+        return ResponseEntity.ok(postService.searchPosts(keyword, pageable));
+    }
 }

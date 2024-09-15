@@ -6,6 +6,7 @@ import com.sist.jobgem.entity.Post;
 
 import jakarta.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -56,4 +57,6 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
     @Transactional
     @Query("UPDATE Post p SET p.poState = 0 WHERE p.id = :id")
     int updateStateById(@Param("id") int id); 
+
+    Page<Post> findByPoTitleContainsAndPoState(String keyword, int poState, Pageable pageable);
 }
