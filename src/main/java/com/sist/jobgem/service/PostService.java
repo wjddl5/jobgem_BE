@@ -148,4 +148,8 @@ public class PostService {
         response.put("unviewCount", applymentRepository.countByPoIdxAndApRead(id, 0));
         return response;
     }
+
+    public int delete(int id) {
+        return postRepository.updateStateById(id);
+    }
 }

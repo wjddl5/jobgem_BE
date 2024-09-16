@@ -1,5 +1,10 @@
 package com.sist.jobgem.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,10 +16,6 @@ import com.sist.jobgem.dto.ApplymentSearchDto;
 import com.sist.jobgem.entity.Applyment;
 import com.sist.jobgem.mapper.ApplymentMapper;
 import com.sist.jobgem.repository.ApplymentRepository;
-import java.util.stream.Collectors;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class ApplymentService {
@@ -76,5 +77,15 @@ public class ApplymentService {
 
     public void view(int id) {
         applymentRepository.view(id);
+    }
+
+    public Page<ApplymentDto> searchApplymentwithJobseeker(ApplymentSearchDto dto, Pageable pageable) {
+        return applymentRepository.searchApplymentwithJobseeker(
+                dto.getJoIdx(),
+                dto.getApRead(),
+                dto.getStartDate(),
+                dto.getEndDate(),
+                dto.getPoIdx(),
+                pageable);
     }
 }
