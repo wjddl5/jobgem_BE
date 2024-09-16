@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClovaChatBotService {
   public String main(String voiceMessage) {
-    String secretKey = "a2V1cVBXTG9KeGRqb2REakRlWUFDblZ2RnVOVXlNdEo=";
-    String apiURL = "https://8m2gekg6n1.apigw.ntruss.com/custom/v1/15740/86c80e0e03f4ecf3d89ecefe2a4c4c5d403eff91fbe4f8512d628c2ac2c32e85";
+    String secretKey = "";
+    String apiURL = "";
 
     String chatbotMessage = ""; // 응답 메세지
     try {
