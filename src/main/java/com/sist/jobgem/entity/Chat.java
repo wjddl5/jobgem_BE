@@ -38,4 +38,7 @@ public class Chat {
         this.chDate = LocalDate.now();
     }
 
+    @ManyToOne
+    @JoinColumn(name = "us_idx", nullable = false, insertable = false, updatable = false)
+    private User user;
 }

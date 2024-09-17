@@ -1,9 +1,7 @@
 package com.sist.jobgem.mapper;
 
 import com.sist.jobgem.dto.ChatDto;
-import com.sist.jobgem.dto.ChatroomDto;
 import com.sist.jobgem.entity.Chat;
-import com.sist.jobgem.entity.Chatroom;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

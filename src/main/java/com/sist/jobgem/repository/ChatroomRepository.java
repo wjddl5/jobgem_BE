@@ -13,4 +13,7 @@ import java.util.List;
 public interface ChatroomRepository extends JpaRepository<Chatroom, Integer> {
     @Query("select new com.sist.jobgem.dto.ChatroomResponseDto(c) from Chatroom c where c.opIdx = :usId or c.jnIdx = :usId and c.cmStatus = 1")
     List<ChatroomResponseDto> findChatList(@Param("usId") int usId);
+
+    @Query("select new com.sist.jobgem.dto.ChatroomResponseDto(c) from Chatroom c where c.opIdx = :opIdx and c.cmStatus = 1 ORDER BY c.id DESC LIMIT 3")
+    List<ChatroomResponseDto> findByOpIdx(@Param("opIdx") int coIdx);
 }
