@@ -2,8 +2,12 @@ package com.sist.jobgem.service;
 
 import com.sist.jobgem.dto.ChatDto;
 import com.sist.jobgem.dto.ChatroomDto;
+import com.sist.jobgem.dto.OfferDto;
 import com.sist.jobgem.dto.OfferResponseDto;
-import com.sist.jobgem.entity.*;
+import com.sist.jobgem.entity.Chatroom;
+import com.sist.jobgem.entity.Company;
+import com.sist.jobgem.entity.Jobseeker;
+import com.sist.jobgem.entity.Offer;
 import com.sist.jobgem.mapper.ChatMapper;
 import com.sist.jobgem.mapper.ChatroomMapper;
 import com.sist.jobgem.mapper.OfferMapper;
@@ -11,13 +15,8 @@ import com.sist.jobgem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import com.sist.jobgem.dto.OfferDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,7 +69,7 @@ public class OfferService {
 
         ChatDto chat = ChatDto.builder()
                 .cmIdx(chatroom.getId())
-                .usIdx(joinUser)
+                .usIdx(openUser)
                 .chContent(offerDto.getOfContent())
                 .build();
 
