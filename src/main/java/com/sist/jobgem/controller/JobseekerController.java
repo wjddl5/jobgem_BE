@@ -90,59 +90,61 @@ public class JobseekerController {
     ApplymentService applymentService;
 
     @GetMapping("/jobseeker")
-    public ResponseEntity<JobseekerDto> getJobseeker(@RequestParam(value = "id", required = true) int id) {
+    public ResponseEntity<JobseekerDto> getJobseeker(@RequestParam("id") int id) {
         return ResponseEntity.ok(jobseekerService.getJobseeker(id));
     }
 
     @GetMapping("/reviewList")
-    public Page<ReviewDto> getReviewList(int id, int curPage) {
+    public Page<ReviewDto> getReviewList(@RequestParam("id") int id, @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return reviewService.getReviewList(id, pageable);
     }
 
     @GetMapping("/interviewList")
-    public Page<InterviewDto> getInterviewist(int id, int curPage) {
+    public Page<InterviewDto> getInterviewist(@RequestParam("id") int id, @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return interviewService.getInterviewist(id, pageable);
     }
 
     @GetMapping("/resumeList")
-    public Page<ResumeDto> getresumeList(int id, int curPage) {
+    public Page<ResumeDto> getresumeList(@RequestParam("id") int id, @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return resumeService.getResumeList(id, pageable);
     }
 
     @GetMapping("/applymentList")
-    public ResponseEntity<Page<ApplymentDto>> getApplymentList(@RequestParam int id, @RequestParam int curPage) {
+    public ResponseEntity<Page<ApplymentDto>> getApplymentList(@RequestParam("id") int id,
+            @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5,
                 Sort.by(Sort.Direction.DESC, "id"));
         return ResponseEntity.ok(applymentService.getApplymentList(id, pageable));
     }
 
     @GetMapping("/applymentSearch")
-    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto, @RequestParam(value="curPage", required = false)int curPage) {
+    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto,
+            @RequestParam(value = "curPage", required = false) int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return applymentService.searchApplyment(dto, pageable);
     }
 
     @GetMapping("/getMypageCount")
-    public ResponseEntity<Map<String, Object>> getMypageCount(@RequestParam int id) {
+    public ResponseEntity<Map<String, Object>> getMypageCount(@RequestParam("id") int id) {
         return ResponseEntity.ok(jobseekerService.getMypageCount(id));
     }
 
     @GetMapping("/applymentCount")
-    public Map<String, Object> getApplymentCount(@RequestParam int id) {
+    public Map<String, Object> getApplymentCount(@RequestParam("id") int id) {
         return applymentService.applymentCount(id);
     }
 
     @GetMapping("/offerList")
-    public Page<OfferDto> getOfferList(int id, int curPage) {
+    public Page<OfferDto> getOfferList(@RequestParam("id") int id, @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return offerService.getOfferList(id, pageable);
     }
 
     @GetMapping("/postList")
-    public ResponseEntity<Slice<PostDto>> getPostList(@RequestParam int loadPage) {
+    public ResponseEntity<Slice<PostDto>> getPostList(@RequestParam("loadPage") int loadPage) {
         PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "id"));
         return ResponseEntity.ok(postService.getPostList(pageable));
     }
@@ -159,37 +161,41 @@ public class JobseekerController {
 
     @GetMapping("/addReview")
     public Review addReview(@RequestBody ReviewDto dto) {
-        return reviewService.addReview(dto);
+        ReviewDto rto = new ReviewDto(dto);
+        return reviewService.addReview(rto);
     }
 
     @GetMapping("/addInterview")
     public Interview addInterview(@RequestBody InterviewDto dto) {
-        return interviewService.addInterview(dto);
+        InterviewDto ito = new InterviewDto(dto);
+        return interviewService.addInterview(ito);
     }
 
     @GetMapping("/addResume")
     public Resume addResume(@RequestBody ResumeDto dto) {
-        return resumeService.addResume(dto);
+        ResumeDto rto = new ResumeDto(dto);
+        return resumeService.addResume(rto);
     }
 
     @GetMapping("/addApplyment")
-    public ResponseEntity<Applyment> addApplyment(@RequestBody ApplymentDto applymentDto, @RequestParam int joIdx) {
+    public ResponseEntity<Applyment> addApplyment(@RequestBody ApplymentDto applymentDto,
+            @RequestParam("joIdx") int joIdx) {
         Applyment applyment = applymentService.addApplyment(applymentDto, joIdx);
         return ResponseEntity.ok(applyment);
     }
 
     @GetMapping("/getReview")
-    public ReviewDto getReview(int id) {
+    public ReviewDto getReview(@RequestParam("id") int id) {
         return reviewService.getReview(id);
     }
 
     @GetMapping("/getInterview")
-    public InterviewDto getInterview(int id) {
+    public InterviewDto getInterview(@RequestParam("id") int id) {
         return interviewService.getInterview(id);
     }
 
     @GetMapping("/getResume")
-    public ResumeDto getResume(int id) {
+    public ResumeDto getResume(@RequestParam("id") int id) {
         return resumeService.getResume(id);
     }
 
@@ -209,7 +215,7 @@ public class JobseekerController {
     }
 
     @GetMapping("/updateMypage")
-    public Jobseeker updateJobseekerDetails(@RequestParam int id, @RequestBody JobseekerDto jobseekerDto) {
+    public Jobseeker updateJobseekerDetails(@RequestParam("id") int id, @RequestBody JobseekerDto jobseekerDto) {
         return jobseekerService.updateJobseekerDetails(id, jobseekerDto);
     }
 
@@ -225,17 +231,17 @@ public class JobseekerController {
     }
 
     @GetMapping("/deleteReview")
-    public int deleteReview(int id) {
+    public int deleteReview(@RequestParam("id") int id) {
         return reviewService.deleteReview(id);
     }
 
     @GetMapping("/deleteInterview")
-    public int deleteInterview(int id) {
+    public int deleteInterview(@RequestParam("id") int id) {
         return interviewService.deleteInterview(id);
     }
 
     @GetMapping("/deleteResume")
-    public int deleteResume(int id) {
+    public int deleteResume(@RequestParam("id") int id) {
         return resumeService.deleteResume(id);
     }
 

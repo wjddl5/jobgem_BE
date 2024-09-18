@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +42,13 @@ public class Interview {
 
     @Column(name = "in_write_date", nullable = false)
     private LocalDate inWriteDate;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.inWriteDate == null) {
+            this.inWriteDate = LocalDate.now();
+        }
+    }
 
     @Column(name = "in_level")
     private Integer inLevel;
