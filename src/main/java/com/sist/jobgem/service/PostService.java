@@ -152,4 +152,9 @@ public class PostService {
     public int delete(int id) {
         return postRepository.updateStateById(id);
     }
+
+    public Page<PostDto> getAllPosts(Pageable pageable, String type, String value) {
+        return postRepository.findByTitleOrContent(value, type, pageable).map(post -> PostMapper.INSTANCE.toDto(post));
+    }
+
 }

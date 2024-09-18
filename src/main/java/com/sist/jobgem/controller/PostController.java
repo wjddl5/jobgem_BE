@@ -3,6 +3,7 @@ package com.sist.jobgem.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -119,6 +120,10 @@ public class PostController {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return applymentService.searchApplymentwithJobseeker(dto, pageable);
     }
-
+    
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ResponseEntity<Page<PostDto>> getAllPosts(Pageable pageable, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "value", required = false) String value) {
+        return ResponseEntity.ok(postService.getAllPosts(pageable, type, value));
+    }
     
 }
