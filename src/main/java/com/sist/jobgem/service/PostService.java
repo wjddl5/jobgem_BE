@@ -154,17 +154,23 @@ public class PostService {
 
     public int delete(int id) {
         return postRepository.updateStateById(id);
-    }
+    } 
 
-    public Page<PostDto> searchPosts(String keyword, Pageable pageable) {
-        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+    public Page<PostDto> searchPosts(String keyword, int curPage) {
+        int pageSize = 12;
+        Pageable pageable = PageRequest.of(curPage, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         Page<Post> posts = postRepository.findByPoTitleContainsAndPoState(keyword, 1, pageable);
         List<PostDto> postDtos = PostMapper.INSTANCE.toDtoList(posts.getContent());
 
         return new PageImpl<>(postDtos, pageable, posts.getTotalElements());
     }
 
-    public Page<Post> findByRecruit(RecruitRequest request, Pageable pageable) {
-        return postRepository.findByRecruit(request, pageable);
+    public Page<PostDto> findByRecruit(RecruitRequest request) {
+        int pageSize = 12;
+        Pageable pageable = PageRequest.of(request.getCurPage(), pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Post> posts = postRepository.findByRecruit(request, pageable);
+        List<PostDto> postDtos = PostMapper.INSTANCE.toDtoList(posts.getContent());
+        
+        return new PageImpl<>(postDtos, pageable, posts.getTotalElements());
     }
 }

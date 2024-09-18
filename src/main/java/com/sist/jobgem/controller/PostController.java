@@ -130,16 +130,11 @@ public class PostController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<PostDto>> searchPosts(@RequestParam(value = "keyword", required = true) String keyword, @RequestParam(value = "curPage", required = true) int curPage) {
-        int pageSize = 2;
-        PageRequest pageable = PageRequest.of(curPage, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-
-        return ResponseEntity.ok(postService.searchPosts(keyword, pageable));
+        return ResponseEntity.ok(postService.searchPosts(keyword, curPage));
     }
 
     @PostMapping("/recruit")
-    public ResponseEntity<Page<Post>> recruitPost(@RequestBody RecruitRequest recruitRequest) {
-        PageRequest pageable = PageRequest.of(recruitRequest.getCurPage(), 2, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Post> posts = postService.findByRecruit(recruitRequest, pageable);
-        return ResponseEntity.ok(posts);
+    public ResponseEntity<Page<PostDto>> recruitPost(@RequestBody RecruitRequest recruitRequest) {
+        return ResponseEntity.ok(postService.findByRecruit(recruitRequest));
     }
 }
