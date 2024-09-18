@@ -1,7 +1,9 @@
 package com.sist.jobgem.service;
 
-import java.util.List;
-import com.sist.jobgem.dto.*;
+import com.sist.jobgem.dto.CompanyDto;
+import com.sist.jobgem.dto.CompanyIndexDto;
+import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.dto.TalentDto;
 import com.sist.jobgem.mapper.CompanyMapper;
 import com.sist.jobgem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CompanyService {
@@ -27,6 +31,8 @@ public class CompanyService {
     private JobseekerRepository jobseekerRepository;
     @Autowired
     private BlockRepository blockRepository;
+    @Autowired
+    private ChatroomRepository chatroomRepository;
 
     public CompanyIndexDto getCompany(int id) {
         return CompanyIndexDto.builder()
@@ -38,6 +44,7 @@ public class CompanyService {
                 .talentCount(talentRepository.countByCoIdx(id))
                 .fitJobseekerCount(jobseekerRepository.countByWithfitJobseeker(id))
                 .blockList(blockRepository.findAllByCoIdx(id))
+                .chatList(chatroomRepository.findByOpIdx(id))
                 .build();
     }
 

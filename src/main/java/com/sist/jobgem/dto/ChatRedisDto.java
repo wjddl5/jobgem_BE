@@ -3,19 +3,16 @@ package com.sist.jobgem.dto;
 import com.sist.jobgem.entity.User;
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ChatDto {
+public class ChatRedisDto {
     private Integer id;
     private Integer usIdx;
     private Integer cmIdx;
     private String chContent;
-    private LocalDate chDate;
-
+    private String chDate;
     private User user;
 }
