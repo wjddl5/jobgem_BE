@@ -43,4 +43,10 @@ public class FileController {
         s3UploadService.deleteImage(filename);
         return ResponseEntity.ok("File deleted successfully");
     }
+
+    @GetMapping("viewFile")
+    public String viewFile(@RequestParam("filename") String filename) {
+        return s3UploadService.viewFile(filename);
+    }
+
 }

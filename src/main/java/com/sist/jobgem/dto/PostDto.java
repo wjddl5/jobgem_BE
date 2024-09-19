@@ -54,6 +54,7 @@ public class PostDto {
         this.poEmail = post.getPoEmail();
         this.poFax = post.getPoFax();
         this.poState = post.getPoState();
+        this.company = post.getCompany();
 
         // 리스트 매핑 - 필요하다면 매퍼를 통해 변환
         this.education = post.getEducation();
