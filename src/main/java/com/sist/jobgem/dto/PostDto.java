@@ -85,6 +85,7 @@ public class PostDto {
         this.poSal = postDto.getSalary().toString();
         this.wsStartTime = postDto.getWorkStartTime();
         this.wsEndTime = postDto.getWorkEndTime();
+        this.poImgurl = postDto.getImgUrl();
     }
 
     private Integer id;
