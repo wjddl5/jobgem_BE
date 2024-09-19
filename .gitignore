@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### chat ###
+application-chat.yml
