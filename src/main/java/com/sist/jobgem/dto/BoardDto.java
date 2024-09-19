@@ -22,6 +22,7 @@ public class BoardDto {
   private Integer boType;
   private String boTitle;
   private String boContent;
+  private String boImage;
   private LocalDate boWritedate;
   private Integer boHit;
   private Integer boLike;
@@ -44,6 +45,7 @@ public class BoardDto {
         .boTitle(board.getBoTitle())
         .boContent(board.getBoContent())
         .boWritedate(board.getBoWritedate())
+        .boImage(board.getBoImage())
         .boHit(board.getBoHit())
         .boLike(board.getBoLike())
         .boAnswer(board.getBoAnswer())
