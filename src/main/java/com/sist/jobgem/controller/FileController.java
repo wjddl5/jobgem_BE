@@ -33,13 +33,13 @@ public class FileController {
 
     // 파일 다운로드
     @GetMapping("/download/{filename}")
-    public ResponseEntity<UrlResource> downloadFile(@PathVariable String filename) {
+    public ResponseEntity<UrlResource> downloadFile(@PathVariable("filename") String filename) {
         return s3UploadService.downloadImage(filename);
     }
 
     // 파일 삭제
     @DeleteMapping("/delete/{filename}")
-    public ResponseEntity<String> deleteFile(@PathVariable String filename) {
+    public ResponseEntity<String> deleteFile(@PathVariable("filename") String filename) {
         s3UploadService.deleteImage(filename);
         return ResponseEntity.ok("File deleted successfully");
     }
