@@ -173,4 +173,9 @@ public class PostService {
         
         return new PageImpl<>(postDtos, pageable, posts.getTotalElements());
     }
+
+    public Page<PostDto> getAllPosts(Pageable pageable, String type, String value) {
+        return postRepository.findByTitleOrContent(value, type, pageable).map(post -> PostMapper.INSTANCE.toDto(post));
+    }
+
 }
