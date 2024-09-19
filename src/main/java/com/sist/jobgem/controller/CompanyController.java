@@ -33,6 +33,11 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.getCompany(id));
     }
 
+    @PostMapping("/update/logo")
+    public ResponseEntity<Integer> updateCompany(@RequestParam("id") int id, @RequestParam("coThumbimgUrl") String coThumbimgUrl) {
+        return ResponseEntity.ok(companyService.updateCompany(id, coThumbimgUrl));
+    }
+
     @GetMapping("/fit")
     public ResponseEntity<Slice<JobseekerDto>> getFitJobseekerList(@RequestParam int id,@RequestParam int loadPage) {
         PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "joName"));
