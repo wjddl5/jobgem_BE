@@ -22,6 +22,7 @@ public class FileController {
     // 파일 업로드
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        System.out.println("======================" + file);
         try {
             String fileUrl = s3UploadService.saveFile(file);
             return ResponseEntity.ok(fileUrl);

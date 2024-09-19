@@ -64,8 +64,9 @@ public class BoardController {
 
   @RequestMapping("/notice/write")
   public boolean writeBbs(@RequestParam(value = "title") String title, @RequestParam(value = "content") String content,
-      @RequestParam(value = "boType") int boType, @RequestParam(value = "usIdx") int usIdx) {
-    return boardService.writeBbs(boType, usIdx, title, content);
+      @RequestParam(value = "boType") int boType, @RequestParam(value = "usIdx") int usIdx,
+      @RequestParam(value = "boImage", required = false) String boImage) {
+    return boardService.writeBbs(boType, usIdx, title, content, boImage);
   }
 
   @RequestMapping("/notice/edit")
