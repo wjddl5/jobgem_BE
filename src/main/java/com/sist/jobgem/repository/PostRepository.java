@@ -1,10 +1,7 @@
 package com.sist.jobgem.repository;
 
-import com.sist.jobgem.dto.PostCountApplyDto;
-import com.sist.jobgem.dto.PostDto;
-import com.sist.jobgem.entity.Post;
-
-import jakarta.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,12 +9,14 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.List;
+import com.sist.jobgem.dto.PostCountApplyDto;
+import com.sist.jobgem.dto.PostDto;
+import com.sist.jobgem.entity.Post;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer>, PostRepositoryCustom {
@@ -56,8 +55,10 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
     @Modifying
     @Transactional
     @Query("UPDATE Post p SET p.poState = 0 WHERE p.id = :id")
-    int updateStateById(@Param("id") int id);
+    int updateStateById(@Param("id") int id); 
 
+    Page<Post> findByPoTitleContainsAndPoState(String keyword, int poState, Pageable pageable);
+    
     @Query("SELECT p FROM Post p JOIN Company c ON p.coIdx = c.id " +
             "WHERE p.poState = 1 AND (" +
             "(:type IS NULL AND :value IS NULL) OR " +

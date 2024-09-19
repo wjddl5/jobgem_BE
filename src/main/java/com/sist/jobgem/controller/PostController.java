@@ -1,45 +1,42 @@
 package com.sist.jobgem.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
-import com.sist.jobgem.dto.JobseekerDto;
-import com.sist.jobgem.service.JobseekerService;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-
-import com.sist.jobgem.dto.PostDto;
-import com.sist.jobgem.dto.PostListDto;
-import com.sist.jobgem.dto.PostSetDto;
-import com.sist.jobgem.dto.PostWriteDto;
-import com.sist.jobgem.dto.ResumeDto;
-import com.sist.jobgem.dto.WorkDayDto;
-import com.sist.jobgem.entity.WorkDay;
-import com.sist.jobgem.service.ApplymentService;
-import com.sist.jobgem.service.PostService;
-import com.sist.jobgem.service.ResumeService;
-import com.sist.jobgem.dto.ApplymentDto;
-import com.sist.jobgem.dto.ApplymentSearchDto;
-import com.sist.jobgem.dto.PostCountApplyDto;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sist.jobgem.dto.ApplymentDto;
+import com.sist.jobgem.dto.ApplymentSearchDto;
+import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.dto.PostCountApplyDto;
+import com.sist.jobgem.dto.PostDto;
+import com.sist.jobgem.dto.PostSetDto;
+import com.sist.jobgem.dto.PostWriteDto;
+import com.sist.jobgem.dto.RecruitRequest;
+import com.sist.jobgem.dto.ResumeDto;
+import com.sist.jobgem.service.ApplymentService;
+import com.sist.jobgem.service.JobseekerService;
+import com.sist.jobgem.service.PostService;
+import com.sist.jobgem.service.ResumeService;
 import com.sist.jobgem.service.WorkDayService;
 
 @RestController
 @RequestMapping("/api/post")
 public class PostController {
-    
+
     @Autowired
     private PostService postService;
 
@@ -48,7 +45,6 @@ public class PostController {
 
     @Autowired
     private WorkDayService workDayService;
-
 
     @Autowired
     private ResumeService resumeService;
@@ -63,7 +59,8 @@ public class PostController {
     }
 
     @RequestMapping("/info")
-    public ResponseEntity<Map<String, Object>> getPostListInfo(@RequestParam(value = "coIdx", required = true) int coIdx) {
+    public ResponseEntity<Map<String, Object>> getPostListInfo(
+            @RequestParam(value = "coIdx", required = true) int coIdx) {
         return ResponseEntity.ok(postService.getPostListInfo(coIdx));
     }
 
@@ -73,6 +70,7 @@ public class PostController {
         int result = postService.create(pvo);
         return "success";
     }
+
     @RequestMapping(value = "/set", method = RequestMethod.GET)
     public ResponseEntity<PostSetDto> getPostSet() {
         return ResponseEntity.ok(postService.getPostSet());
@@ -84,16 +82,19 @@ public class PostController {
     }
 
     @RequestMapping(value = "/apply", method = RequestMethod.GET)
-    public ResponseEntity<Page<ApplymentDto>> getApply(@RequestParam(value = "id", required = true) int id, @RequestParam(value = "curPage", required = true) int curPage) {
+    public ResponseEntity<Page<ApplymentDto>> getApply(@RequestParam(value = "id", required = true) int id,
+            @RequestParam(value = "curPage", required = true) int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5,
                 Sort.by(Sort.Direction.DESC, "id"));
-                
+
         return ResponseEntity.ok(applymentService.getApplymentListByPoIdx(id, pageable));
     }
+
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> getPostDetail(@RequestParam(value = "id", required = true) int id) {
         return ResponseEntity.ok(postService.getDetail(id));
     }
+
     @RequestMapping(value = "/resume", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> getResume(@RequestParam(value = "id", required = true) int id) {
         Map<String, Object> map = new HashMap<>();
@@ -116,9 +117,20 @@ public class PostController {
     }
 
     @GetMapping("/applymentSearch")
-    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto, @RequestParam(value="curPage", required = false)int curPage) {
+    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto,
+            @RequestParam(value = "curPage", required = false) int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return applymentService.searchApplymentwithJobseeker(dto, pageable);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<PostDto>> searchPosts(@RequestParam(value = "keyword", required = true) String keyword, @RequestParam(value = "curPage", required = true) int curPage) {
+        return ResponseEntity.ok(postService.searchPosts(keyword, curPage));
+    }
+
+    @PostMapping("/recruit")
+    public ResponseEntity<Page<PostDto>> recruitPost(@RequestBody RecruitRequest recruitRequest) {
+        return ResponseEntity.ok(postService.findByRecruit(recruitRequest));
     }
     
     @RequestMapping(value = "/all", method = RequestMethod.GET)

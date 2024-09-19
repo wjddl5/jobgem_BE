@@ -4,10 +4,10 @@ package com.sist.jobgem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +25,13 @@ import com.sist.jobgem.dto.PostCountApplyDto;
 import com.sist.jobgem.dto.PostDto;
 import com.sist.jobgem.dto.PostListDto;
 import com.sist.jobgem.dto.PostSetDto;
+import com.sist.jobgem.dto.RecruitRequest;
 import com.sist.jobgem.entity.Post;
 import com.sist.jobgem.mapper.PostMapper;
 import com.sist.jobgem.repository.ApplymentRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+
 @Service
 public class PostService {
 
@@ -151,6 +154,24 @@ public class PostService {
 
     public int delete(int id) {
         return postRepository.updateStateById(id);
+    } 
+
+    public Page<PostDto> searchPosts(String keyword, int curPage) {
+        int pageSize = 12;
+        Pageable pageable = PageRequest.of(curPage, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Post> posts = postRepository.findByPoTitleContainsAndPoState(keyword, 1, pageable);
+        List<PostDto> postDtos = PostMapper.INSTANCE.toDtoList(posts.getContent());
+
+        return new PageImpl<>(postDtos, pageable, posts.getTotalElements());
+    }
+
+    public Page<PostDto> findByRecruit(RecruitRequest request) {
+        int pageSize = 12;
+        Pageable pageable = PageRequest.of(request.getCurPage(), pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Post> posts = postRepository.findByRecruit(request, pageable);
+        List<PostDto> postDtos = PostMapper.INSTANCE.toDtoList(posts.getContent());
+        
+        return new PageImpl<>(postDtos, pageable, posts.getTotalElements());
     }
 
     public Page<PostDto> getAllPosts(Pageable pageable, String type, String value) {
