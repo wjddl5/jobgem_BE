@@ -1,9 +1,12 @@
 package com.sist.jobgem.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.sist.jobgem.dto.BlackListRequestDto;
+import com.sist.jobgem.mapper.BlacklistMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -98,6 +101,10 @@ public class BlackListService {
       return true;
     else
       return false;
+  }
+
+  public int addBlackList(BlackListRequestDto requestDto){
+    return blacklistRepository.save(BlacklistMapper.INSTANCE.toEntity(requestDto)).getId();
   }
 
 }

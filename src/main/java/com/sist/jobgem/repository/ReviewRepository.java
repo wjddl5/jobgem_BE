@@ -21,6 +21,9 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
     List<Review> findByCoIdxAndReState(int coIdx, int reState);
 
+    @Query("select new com.sist.jobgem.dto.ReviewDto(r) from Review r where r.coIdx = :coIdx and r.reState = 1")
+    Page<ReviewDto> findCompanyReview(@Param("coIdx") int coIdx, Pageable pageable);
+
     int countByCoIdxAndReState(int coIdx, int reState);
 
     @Modifying
