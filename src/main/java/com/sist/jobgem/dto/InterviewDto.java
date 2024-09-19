@@ -55,4 +55,15 @@ public class InterviewDto {
         this.jobseeker = interview.getJobseeker();
         this.inState = interview.getInState();
     }
+
+    public InterviewDto(InterviewDto interviewDto) {
+        this.id = interviewDto.getId();
+        this.joIdx = interviewDto.getJoIdx();
+        this.coIdx = interviewDto.getCoIdx();
+        this.inContent = interviewDto.getInContent();
+        this.inWriteDate = interviewDto.getInWriteDate();
+        this.inLevel = interviewDto.getInLevel();
+        this.jobseeker = interviewDto.getJobseeker();
+        this.inState = interviewDto.getInState();
+    }
 }
