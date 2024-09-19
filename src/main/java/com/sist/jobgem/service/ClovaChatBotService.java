@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -18,10 +19,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ClovaChatBotService {
-  public String main(String voiceMessage) {
-    String secretKey = "";
-    String apiURL = "";
+  @Value("${chat.secretKey}")
+  private String secretKey;
 
+  @Value("${chat.apiURL}")
+  private String apiURL;
+
+  public String main(String voiceMessage) {
     String chatbotMessage = ""; // 응답 메세지
     try {
 
