@@ -102,7 +102,7 @@ public class JobseekerService {
                 jobseekerDto.getJoGender(),
                 jobseekerDto.getJoEdu(),
                 jobseekerDto.getJoSal(),
-                jobseekerDto.getJoImgurl());
+                jobseekerDto.getJoImgUrl());
 
         // 변경된 엔티티 저장
         return jobseekerRepository.save(existingJobseeker);
