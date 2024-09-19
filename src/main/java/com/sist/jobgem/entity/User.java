@@ -3,12 +3,11 @@ package com.sist.jobgem.entity;
 import java.time.Instant;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +28,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-@JsonIgnoreType
 public class User {
     
     @Id
@@ -40,6 +38,7 @@ public class User {
     @Column(name = "us_id", nullable = false, length = 50)
     private String usId;
 
+    @JsonIgnore
     @Column(name = "us_pw", nullable = false, length = 100)
     private String usPw;
 
@@ -53,10 +52,12 @@ public class User {
     @Column(name = "us_type")
     private Integer usType;
 
+    @JsonIgnore
     @ColumnDefault("1")
     @Column(name = "us_state")
     private Integer usState;
 
+    @JsonIgnore
     @Column(name = "refresh_token", length = 100)
     private String refreshToken;
 }
