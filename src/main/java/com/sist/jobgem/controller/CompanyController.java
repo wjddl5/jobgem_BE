@@ -27,10 +27,17 @@ public class CompanyController {
     private InterviewService interviewService;
     @Autowired
     private OfferService offerService;
+    @Autowired
+    private BlackListService blackListService;
 
     @GetMapping("")
     public ResponseEntity<CompanyIndexDto> Index(@RequestParam int id) {
         return ResponseEntity.ok(companyService.getCompany(id));
+    }
+
+    @PostMapping("/update/logo")
+    public ResponseEntity<Integer> updateCompany(@RequestParam("id") int id, @RequestParam("coThumbimgUrl") String coThumbimgUrl) {
+        return ResponseEntity.ok(companyService.updateCompany(id, coThumbimgUrl));
     }
 
     @GetMapping("/fit")
@@ -72,13 +79,19 @@ public class CompanyController {
     }
 
     @GetMapping("/review")
-    public ResponseEntity<List<ReviewDto>> getReviewListByCoIdx(int coIdx) {
-        return ResponseEntity.ok(reviewService.getReviewListByCoIdx(coIdx));
+    public ResponseEntity<Page<ReviewDto>> getReviewListByCoIdx(int coIdx, int loadPage) {
+        PageRequest pageRequest = PageRequest.of(loadPage, 3, Sort.by(Sort.Direction.DESC, "reWriteDate"));
+        return ResponseEntity.ok(reviewService.getReviewListByCoIdx(coIdx, pageRequest));
     }
 
     @GetMapping("/blackList")
     public Page<BlockDto> getBlackList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
         return blockService.blackcompanyList(pageable, value, type);
+    }
+
+    @PostMapping("/blackList/add")
+    public ResponseEntity<Integer> addBlackList(@RequestBody BlackListRequestDto requestDto){
+        return ResponseEntity.ok(blackListService.addBlackList(requestDto));
     }
 
     @GetMapping("/notBlack")

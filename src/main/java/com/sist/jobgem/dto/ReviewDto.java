@@ -53,6 +53,18 @@ public class ReviewDto {
         this.company = reviewDto.getCompany();
     }
 
+    private ReviewDto(Review review){
+        this.id = review.getId();
+        this.coIdx = review.getCoIdx();
+        this.joIdx = review.getJoIdx();
+        this.reTitle = review.getReTitle();
+        this.reContent = review.getReContent();
+        this.reScore = review.getReScore();
+        this.reWriteDate = review.getReWriteDate();
+        this.reState = review.getReState();
+        this.company = review.getCompany();
+    }
+
     public static ReviewDto fromEntity(Review review) {
         return ReviewDto.builder()
                 .id(review.getId())

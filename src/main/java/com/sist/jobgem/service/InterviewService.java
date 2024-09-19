@@ -74,6 +74,7 @@ public class InterviewService {
                 .coIdx(interviewDto.getCoIdx())
                 .inContent(interviewDto.getInContent())
                 .inWriteDate(LocalDate.now())
+                .inLevel(interviewDto.getInLevel())
                 .inState(1)
                 .company(existingReview.getCompany())
                 .build();

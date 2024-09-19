@@ -4,8 +4,10 @@ import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.CompanyIndexDto;
 import com.sist.jobgem.dto.JobseekerDto;
 import com.sist.jobgem.dto.TalentDto;
+import com.sist.jobgem.entity.Company;
 import com.sist.jobgem.mapper.CompanyMapper;
 import com.sist.jobgem.repository.*;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +48,12 @@ public class CompanyService {
                 .blockList(blockRepository.findAllByCoIdx(id))
                 .chatList(chatroomRepository.findByOpIdx(id))
                 .build();
+    }
+    public Integer updateCompany(int id, String coThumbimgUrl) {
+        CompanyDto joinCompany = CompanyMapper.INSTANCE.toDto(companyRepository.findById(id).orElseThrow());
+        joinCompany.setCoThumbimgUrl(coThumbimgUrl);
+
+        return companyRepository.save(CompanyMapper.INSTANCE.toEntity(joinCompany)).getId();
     }
 
     public Page<CompanyDto> getCompanyList(Pageable pageable, String value, String type) {

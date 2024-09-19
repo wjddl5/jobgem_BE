@@ -50,11 +50,14 @@ public class S3UploadService {
     }
 
     // 이미지 미리보기
-    // String url = amazonS3.getUrl(bucket, filename).toString();
-    // <img th:src="${s3ImageUrl}"/>
+    public String viewFile(String filename) {
+        String url = amazonS3.getUrl(bucket, filename).toString();
+        return url;
+    }
 
     // 파일 삭제
     public void deleteImage(String originalFilename) {
         amazonS3.deleteObject(bucket, originalFilename);
     }
+
 }
