@@ -39,7 +39,7 @@ public class JobseekerDto {
 
     private String joGender;
 
-    private String joImgurl;
+    private String joImgUrl;
 
     private String joEdu;
 
@@ -61,7 +61,7 @@ public class JobseekerDto {
         this.joGender = jobseeker.getJoGender();
         this.joEdu = jobseeker.getJoEdu();
         this.joSal = jobseeker.getJoSal();
-        this.joImgurl = jobseeker.getJoImgUrl();
+        this.joImgUrl = jobseeker.getJoImgUrl();
         this.skills = jobseeker.getSkills();
         this.skillIds = jobseeker.getSkills().stream()
                 .map(Skill::getId)
