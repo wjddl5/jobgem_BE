@@ -35,7 +35,7 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.getCompany(id));
     }
 
-    @PostMapping("/update/logo")
+    @PutMapping("/logo")
     public ResponseEntity<Integer> updateCompany(@RequestParam("id") int id, @RequestParam("coThumbimgUrl") String coThumbimgUrl) {
         return ResponseEntity.ok(companyService.updateCompany(id, coThumbimgUrl));
     }
@@ -52,13 +52,13 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.getWishjobseekerList(id, pageable));
     }
 
-    @PostMapping("/wish/add")
+    @PostMapping("/wish")
     public ResponseEntity<Integer> addWishJobseeker(@RequestBody TalentDto request) {
         return ResponseEntity.ok(talentService.addTalent(request));
     }
 
-    @PostMapping("/wish/delete")
-    public void removeWishJobseeker(@RequestBody int id) {
+    @DeleteMapping("/wish")
+    public void removeWishJobseeker(@RequestParam int id) {
         talentService.removeTalent(id);
     }
 
@@ -68,12 +68,12 @@ public class CompanyController {
         return ResponseEntity.ok(blockService.getBlockListByCoIdxAndJoName(id, name, pageable));
     }
 
-    @PostMapping("/block/{id}")
-    public ResponseEntity<BlockDto> addBlock(@RequestBody BlockDto request, @PathVariable("id") int joIdx) {
+    @PostMapping("/block")
+    public ResponseEntity<BlockDto> addBlock(@RequestBody BlockDto request) {
         return ResponseEntity.ok(blockService.addjobseekerBlock(request));
     }
 
-    @PostMapping("/block/delete")
+    @DeleteMapping("/block")
     public void deleteBlock(@RequestBody int[] selectList) {
         blockService.deleteBlock(selectList);
     }
@@ -94,7 +94,7 @@ public class CompanyController {
         return blockService.blackcompanyList(pageable, value, type);
     }
 
-    @PostMapping("/blackList/add")
+    @PostMapping("/blacklist")
     public ResponseEntity<Integer> addBlackList(@RequestBody BlackListRequestDto requestDto){
         return ResponseEntity.ok(blackListService.addBlackList(requestDto));
     }
@@ -123,7 +123,7 @@ public class CompanyController {
         return ResponseEntity.ok(interviewService.getInterviewListByCoIdx(id, pageable));
     }
 
-    @PostMapping("/offer/add")
+    @PostMapping("/offer")
     public ResponseEntity<OfferResponseDto> addOffer(@RequestBody OfferDto offerDto) {
         return ResponseEntity.ok(offerService.addOffer(offerDto));
     }
