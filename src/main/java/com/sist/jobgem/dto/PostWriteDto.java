@@ -2,6 +2,8 @@ package com.sist.jobgem.dto;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.sist.jobgem.entity.Career;
 import com.sist.jobgem.entity.Education;
 import com.sist.jobgem.entity.HireKind;
@@ -30,6 +32,7 @@ public class PostWriteDto {
     private Integer poState;
     private String startDate;
     private String endDate;
+    private String imgUrl;
 
     private List<EducationDto> education;
     private List<HireKindDto> hireKind;
