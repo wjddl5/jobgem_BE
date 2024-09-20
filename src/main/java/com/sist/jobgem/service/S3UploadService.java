@@ -1,6 +1,7 @@
 package com.sist.jobgem.service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
@@ -37,16 +38,12 @@ public class S3UploadService {
     }
 
     // 파일 다운로드
-    public ResponseEntity<UrlResource> downloadImage(String originalFilename) {
-        UrlResource urlResource = new UrlResource(amazonS3.getUrl(bucket, originalFilename));
+    public UrlResource downloadImage(String originalFilename) throws MalformedURLException {
+        return new UrlResource(amazonS3.getUrl(bucket, originalFilename));
+    }
 
-        String contentDisposition = "attachment; filename=\"" + originalFilename + "\"";
-
-        // header에 CONTENT_DISPOSITION 설정을 통해 클릭 시 다운로드 진행
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
-                .body(urlResource);
-
+    public String getContentDisposition(String originalFilename) {
+        return "attachment; filename=\"" + originalFilename + "\"";
     }
 
     // 이미지 미리보기
