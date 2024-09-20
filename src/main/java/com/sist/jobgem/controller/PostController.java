@@ -12,11 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.sist.jobgem.dto.ApplymentDto;
 import com.sist.jobgem.dto.ApplymentSearchDto;
@@ -34,7 +37,7 @@ import com.sist.jobgem.service.ResumeService;
 import com.sist.jobgem.service.WorkDayService;
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/api/posts")
 public class PostController {
 
     @Autowired
@@ -52,51 +55,47 @@ public class PostController {
     @Autowired
     private JobseekerService jobseekerService;
 
-    @RequestMapping("")
-    public ResponseEntity<Page<PostCountApplyDto>> getPosts(@RequestParam Map<String, Object> map) {
-        int coIdx = 1;
-        return ResponseEntity.ok(postService.getPosts(map, coIdx));
+    @GetMapping("")
+    public ResponseEntity<Page<PostCountApplyDto>> getPosts(@RequestParam Map<String, Object> params) {
+        int coIdx = 1; // Consider making this a path variable or part of the params
+        return ResponseEntity.ok(postService.getPosts(params, coIdx));
     }
 
-    @RequestMapping("/info")
-    public ResponseEntity<Map<String, Object>> getPostListInfo(
-            @RequestParam(value = "coIdx", required = true) int coIdx) {
+    @GetMapping("/info")
+    public ResponseEntity<Map<String, Object>> getPostListInfo(@RequestParam int coIdx) {
         return ResponseEntity.ok(postService.getPostListInfo(coIdx));
     }
 
-    @RequestMapping(value = "/write", method = RequestMethod.POST)
-    public String writePost(@RequestBody PostWriteDto data) {
+    @PostMapping("")
+    public ResponseEntity<String> createPost(@RequestBody PostWriteDto data) {
         PostDto pvo = new PostDto(data);
-        int result = postService.create(pvo);
-        return "success";
+        postService.create(pvo);
+        return ResponseEntity.ok("success");
     }
 
-    @RequestMapping(value = "/set", method = RequestMethod.GET)
+    @GetMapping("/set")
     public ResponseEntity<PostSetDto> getPostSet() {
         return ResponseEntity.ok(postService.getPostSet());
     }
 
-    @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public ResponseEntity<PostDto> getPost(@RequestParam(value = "poIdx", required = true) int poIdx) {
+    @GetMapping("/{poIdx}")
+    public ResponseEntity<PostDto> getPost(@PathVariable int poIdx) {
         return ResponseEntity.ok(postService.getPost(poIdx));
     }
 
-    @RequestMapping(value = "/apply", method = RequestMethod.GET)
-    public ResponseEntity<Page<ApplymentDto>> getApply(@RequestParam(value = "id", required = true) int id,
-            @RequestParam(value = "curPage", required = true) int curPage) {
-        PageRequest pageable = PageRequest.of(curPage, 5,
-                Sort.by(Sort.Direction.DESC, "id"));
-
+    @GetMapping("/{id}/applyments")
+    public ResponseEntity<Page<ApplymentDto>> getApply(@PathVariable int id, @RequestParam int curPage) {
+        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return ResponseEntity.ok(applymentService.getApplymentListByPoIdx(id, pageable));
     }
 
-    @RequestMapping(value = "/detail", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, Object>> getPostDetail(@RequestParam(value = "id", required = true) int id) {
+    @GetMapping("/{id}/detail")
+    public ResponseEntity<Map<String, Object>> getPostDetail(@PathVariable int id) {
         return ResponseEntity.ok(postService.getDetail(id));
     }
 
-    @RequestMapping(value = "/resume", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, Object>> getResume(@RequestParam(value = "id", required = true) int id) {
+    @GetMapping("/{id}/resume")
+    public ResponseEntity<Map<String, Object>> getResume(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
         applymentService.view(id);
         ResumeDto resume = resumeService.getResume(id);
@@ -106,21 +105,17 @@ public class PostController {
         return ResponseEntity.ok(map);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String deletePost(@RequestParam(value = "id", required = true) int id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePost(@PathVariable int id) {
         int result = postService.delete(id);
-        if (result == 1) {
-            return "success";
-        } else {
-            return "fail";
-        }
+        return result == 1 ? ResponseEntity.ok("success") : ResponseEntity.badRequest().body("fail");
     }
 
-    @GetMapping("/applymentSearch")
-    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto,
-            @RequestParam(value = "curPage", required = false) int curPage) {
+    @GetMapping("/applyments/search")
+    public ResponseEntity<Page<ApplymentDto>> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto,
+            @RequestParam(required = false) int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
-        return applymentService.searchApplymentwithJobseeker(dto, pageable);
+        return ResponseEntity.ok(applymentService.searchApplymentwithJobseeker(dto, pageable));
     }
 
     @GetMapping("/search")
@@ -136,8 +131,10 @@ public class PostController {
         return ResponseEntity.ok(postService.findByRecruit(recruitRequest));
     }
     
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ResponseEntity<Page<PostDto>> getAllPosts(Pageable pageable, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "value", required = false) String value) {
+    @GetMapping("/all")
+    public ResponseEntity<Page<PostDto>> getAllPosts(Pageable pageable, 
+            @RequestParam(required = false) String type, 
+            @RequestParam(required = false) String value) {
         return ResponseEntity.ok(postService.getAllPosts(pageable, type, value));
     }
     
