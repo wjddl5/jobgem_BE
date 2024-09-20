@@ -68,6 +68,11 @@ public class CompanyController {
         return ResponseEntity.ok(blockService.getBlockListByCoIdxAndJoName(id, name, pageable));
     }
 
+    @PostMapping("/block/{id}")
+    public ResponseEntity<BlockDto> addBlock(@RequestBody BlockDto request, @PathVariable("id") int joIdx) {
+        return ResponseEntity.ok(blockService.addjobseekerBlock(request));
+    }
+
     @PostMapping("/block/delete")
     public void deleteBlock(@RequestBody int[] selectList) {
         blockService.deleteBlock(selectList);
