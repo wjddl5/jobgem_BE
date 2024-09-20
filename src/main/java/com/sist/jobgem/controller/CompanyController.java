@@ -27,13 +27,15 @@ public class CompanyController {
     private InterviewService interviewService;
     @Autowired
     private OfferService offerService;
+    @Autowired
+    private BlackListService blackListService;
 
     @GetMapping("")
     public ResponseEntity<CompanyIndexDto> Index(@RequestParam int id) {
         return ResponseEntity.ok(companyService.getCompany(id));
     }
 
-    @PostMapping("/update/logo")
+    @PutMapping("/logo")
     public ResponseEntity<Integer> updateCompany(@RequestParam("id") int id, @RequestParam("coThumbimgUrl") String coThumbimgUrl) {
         return ResponseEntity.ok(companyService.updateCompany(id, coThumbimgUrl));
     }
@@ -50,13 +52,13 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.getWishjobseekerList(id, pageable));
     }
 
-    @PostMapping("/wish/add")
+    @PostMapping("/wish")
     public ResponseEntity<Integer> addWishJobseeker(@RequestBody TalentDto request) {
         return ResponseEntity.ok(talentService.addTalent(request));
     }
 
-    @PostMapping("/wish/delete")
-    public void removeWishJobseeker(@RequestBody int id) {
+    @DeleteMapping("/wish")
+    public void removeWishJobseeker(@RequestParam int id) {
         talentService.removeTalent(id);
     }
 
@@ -66,7 +68,12 @@ public class CompanyController {
         return ResponseEntity.ok(blockService.getBlockListByCoIdxAndJoName(id, name, pageable));
     }
 
-    @PostMapping("/block/delete")
+    @PostMapping("/block")
+    public ResponseEntity<BlockDto> addBlock(@RequestBody BlockDto request) {
+        return ResponseEntity.ok(blockService.addjobseekerBlock(request));
+    }
+
+    @DeleteMapping("/block")
     public void deleteBlock(@RequestBody int[] selectList) {
         blockService.deleteBlock(selectList);
     }
@@ -77,13 +84,19 @@ public class CompanyController {
     }
 
     @GetMapping("/review")
-    public ResponseEntity<List<ReviewDto>> getReviewListByCoIdx(int coIdx) {
-        return ResponseEntity.ok(reviewService.getReviewListByCoIdx(coIdx));
+    public ResponseEntity<Page<ReviewDto>> getReviewListByCoIdx(int coIdx, int loadPage) {
+        PageRequest pageRequest = PageRequest.of(loadPage, 3, Sort.by(Sort.Direction.DESC, "reWriteDate"));
+        return ResponseEntity.ok(reviewService.getReviewListByCoIdx(coIdx, pageRequest));
     }
 
     @GetMapping("/blackList")
     public Page<BlockDto> getBlackList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
         return blockService.blackcompanyList(pageable, value, type);
+    }
+
+    @PostMapping("/blacklist")
+    public ResponseEntity<Integer> addBlackList(@RequestBody BlackListRequestDto requestDto){
+        return ResponseEntity.ok(blackListService.addBlackList(requestDto));
     }
 
     @GetMapping("/notBlack")
@@ -110,7 +123,7 @@ public class CompanyController {
         return ResponseEntity.ok(interviewService.getInterviewListByCoIdx(id, pageable));
     }
 
-    @PostMapping("/offer/add")
+    @PostMapping("/offer")
     public ResponseEntity<OfferResponseDto> addOffer(@RequestBody OfferDto offerDto) {
         return ResponseEntity.ok(offerService.addOffer(offerDto));
     }

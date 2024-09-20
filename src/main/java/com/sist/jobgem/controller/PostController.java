@@ -125,6 +125,9 @@ public class PostController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<PostDto>> searchPosts(@RequestParam(value = "keyword", required = true) String keyword, @RequestParam(value = "curPage", required = true) int curPage) {
+        if(keyword.equals("")){
+            return ResponseEntity.ok(null);
+        }
         return ResponseEntity.ok(postService.searchPosts(keyword, curPage));
     }
 
