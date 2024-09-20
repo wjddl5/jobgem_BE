@@ -114,4 +114,8 @@ public class ReviewService {
         return ReviewMapper.INSTANCE.toDtoList(reviewRepository.findByCoIdxAndReState(coIdx, 1));
     }
 
+    public Page<ReviewDto> getReviewListByCoIdx(int coIdx, Pageable pageable){
+        return reviewRepository.findCompanyReview(coIdx, pageable);
+    }
+
 }
