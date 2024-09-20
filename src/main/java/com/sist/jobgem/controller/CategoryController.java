@@ -16,6 +16,11 @@ import com.sist.jobgem.service.LocationDoService;
 import com.sist.jobgem.service.LocationGuSiService;
 import com.sist.jobgem.service.SkillService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -44,17 +49,17 @@ public class CategoryController {
   private LocationGuSiService locationGuSiService;
 
   // 학력
-  @RequestMapping("/edu")
+  @GetMapping("/edu")
   public List<EducationDto> getEdu() {
     return educationService.getEdu();
   }
 
-  @RequestMapping("/addEdu")
+  @PostMapping("/edu")
   public boolean addEdu(@RequestParam(value = "itemName") String itemName) {
     return educationService.addEdu(itemName);
   }
 
-  @RequestMapping("removeList")
+  @DeleteMapping("/edu")
   public boolean removeEdu(@RequestParam(value = "chkList") List<String> chkList) {
     for (int i = 0; i < chkList.size(); i++) {
       Boolean chk = educationService.removeEdu(Integer.parseInt(chkList.get(i)));
@@ -64,24 +69,24 @@ public class CategoryController {
     return true;
   }
 
-  @RequestMapping("edit")
-  public boolean editEdu(@RequestParam(value = "id") int id,
+  @PutMapping("/edu/{id}")
+  public boolean editEdu(@PathVariable int id,
       @RequestParam(value = "editItemName") String editItemName) {
     return educationService.editEdu(id, editItemName);
   }
 
   // 경력
-  @RequestMapping("/car")
+  @GetMapping("/car")
   public List<CareerDto> getCar() {
     return careerService.getCar();
   }
 
-  @RequestMapping("/addCar")
+  @PostMapping("/car")
   public boolean addCar(@RequestParam(value = "itemName") String itemName) {
     return careerService.addCar(itemName);
   }
 
-  @RequestMapping("removeCar")
+  @DeleteMapping("/car")
   public boolean removeCar(@RequestParam(value = "chkList") List<String> chkList) {
     for (int i = 0; i < chkList.size(); i++) {
       Boolean chk = careerService.removeCar(Integer.parseInt(chkList.get(i)));
@@ -91,24 +96,24 @@ public class CategoryController {
     return true;
   }
 
-  @RequestMapping("editCar")
-  public boolean editCar(@RequestParam(value = "id") int id,
+  @PutMapping("/car/{id}")
+  public boolean editCar(@PathVariable int id,
       @RequestParam(value = "editItemName") String editItemName) {
     return careerService.editCar(id, editItemName);
   }
 
   // 기술
-  @RequestMapping("/ski")
+  @GetMapping("/ski")
   public List<SkillDto> getSki() {
     return skillService.getSki();
   }
 
-  @RequestMapping("/addSki")
+  @PostMapping("/ski")
   public boolean addSki(@RequestParam(value = "itemName") String itemName) {
     return skillService.addSki(itemName);
   }
 
-  @RequestMapping("removeSki")
+  @DeleteMapping("/ski")
   public boolean removeSki(@RequestParam(value = "chkList") List<String> chkList) {
     for (int i = 0; i < chkList.size(); i++) {
       Boolean chk = skillService.removeSki(Integer.parseInt(chkList.get(i)));
@@ -118,24 +123,24 @@ public class CategoryController {
     return true;
   }
 
-  @RequestMapping("editSki")
-  public boolean editSki(@RequestParam(value = "id") int id,
+  @PutMapping("/ski/{id}")
+  public boolean editSki(@PathVariable int id,
       @RequestParam(value = "editItemName") String editItemName) {
     return skillService.editSki(id, editItemName);
   }
 
   // 고용형태
-  @RequestMapping("/hir")
+  @GetMapping("/hir")
   public List<HireKindDto> getHir() {
     return hireKindService.getHir();
   }
 
-  @RequestMapping("/addHir")
+  @PostMapping("/hir")
   public boolean addHir(@RequestParam(value = "itemName") String itemName) {
     return hireKindService.addHir(itemName);
   }
 
-  @RequestMapping("removeHir")
+  @DeleteMapping("/hir")
   public boolean removeHir(@RequestParam(value = "chkList") List<String> chkList) {
     for (int i = 0; i < chkList.size(); i++) {
       Boolean chk = hireKindService.removeHir(Integer.parseInt(chkList.get(i)));
@@ -145,47 +150,47 @@ public class CategoryController {
     return true;
   }
 
-  @RequestMapping("editHir")
-  public boolean editHir(@RequestParam(value = "id") int id,
+  @PutMapping("/hir/{id}")
+  public boolean editHir(@PathVariable int id,
       @RequestParam(value = "editItemName") String editItemName) {
     return hireKindService.editHir(id, editItemName);
   }
 
   // 지역 (도)
-  @RequestMapping("/loc")
+  @GetMapping("/loc")
   public List<LocationDoDto> getLoc() {
     return locationDoService.getLoc();
   }
 
-  @RequestMapping("/addLoc")
+  @PostMapping("/loc")
   public boolean addLoc(@RequestParam(value = "itemName") String itemName) {
     return locationDoService.addLoc(itemName);
   }
 
-  @RequestMapping("removeLoc")
-  public boolean removeLoc(@RequestParam(value = "id") int id) {
+  @DeleteMapping("/loc/{id}")
+  public boolean removeLoc(@PathVariable int id) {
     return locationDoService.removeLoc(id);
   }
 
-  @RequestMapping("editLoc")
-  public boolean editLoc(@RequestParam(value = "id") int id,
+  @PutMapping("/loc/{id}")
+  public boolean editLoc(@PathVariable int id,
       @RequestParam(value = "editDoName") String editDoName) {
     return locationDoService.editLoc(id, editDoName);
   }
 
   // 지역 (구, 시)
-  @RequestMapping("/locGuSi")
-  public List<LocationGuSiDto> getLocGuSi(@RequestParam(value = "ldIdx") int ldIdx) {
+  @GetMapping("/locGuSi/{ldIdx}")
+  public List<LocationGuSiDto> getLocGuSi(@PathVariable int ldIdx) {
     return locationGuSiService.getLocGuSi(ldIdx);
   }
 
-  @RequestMapping("/addLocGuSi")
-  public boolean addLocGuSi(@RequestParam(value = "itemName") String itemName,
-      @RequestParam(value = "ldIdx") int ldIdx) {
+  @PostMapping("/locGuSi/{ldIdx}")
+  public boolean addLocGuSi(@PathVariable int ldIdx,
+      @RequestParam(value = "itemName") String itemName) {
     return locationGuSiService.addLocGuSi(itemName, ldIdx);
   }
 
-  @RequestMapping("removeLocGuSi")
+  @DeleteMapping("/locGuSi")
   public boolean removeLocGuSi(@RequestParam(value = "chkList") List<String> chkList) {
     for (int i = 0; i < chkList.size(); i++) {
       Boolean chk = locationGuSiService.removeLocGuSi(Integer.parseInt(chkList.get(i)));
@@ -195,8 +200,8 @@ public class CategoryController {
     return true;
   }
 
-  @RequestMapping("editLocGuSi")
-  public boolean editLocGuSi(@RequestParam(value = "id") int id,
+  @PutMapping("/locGuSi/{id}")
+  public boolean editLocGuSi(@PathVariable int id,
       @RequestParam(value = "editItemName") String editItemName) {
     return locationGuSiService.editLocGuSi(id, editItemName);
   }

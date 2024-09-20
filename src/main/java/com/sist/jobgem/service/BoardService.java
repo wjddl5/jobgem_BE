@@ -86,13 +86,12 @@ public class BoardService {
   }
 
   // 게시글 저장
-  public boolean writeBbs(int boType, int usIdx, String title, String content, String boImage) {
+  public boolean writeBbs(int boType, int usIdx, String title, String content) {
     BoardDto bDto = new BoardDto();
     bDto.setBoType(boType);
     bDto.setUsIdx(usIdx);
     bDto.setBoTitle(title);
     bDto.setBoContent(content);
-    bDto.setBoImage(boImage);
     bDto.setBoHit(0);
     bDto.setBoLike(0);
     bDto.setBoStatus(1);
