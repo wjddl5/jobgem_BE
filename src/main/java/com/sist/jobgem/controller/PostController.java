@@ -6,16 +6,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,8 +31,6 @@ import com.sist.jobgem.service.ApplymentService;
 import com.sist.jobgem.service.JobseekerService;
 import com.sist.jobgem.service.PostService;
 import com.sist.jobgem.service.ResumeService;
-import com.sist.jobgem.service.WorkDayService;
-
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
@@ -45,9 +40,6 @@ public class PostController {
 
     @Autowired
     private ApplymentService applymentService;
-
-    @Autowired
-    private WorkDayService workDayService;
 
     @Autowired
     private ResumeService resumeService;
@@ -129,13 +121,6 @@ public class PostController {
     @PostMapping("/recruit")
     public ResponseEntity<Page<PostDto>> recruitPost(@RequestBody RecruitRequest recruitRequest) {
         return ResponseEntity.ok(postService.findByRecruit(recruitRequest));
-    }
-    
-    @GetMapping("/all")
-    public ResponseEntity<Page<PostDto>> getAllPosts(Pageable pageable, 
-            @RequestParam(required = false) String type, 
-            @RequestParam(required = false) String value) {
-        return ResponseEntity.ok(postService.getAllPosts(pageable, type, value));
     }
     
 }
