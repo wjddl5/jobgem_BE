@@ -56,7 +56,7 @@ public class CompanyService {
         return companyRepository.save(CompanyMapper.INSTANCE.toEntity(joinCompany)).getId();
     }
 
-    public Page<CompanyDto> getCompanyList(Pageable pageable, String value, String type) {
+    public Page<CompanyDto> findAllCompanies(Pageable pageable, String value, String type) {
         if (value == null && type == null) {
             return companyRepository.findAll(pageable).map(CompanyMapper.INSTANCE::toDto);
         }
@@ -73,7 +73,7 @@ public class CompanyService {
         return talentList;
     }
 
-    public List<CompanyDto> notBlack(String type, String value) {
+    public List<CompanyDto> findUnblockedCompany(String type, String value) {
         if (value == null && type == null) {
             return CompanyMapper.INSTANCE.toDtoList(companyRepository.findAllcompanysNotInBlock());
         }else{
