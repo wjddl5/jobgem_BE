@@ -1,5 +1,7 @@
 package com.sist.jobgem.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -12,4 +14,5 @@ public interface UserMapper {
 
     UserDto toDto(User user);
     User toEntity(UserDto userDto);
+    List<UserDto> toDtoList(List<User> userList);
 }
