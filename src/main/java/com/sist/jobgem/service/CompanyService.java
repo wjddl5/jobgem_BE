@@ -56,6 +56,11 @@ public class CompanyService {
         return companyRepository.save(CompanyMapper.INSTANCE.toEntity(joinCompany)).getId();
     }
 
+    public Integer updateCompany(CompanyDto companyDto) {
+        Company company = CompanyMapper.INSTANCE.toEntity(companyDto);
+        return companyRepository.save(company).getId();
+    }
+
     public Page<CompanyDto> findAllCompanies(Pageable pageable, String value, String type) {
         if (value == null && type == null) {
             return companyRepository.findAll(pageable).map(CompanyMapper.INSTANCE::toDto);
@@ -80,5 +85,7 @@ public class CompanyService {
         return CompanyMapper.INSTANCE.toDtoList(companyRepository.findCompanysNotInBlock(type, value));
         }
     }
-
+    public CompanyDto getCompanyById(int id) {
+        return CompanyMapper.INSTANCE.toDto(companyRepository.findById(id).orElseThrow());
+    }
 }

@@ -3,12 +3,15 @@ package com.sist.jobgem.controller;
 import com.sist.jobgem.dto.*;
 import com.sist.jobgem.service.*;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/company")
@@ -29,8 +32,22 @@ public class CompanyController {
     private BlackListService blackListService;
 
     @GetMapping("")
-    public ResponseEntity<CompanyIndexDto> Index(@RequestParam int id) {
+    public ResponseEntity<CompanyIndexDto> Index(@RequestParam("id") int id) {
         return ResponseEntity.ok(companyService.getCompany(id));
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<CompanyDto> getCompany(@PathVariable("id") int id) {
+        System.out.println("id = " + id);
+        return ResponseEntity.ok(companyService.getCompanyById(id));
+    }
+    
+    @PutMapping("")
+    public ResponseEntity<String> putCompany(@RequestBody CompanyDto companyDto) {
+        int result = companyService.updateCompany(companyDto);
+        if(result == companyDto.getId()){
+            return ResponseEntity.ok("success");
+        }
+        return ResponseEntity.badRequest().body("fail");
     }
 
     @PutMapping("/logo")
@@ -92,5 +109,5 @@ public class CompanyController {
     public ResponseEntity<OfferResponseDto> addOffer(@RequestBody OfferDto offerDto) {
         return ResponseEntity.ok(offerService.addOffer(offerDto));
     }
-
+    
 }
