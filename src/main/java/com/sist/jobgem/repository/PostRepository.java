@@ -20,7 +20,7 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer>, PostRepositoryCustom {
-        @Query("SELECT new com.sist.jobgem.dto.PostDto(t) FROM Post t WHERE t.poState =  1")
+        @Query("SELECT new com.sist.jobgem.dto.PostDto(t) FROM Post t WHERE t.poState = 1 AND t.poDeadline > CURRENT_DATE")
         Slice<PostDto> getPostListSlice(Pageable pageable);
 
         int countByCoIdxAndPoState(int coIdx, int poState);
