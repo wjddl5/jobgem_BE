@@ -18,7 +18,7 @@ class ChatControllerTest {
     @Test
     @DisplayName("채팅 저장 테스트")
     void addChat(){
-        ChatRequestDto chatRequestDto = new ChatRequestDto(1, 10, "안녕하세요", "2022-10-10");
+        ChatRequestDto chatRequestDto = new ChatRequestDto(1, 10, "안녕하세요", 0, "2022-10-10");
 
         chatService.addChat(chatRequestDto);
     }
@@ -27,12 +27,12 @@ class ChatControllerTest {
     @DisplayName("두번째 조회일때 캐쉬에서 불러오는지 속도 확인")
     void getChatList(){
         long start1 = System.currentTimeMillis();
-        System.out.println(chatController.getChatList(10).toString());
+        System.out.println(chatController.getChatList(10, 1).toString());
         long end1 = System.currentTimeMillis();
         System.out.println(end1 - start1);
 
         long start2 = System.currentTimeMillis();
-        System.out.println(chatController.getChatList(10).toString());
+        System.out.println(chatController.getChatList(10, 1).toString());
         long end2 = System.currentTimeMillis();
         System.out.println(end2- start2);
     }
