@@ -131,10 +131,10 @@ public class JobseekerController {
 
     // 회사지원 - 검색 목록 불러오기
     @GetMapping("/search/applyment")
-    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto,
+    public ResponseEntity<Page<ApplymentDto>> getApplymentListByFilters(@RequestBody ApplymentSearchDto dto,
             @RequestParam(value = "curPage", required = false) int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
-        return applymentService.searchApplyment(dto, pageable);
+        return ResponseEntity.ok(applymentService.searchApplyment(dto, pageable));
     }
 
     // 마이페이지 이력서, 지원현황 등 개수 정보 불러오기
@@ -193,16 +193,19 @@ public class JobseekerController {
     // 이력서 추가하기
     @PostMapping("/resume")
     public ResponseEntity<Resume> addResume(@RequestBody ResumeDto dto) {
-        ResumeDto rto = new ResumeDto(dto);
-        return ResponseEntity.ok(resumeService.addResume(rto));
+        ResumeDto resumeDto = new ResumeDto(dto);
+        return ResponseEntity.ok(resumeService.addResume(resumeDto));
     }
 
     // 공고지원 추가하기
     @PostMapping("/applyment")
-    public ResponseEntity<Applyment> addApplyment(@RequestBody ApplymentDto applymentDto,
-            @RequestParam("joIdx") int joIdx) {
-        Applyment applyment = applymentService.addApplyment(applymentDto, joIdx);
-        return ResponseEntity.ok(applyment);
+    public ResponseEntity<?> addApplyment(@RequestBody ApplymentDto dto) {
+        if (applymentService.isAlreadyApplied(dto)) {
+            return ResponseEntity.ok("0");
+        } else {
+            Applyment applyment = applymentService.addApplyment(dto);
+            return ResponseEntity.ok(applyment);
+        }
     }
 
     // 회사후기 상세정보 불러오기

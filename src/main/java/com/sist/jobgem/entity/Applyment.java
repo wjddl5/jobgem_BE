@@ -1,12 +1,18 @@
 package com.sist.jobgem.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "applyments")
 public class Applyment {
     @Id
@@ -25,6 +31,13 @@ public class Applyment {
 
     @Column(name = "ap_date", nullable = false)
     private LocalDate apDate;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.apDate == null) {
+            this.apDate = LocalDate.now();
+        }
+    }
 
     @Column(name = "ap_pass")
     private Integer apPass;
