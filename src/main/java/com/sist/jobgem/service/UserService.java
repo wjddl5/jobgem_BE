@@ -1,6 +1,7 @@
 package com.sist.jobgem.service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,5 +89,9 @@ public class UserService {
         int companyIdx = companyRepository.save(CompanyMapper.INSTANCE.toEntity(companyDto)).getId();
 
         return companyIdx;
+    }
+
+    public List<UserDto> findAllUsers() {
+        return UserMapper.INSTANCE.toDtoList(userRepository.findAll());
     }
 }

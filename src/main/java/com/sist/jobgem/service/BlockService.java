@@ -20,7 +20,7 @@ public class BlockService {
     @Autowired
     private BlockRepository blockRepository;
 
-    public Page<BlockDto> blackjobseekerList(Pageable pageable, String value, String type) {
+    public Page<BlockDto> findAllJobseekerBlocks(Pageable pageable, String value, String type) {
         if (value == null && type == null) {
             return blockRepository.blackjobseeker(pageable).map(BlockMapper.INSTANCE::toDto);
         }
@@ -45,23 +45,27 @@ public class BlockService {
         }
     }
 
-    public Page<BlockDto> blackcompanyList(Pageable pageable, String value, String type) {
+    public Page<BlockDto> findAllCompanyBlocks(Pageable pageable, String value, String type) {
         if (value == null && type == null) {
             return blockRepository.blackcompany(pageable).map(BlockMapper.INSTANCE::toDto);
         }
         return blockRepository.findByTypeAndValuecompanyContaining(type, value, pageable).map(BlockMapper.INSTANCE::toDto);
     }
 
-    public BlockDto addjobseekerBlock(BlockDto dto) {
+    public void addjobseekerBlock(int id, String value) {
+        BlockDto dto = new BlockDto();
         dto.setBlDate(LocalDate.now());
-        dto.setJoIdx(dto.getJoIdx());
-        return BlockMapper.INSTANCE.toDto(blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto)));
+        dto.setJoIdx(id);
+        dto.setBlContent(value);
+        blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto));
     }
 
-    public BlockDto addcompanyBlock(BlockDto dto) {
+    public void addcompanyBlock(int id, String value) {
+        BlockDto dto = new BlockDto();
         dto.setBlDate(LocalDate.now());
-        dto.setCoIdx(dto.getCoIdx());
-        return BlockMapper.INSTANCE.toDto(blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto)));
+        dto.setCoIdx(id);
+        dto.setBlContent(value);
+        blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto));
     }
     
     @Transactional
