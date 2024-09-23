@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.sist.jobgem.service.CompanyService;
 import com.sist.jobgem.service.JobseekerService;
@@ -31,11 +32,11 @@ import com.sist.jobgem.dto.UserDto;
 @RestController
 @RequestMapping("api/admin")
 public class AdminController {
+    
     @Autowired
     UserService userService;
     @Autowired
     CompanyService companyService;
-
     @Autowired
     PostService postService;
     @Autowired
@@ -51,44 +52,48 @@ public class AdminController {
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.findAllUsers());
     }
+    @GetMapping("/jobseekers")
+    public ResponseEntity<Page<JobseekerDto>> getAllJobseekers(Pageable pageable, @RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
+        return ResponseEntity.ok(jobseekerService.getJobseekerList(pageable, type, value));
+    }
     
     @GetMapping("/companies")
-    public ResponseEntity<Page<CompanyDto>> getAllCompanies(Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
+    public ResponseEntity<Page<CompanyDto>> getAllCompanies(Pageable pageable, @RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
         return ResponseEntity.ok(companyService.findAllCompanies(pageable, value, type));
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<Page<PostDto>> getAllPosts(Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
+    public ResponseEntity<Page<PostDto>> getAllPosts(Pageable pageable, @RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
         return ResponseEntity.ok(postService.findAllPosts(pageable, value, type));
     }
 
     @GetMapping("/blocked-jobseekers")
-    public ResponseEntity<Page<BlockDto>> getJobseekerBlocklist(Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
+    public ResponseEntity<Page<BlockDto>> getJobseekerBlocklist(Pageable pageable, @RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
         return ResponseEntity.ok(blockService.findAllJobseekerBlocks(pageable, value, type));
     }
 
     @GetMapping("/blocked-companies")
-    public ResponseEntity<Page<BlockDto>> getCompanyBlocklist(Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
+    public ResponseEntity<Page<BlockDto>> getCompanyBlocklist(Pageable pageable, @RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
         return ResponseEntity.ok(blockService.findAllCompanyBlocks(pageable, value, type));
     }
 
     @GetMapping("/unblocked-jobseekers")
-    public ResponseEntity<List<JobseekerDto>> getUnblockedJobseeker(@RequestParam(required = false) String type, @RequestParam(required = false) String value) {
+    public ResponseEntity<List<JobseekerDto>> getUnblockedJobseeker(@RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
         return ResponseEntity.ok(jobseekerService.findUnblockedJobseeker(type, value));
     }
 
     @GetMapping("/unblocked-companies")
-    public ResponseEntity<List<CompanyDto>> getUnblockedCompany(@RequestParam(required = false) String type, @RequestParam(required = false) String value) {
+    public ResponseEntity<List<CompanyDto>> getUnblockedCompany(@RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
         return ResponseEntity.ok(companyService.findUnblockedCompany(type, value));
     }
 
     @PostMapping("/jobseeker-blocks")
-    public void addjobseekerBlock(@RequestParam(value = "id") int id, @RequestParam(value = "value") String value) {
+    public void addjobseekerBlock(@RequestParam(required = true, name= "id") int id, @RequestParam(required = true ,name= "value") String value) {
         blockService.addjobseekerBlock(id, value);
     }
 
     @DeleteMapping("/jobseeker-blocks")
-    public int deletejobseekerBlock(@RequestParam List<String> chkList) {
+    public int deletejobseekerBlock(@RequestParam(value = "chkList", required = true) List<String> chkList) {
         for (int i = 0; i < chkList.size(); i++) {
             blockService.deletecomjobBlock(Integer.parseInt(chkList.get(i)));
         }
@@ -101,11 +106,22 @@ public class AdminController {
     }
     
     @DeleteMapping("/company-blocks")
-    public int deletecompanyBlock(@RequestParam List<String> chkList) {
+    public int deletecompanyBlock(@RequestParam(value = "chkList", required = true) List<String> chkList) {
         for (int i = 0; i < chkList.size(); i++) {
             blockService.deletecomjobBlock(Integer.parseInt(chkList.get(i)));
         }
         return chkList.size();
     }
+
+    @GetMapping("unanswered-questions")
+    public ResponseEntity<List<BoardDto>> getQnaList() {
+        return ResponseEntity.ok(boardService.getQnaList());
+    }
+
+    @GetMapping("pending-blacklist")
+    public ResponseEntity<List<BlackListDto>> getPendingBlackList() {
+        return ResponseEntity.ok(blackListService.findPendingBlackList());
+    }
+
 }
 
