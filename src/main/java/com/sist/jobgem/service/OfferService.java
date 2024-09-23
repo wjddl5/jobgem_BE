@@ -71,6 +71,7 @@ public class OfferService {
                 .cmIdx(chatroom.getId())
                 .usIdx(openUser)
                 .chContent(offerDto.getOfContent())
+                .chIsRead(0)
                 .build();
 
         OfferResponseDto offerResponseDto = OfferResponseDto.builder()

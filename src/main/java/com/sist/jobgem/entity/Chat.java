@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -30,12 +31,15 @@ public class Chat {
     private String chContent;
 
     @Column(name = "ch_date", nullable = false)
-    private LocalDate chDate;
+    private LocalDateTime chDate;
+
+    @Column(name = "ch_is_read", nullable = false)
+    private Integer chIsRead;
 
     // 엔티티가 처음 저장될 때
     @PrePersist
     public void prePersist() {
-        this.chDate = LocalDate.now();
+        this.chDate = LocalDateTime.now();
     }
 
     @ManyToOne

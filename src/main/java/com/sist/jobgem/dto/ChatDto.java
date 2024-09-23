@@ -3,7 +3,7 @@ package com.sist.jobgem.dto;
 import com.sist.jobgem.entity.User;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -15,7 +15,8 @@ public class ChatDto {
     private Integer usIdx;
     private Integer cmIdx;
     private String chContent;
-    private LocalDate chDate;
+    private LocalDateTime chDate;
+    private Integer chIsRead;
 
     private User user;
 }
