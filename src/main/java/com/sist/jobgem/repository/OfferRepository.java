@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Integer> {
     Page<Offer> findByJoIdxAndOfState(int idx, int ofState, Pageable pageable);
+
+    int countByJoIdxAndOfState(int idx, int ofState);
 }
