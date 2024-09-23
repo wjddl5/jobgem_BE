@@ -10,8 +10,6 @@ import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/company")
 public class CompanyController {
@@ -68,19 +66,9 @@ public class CompanyController {
         return ResponseEntity.ok(blockService.getBlockListByCoIdxAndJoName(id, name, pageable));
     }
 
-    @PostMapping("/block")
-    public ResponseEntity<BlockDto> addBlock(@RequestBody BlockDto request) {
-        return ResponseEntity.ok(blockService.addjobseekerBlock(request));
-    }
-
     @DeleteMapping("/block")
     public void deleteBlock(@RequestBody int[] selectList) {
         blockService.deleteBlock(selectList);
-    }
-
-    @GetMapping("/list")
-    public Page<CompanyDto> getCompanyList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
-        return companyService.getCompanyList(pageable, value, type);
     }
 
     @GetMapping("/review")
@@ -89,34 +77,11 @@ public class CompanyController {
         return ResponseEntity.ok(reviewService.getReviewListByCoIdx(coIdx, pageRequest));
     }
 
-    @GetMapping("/blackList")
-    public Page<BlockDto> getBlackList(@RequestBody Pageable pageable, @RequestParam(required = false) String value, @RequestParam(required = false) String type) {
-        return blockService.blackcompanyList(pageable, value, type);
-    }
-
     @PostMapping("/blacklist")
     public ResponseEntity<Integer> addBlackList(@RequestBody BlackListRequestDto requestDto){
         return ResponseEntity.ok(blackListService.addBlackList(requestDto));
     }
 
-    @GetMapping("/notBlack")
-    public List<CompanyDto> notBlack(@RequestBody @RequestParam(required = false) String type, @RequestParam(required = false) String value) {
-        return companyService.notBlack(type, value);
-    }
-
-    @GetMapping("/addcompanyBlock")
-    public BlockDto addcompanyBlock(@RequestBody BlockDto dto) {
-        return blockService.addcompanyBlock(dto);
-    }
-    
-    @GetMapping("deletecompanyBlock")
-    public int deletecompanyBlock(@RequestParam List<String> chkList) {
-        for (int i = 0; i < chkList.size(); i++) {
-            blockService.deletecomjobBlock(Integer.parseInt(chkList.get(i)));
-        }
-        return chkList.size();
-    }
-  
     @GetMapping("/interview")
     public ResponseEntity<Page<InterviewDto>> getInterviewListByCoIdx(@RequestParam int id, @RequestParam int loadPage, @RequestParam String sortBy) {
         PageRequest pageable = PageRequest.of(loadPage, 3, Sort.by(Sort.Direction.DESC, sortBy));

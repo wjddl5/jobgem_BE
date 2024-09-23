@@ -14,6 +14,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api")
@@ -49,7 +50,7 @@ public class ChatController {
                         .chContent(chat.getChContent())
                         .chDate(chat.getChDate().toString())
                         .build();
-                redisService.addToList("chatroom"+id, chatRedisDto);
+                redisService.addToListWithTTL("chatroom"+id, chatRedisDto, 1, TimeUnit.HOURS);
             }
         }
         return ResponseEntity.ok(redisService.getChatList("chatroom"+id));
@@ -60,6 +61,6 @@ public class ChatController {
     public void receiveMessage(@RequestBody ChatRequestDto chat) {
         template.convertAndSend("/sub/chatroom/"+chat.getCmIdx(), chat);
         chatService.addChat(chat);
-        redisService.addToList("chatroom"+chat.getCmIdx(), chat);
+        redisService.addToListWithTTL("chatroom"+chat.getCmIdx(), chat, 1, TimeUnit.HOURS);
     }
 }

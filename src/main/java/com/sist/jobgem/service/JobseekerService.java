@@ -165,7 +165,7 @@ public class JobseekerService {
         return true;
     }
 
-    public List<JobseekerDto> notBlack(String value, String type) {
+    public List<JobseekerDto> findUnblockedJobseeker(String value, String type) {
         if (value == null && type == null) {
             return JobseekerMapper.INSTANCE.toDtoList(jobseekerRepository.findAllJobseekersNotInBlock());
         } else {

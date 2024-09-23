@@ -59,6 +59,13 @@ public class RedisService {
         logger.info("Redis 리스트에 값 추가: 키: {}, 값: {}", key, value);
     }
 
+    // 리스트에 TTL 설정 저장
+    public void addToListWithTTL(String key, Object value, long timeout, TimeUnit unit) {
+        redisTemplate.opsForList().rightPush(key, value);
+        redisTemplate.expire(key, timeout, unit);  // TTL 설정 (예: 1시간)
+        logger.info("Redis 리스트에 메시지 추가: 키: {}, 값: {}, TTL: {} {}", key, value, timeout, unit);
+    }
+
     // 채팅 리스트 조회
     public List<ChatRedisDto> getChatList(String key) {
         // redis 저장값은 문자열이라 조회 후 DTO로 바꿔줘야함
