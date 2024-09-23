@@ -70,4 +70,7 @@ public interface BlacklistRepository extends JpaRepository<Blacklist, Integer> {
   @Query("UPDATE Blacklist b SET b.blProcess = 1 WHERE b.id = :id")
   int updateProcessYes(@Param("id") int id);
 
+  @Query("SELECT b FROM Blacklist b WHERE b.blState = 1 AND b.blProcess = 0")
+  List<Blacklist> findByPending();
+
 }

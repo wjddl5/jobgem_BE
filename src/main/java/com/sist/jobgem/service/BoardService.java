@@ -138,4 +138,9 @@ public class BoardService {
   public void hitUp(int id) {
     boardRepository.hitUp(id);
   }
+
+  public List<BoardDto> getQnaList() {
+    return BoardDto.toDtoList(boardRepository.findByUnanswered());
+  }
+
 }

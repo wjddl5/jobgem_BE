@@ -54,4 +54,22 @@ public class BoardDto {
         .commCount(list2.size())
         .build();
   }
+
+  public static List<BoardDto> toDtoList(List<Board> boardList) {
+    List<BoardDto> list = new ArrayList<>();
+    for(Board board : boardList){
+        list.add(BoardDto.builder()
+        .id(board.getId())
+        .usIdx(board.getUser().getId())
+        .boTitle(board.getBoTitle())
+        .boWritedate(board.getBoWritedate())
+        .boStatus(board.getBoStatus())
+        .boType(board.getBoType())
+        .boAnswer(board.getBoAnswer())
+        .usId(board.getUser().getUsId())
+        .build());
+    }
+    return list;
+  }
+
 }
