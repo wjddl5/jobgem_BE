@@ -72,7 +72,7 @@ public class PostService {
         response.put("progress", postRepository.countByPoStateAndCoIdx(1, coIdx));
         response.put("all", postRepository.countByCoIdx(coIdx));
         response.put("complete", postRepository.countByPoStateAndCoIdx(2, coIdx));
-        response.put("deadline", postRepository.countByCoIdxAndPoDeadline(coIdx, LocalDate.now()));
+        response.put("deadline", postRepository.countByCoIdxAndPoDeadline(coIdx));
         return response;
     }
 
@@ -135,7 +135,7 @@ public class PostService {
         postListDto.setProgress(postRepository.countByPoStateAndCoIdx(1, coIdx));
         postListDto.setAll(postRepository.countByCoIdx(coIdx));
         postListDto.setComplete(postRepository.countByPoStateAndCoIdx(2, coIdx));
-        postListDto.setDeadline(postRepository.countByCoIdxAndPoDeadline(coIdx, LocalDate.now()));
+        postListDto.setDeadline(postRepository.countByCoIdxAndPoDeadline(coIdx));
     }
 
     public Slice<PostDto> getPostList(Pageable pageable) {
