@@ -40,6 +40,7 @@ public class InterviewDto {
                 .coIdx(interview.getCoIdx())
                 .inContent(interview.getInContent())
                 .inWriteDate(interview.getInWriteDate())
+                .inLevel(interview.getInLevel())
                 .coName(interview.getCompany().getCoName())
                 .build();
     }

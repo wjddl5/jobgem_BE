@@ -49,6 +49,7 @@ import com.sist.jobgem.service.UserService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -89,30 +90,38 @@ public class JobseekerController {
     @Autowired
     ApplymentService applymentService;
 
+    // jobseeker 정보 불러오기
     @GetMapping("/jobseeker")
     public ResponseEntity<JobseekerDto> getJobseeker(@RequestParam("id") int id) {
         return ResponseEntity.ok(jobseekerService.getJobseeker(id));
     }
 
-    @GetMapping("/reviewList")
-    public Page<ReviewDto> getReviewList(@RequestParam("id") int id, @RequestParam("curPage") int curPage) {
+    // 회사후기 목록 불러오기
+    @GetMapping("/reviews")
+    public ResponseEntity<Page<ReviewDto>> getReviewList(@RequestParam("id") int id,
+            @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
-        return reviewService.getReviewList(id, pageable);
+        return ResponseEntity.ok(reviewService.getReviewList(id, pageable));
     }
 
-    @GetMapping("/interviewList")
-    public Page<InterviewDto> getInterviewist(@RequestParam("id") int id, @RequestParam("curPage") int curPage) {
+    // 면접후기 목록 불러오기
+    @GetMapping("/interviews")
+    public ResponseEntity<Page<InterviewDto>> getInterviewist(@RequestParam("id") int id,
+            @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
-        return interviewService.getInterviewist(id, pageable);
+        return ResponseEntity.ok(interviewService.getInterviewist(id, pageable));
     }
 
-    @GetMapping("/resumeList")
-    public Page<ResumeDto> getresumeList(@RequestParam("id") int id, @RequestParam("curPage") int curPage) {
+    // 이력서 목록 불러오기
+    @GetMapping("/resumes")
+    public ResponseEntity<Page<ResumeDto>> getresumeList(@RequestParam("id") int id,
+            @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
-        return resumeService.getResumeList(id, pageable);
+        return ResponseEntity.ok(resumeService.getResumeList(id, pageable));
     }
 
-    @GetMapping("/applymentList")
+    // 회사지원 목록 불러오기
+    @GetMapping("/applyments")
     public ResponseEntity<Page<ApplymentDto>> getApplymentList(@RequestParam("id") int id,
             @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5,
@@ -120,106 +129,130 @@ public class JobseekerController {
         return ResponseEntity.ok(applymentService.getApplymentList(id, pageable));
     }
 
-    @GetMapping("/applymentSearch")
-    public Page<ApplymentDto> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto,
+    // 회사지원 - 검색 목록 불러오기
+    @GetMapping("/search/applyment")
+    public ResponseEntity<Page<ApplymentDto>> getApplymentListByFilters(@RequestBody ApplymentSearchDto dto,
             @RequestParam(value = "curPage", required = false) int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
-        return applymentService.searchApplyment(dto, pageable);
+        return ResponseEntity.ok(applymentService.searchApplyment(dto, pageable));
     }
 
-    @GetMapping("/getMypageCount")
+    // 마이페이지 이력서, 지원현황 등 개수 정보 불러오기
+    @GetMapping("/mypage/count")
     public ResponseEntity<Map<String, Object>> getMypageCount(@RequestParam("id") int id) {
         return ResponseEntity.ok(jobseekerService.getMypageCount(id));
     }
 
-    @GetMapping("/applymentCount")
-    public Map<String, Object> getApplymentCount(@RequestParam("id") int id) {
-        return applymentService.applymentCount(id);
+    // 지원 개수 불러오기
+    @GetMapping("/applyment/count")
+    public ResponseEntity<Map<String, Object>> getApplymentCount(@RequestParam("id") int id) {
+        return ResponseEntity.ok(applymentService.applymentCount(id));
     }
 
-    @GetMapping("/offerList")
-    public Page<OfferDto> getOfferList(@RequestParam("id") int id, @RequestParam("curPage") int curPage) {
+    // 입사제안 목록 불러오기
+    @GetMapping("/offers")
+    public ResponseEntity<Page<OfferDto>> getOfferList(@RequestParam("id") int id,
+            @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
-        return offerService.getOfferList(id, pageable);
+        return ResponseEntity.ok(offerService.getOfferList(id, pageable));
     }
 
-    @GetMapping("/postList")
+    // 공고목록 불러오기
+    @GetMapping("/posts/main")
     public ResponseEntity<Slice<PostDto>> getPostList(@RequestParam("loadPage") int loadPage) {
         PageRequest pageable = PageRequest.of(loadPage, 15, Sort.by(Sort.Direction.DESC, "id"));
         return ResponseEntity.ok(postService.getPostList(pageable));
     }
 
-    @GetMapping("/companyList")
-    public List<CompanyDto> getCompanyList() {
-        return reviewService.getCompanyList();
+    // 회사목록 불러오기
+    @GetMapping("/companies")
+    public ResponseEntity<List<CompanyDto>> getCompanyList() {
+        return ResponseEntity.ok(reviewService.getCompanyList());
     }
 
-    @GetMapping("/skillList")
-    public List<SkillDto> getSkillList() {
-        return skillService.getSkillList();
+    // 기술 목록 불러오기
+    @GetMapping("/skills")
+    public ResponseEntity<List<SkillDto>> getSkillList() {
+        return ResponseEntity.ok(skillService.getSkillList());
     }
 
-    @GetMapping("/addReview")
-    public Review addReview(@RequestBody ReviewDto dto) {
+    // 회사 후기 추가하기
+    @PostMapping("/review")
+    public ResponseEntity<Review> addReview(@RequestBody ReviewDto dto) {
         ReviewDto rto = new ReviewDto(dto);
-        return reviewService.addReview(rto);
+        return ResponseEntity.ok(reviewService.addReview(rto));
     }
 
-    @GetMapping("/addInterview")
-    public Interview addInterview(@RequestBody InterviewDto dto) {
+    // 면접 후기 추가하기
+    @PostMapping("/interview")
+    public ResponseEntity<Interview> addInterview(@RequestBody InterviewDto dto) {
         InterviewDto ito = new InterviewDto(dto);
-        return interviewService.addInterview(ito);
+        return ResponseEntity.ok(interviewService.addInterview(ito));
     }
 
-    @GetMapping("/addResume")
-    public Resume addResume(@RequestBody ResumeDto dto) {
-        ResumeDto rto = new ResumeDto(dto);
-        return resumeService.addResume(rto);
+    // 이력서 추가하기
+    @PostMapping("/resume")
+    public ResponseEntity<Resume> addResume(@RequestBody ResumeDto dto) {
+        ResumeDto resumeDto = new ResumeDto(dto);
+        return ResponseEntity.ok(resumeService.addResume(resumeDto));
     }
 
-    @GetMapping("/addApplyment")
-    public ResponseEntity<Applyment> addApplyment(@RequestBody ApplymentDto applymentDto,
-            @RequestParam("joIdx") int joIdx) {
-        Applyment applyment = applymentService.addApplyment(applymentDto, joIdx);
-        return ResponseEntity.ok(applyment);
+    // 공고지원 추가하기
+    @PostMapping("/applyment")
+    public ResponseEntity<?> addApplyment(@RequestBody ApplymentDto dto) {
+        if (applymentService.isAlreadyApplied(dto)) {
+            return ResponseEntity.ok("0");
+        } else {
+            Applyment applyment = applymentService.addApplyment(dto);
+            return ResponseEntity.ok(applyment);
+        }
     }
 
-    @GetMapping("/getReview")
-    public ReviewDto getReview(@RequestParam("id") int id) {
-        return reviewService.getReview(id);
+    // 회사후기 상세정보 불러오기
+    @GetMapping("/review")
+    public ResponseEntity<ReviewDto> getReview(@RequestParam("id") int id) {
+        return ResponseEntity.ok(reviewService.getReview(id));
     }
 
-    @GetMapping("/getInterview")
-    public InterviewDto getInterview(@RequestParam("id") int id) {
-        return interviewService.getInterview(id);
+    // 면접후기 상세정보 불러오기
+    @GetMapping("/interview")
+    public ResponseEntity<InterviewDto> getInterview(@RequestParam("id") int id) {
+        return ResponseEntity.ok(interviewService.getInterview(id));
     }
 
-    @GetMapping("/getResume")
-    public ResumeDto getResume(@RequestParam("id") int id) {
-        return resumeService.getResume(id);
+    // 이력서 상세정보 불러오기
+    @GetMapping("/resume")
+    public ResponseEntity<ResumeDto> getResume(@RequestParam("id") int id) {
+        return ResponseEntity.ok(resumeService.getResume(id));
     }
 
-    @GetMapping("/updateReview")
-    public Review updateReview(@RequestBody ReviewDto dto) {
-        return reviewService.updateReview(dto);
+    // 회사후기 수정하기
+    @PutMapping("/review")
+    public ResponseEntity<Review> updateReview(@RequestBody ReviewDto dto) {
+        return ResponseEntity.ok(reviewService.updateReview(dto));
     }
 
-    @GetMapping("/updateInterview")
-    public Interview updateInterview(@RequestBody InterviewDto dto) {
-        return interviewService.updateInterview(dto);
+    // 면접후기 수정하기
+    @PutMapping("/interview")
+    public ResponseEntity<Interview> updateInterview(@RequestBody InterviewDto dto) {
+        return ResponseEntity.ok(interviewService.updateInterview(dto));
     }
 
-    @GetMapping("/updateResume")
-    public Resume updateResume(@RequestBody ResumeDto dto) {
-        return resumeService.updateResume(dto);
+    // 이력서 수정하기
+    @PutMapping("/resume")
+    public ResponseEntity<Resume> updateResume(@RequestBody ResumeDto dto) {
+        return ResponseEntity.ok(resumeService.updateResume(dto));
     }
 
-    @GetMapping("/updateMypage")
-    public Jobseeker updateJobseekerDetails(@RequestParam("id") int id, @RequestBody JobseekerDto jobseekerDto) {
-        return jobseekerService.updateJobseekerDetails(id, jobseekerDto);
+    // 마이페이지 수정하기
+    @PutMapping("/mypage")
+    public ResponseEntity<Jobseeker> updateJobseekerDetails(@RequestParam("id") int id,
+            @RequestBody JobseekerDto jobseekerDto) {
+        return ResponseEntity.ok(jobseekerService.updateJobseekerDetails(id, jobseekerDto));
     }
 
-    @GetMapping("/updateDefaultResume")
+    // 대표이력서 설정하기
+    @PutMapping("/resume/default")
     public ResponseEntity<String> updateDefaultResume(@RequestParam("id") int resumeId,
             @RequestParam("joIdx") int joIdx) {
         try {
@@ -230,22 +263,26 @@ public class JobseekerController {
         }
     }
 
-    @GetMapping("/deleteReview")
-    public int deleteReview(@RequestParam("id") int id) {
-        return reviewService.deleteReview(id);
+    // 회사후기 삭제하기
+    @DeleteMapping("/review")
+    public ResponseEntity<Integer> deleteReview(@RequestParam("id") int id) {
+        return ResponseEntity.ok(reviewService.deleteReview(id));
     }
 
-    @GetMapping("/deleteInterview")
-    public int deleteInterview(@RequestParam("id") int id) {
-        return interviewService.deleteInterview(id);
+    // 면접후기 삭제하기
+    @DeleteMapping("/interview")
+    public ResponseEntity<Integer> deleteInterview(@RequestParam("id") int id) {
+        return ResponseEntity.ok(interviewService.deleteInterview(id));
     }
 
-    @GetMapping("/deleteResume")
-    public int deleteResume(@RequestParam("id") int id) {
-        return resumeService.deleteResume(id);
+    // 이력서 삭제하기
+    @DeleteMapping("/resume")
+    public ResponseEntity<Integer> deleteResume(@RequestParam("id") int id) {
+        return ResponseEntity.ok(resumeService.deleteResume(id));
     }
 
-    @GetMapping("/checkPwd")
+    // 비밀번호 확인하기
+    @GetMapping("/password/check")
     public ResponseEntity<String> checkPwd(@RequestParam("id") int id, @RequestParam("usPw") String chkPw) {
         boolean isPwdCorrect = jobseekerService.checkPwd(id, chkPw);
         if (isPwdCorrect) {
@@ -255,7 +292,7 @@ public class JobseekerController {
         }
     }
 
-    @GetMapping("/updatePwd")
+    @PutMapping("/password")
     public ResponseEntity<String> updatePassword(@RequestParam("id") int id, @RequestParam("newPwd") String newPwd) {
         boolean isUpdated = jobseekerService.updatePassword(id, newPwd);
         if (isUpdated) {
@@ -265,7 +302,8 @@ public class JobseekerController {
         }
     }
 
-    @GetMapping("/deleteUser")
+    // 회원탈퇴
+    @DeleteMapping("/account")
     public ResponseEntity<String> deleteUser(@RequestParam("id") int id) {
         boolean isDeleted = jobseekerService.deleteUser(id);
 

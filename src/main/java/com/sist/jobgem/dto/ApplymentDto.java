@@ -44,8 +44,19 @@ public class ApplymentDto {
         this.id = applyment.getId();
         this.post = applyment.getPost();
         this.joIdx = applyment.getJoIdx();
+        this.reIdx = applyment.getReIdx();
         this.apState = applyment.getApState();
         this.apRead = applyment.getApRead();
         this.apDate = applyment.getApDate();
+    }
+
+    public ApplymentDto(ApplymentDto applymentDto) {
+        this.id = applymentDto.getId();
+        this.poIdx = applymentDto.getPoIdx();
+        this.joIdx = applymentDto.getJoIdx();
+        this.reIdx = applymentDto.getReIdx();
+        this.apState = applymentDto.getApState();
+        this.apRead = applymentDto.getApRead();
+        this.apDate = applymentDto.getApDate();
     }
 }
