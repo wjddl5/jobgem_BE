@@ -41,11 +41,15 @@ public class ApplymentService {
         return ApplymentDto.fromEntity(applyment);
     }
 
-    public Applyment addApplyment(ApplymentDto applymentDto, int joIdx) {
-        int reIdx = resumeService.getReDefaultResumeIdx(joIdx);
-        applymentDto.setReIdx(reIdx);
-        applymentDto.setApState(1);
-        return applymentRepository.save(ApplymentMapper.INSTANCE.toEntity(applymentDto));
+    public Applyment addApplyment(ApplymentDto applyment) {
+        int reIdx = resumeService.getReDefaultResumeIdx(applyment.getJoIdx());
+        applyment.setReIdx(reIdx);
+        applyment.setApState(1);
+        return applymentRepository.save(ApplymentMapper.INSTANCE.toEntity(applyment));
+    }
+
+    public boolean isAlreadyApplied(ApplymentDto applyment) {
+        return applymentRepository.existsByJoIdxAndPoIdx(applyment.getJoIdx(), applyment.getPoIdx());
     }
 
     public Map<String, Object> applymentCount(int id) {
@@ -85,7 +89,6 @@ public class ApplymentService {
                 dto.getApRead(),
                 dto.getStartDate(),
                 dto.getEndDate(),
-                dto.getPoIdx(),
                 pageable);
     }
 }

@@ -9,10 +9,9 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ChatRedisDto {
-    private Integer id;
     private Integer usIdx;
     private Integer cmIdx;
     private String chContent;
     private String chDate;
-    private User user;
+    private Integer chIsRead;
 }

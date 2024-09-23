@@ -20,8 +20,6 @@ import lombok.Setter;
 public class ApplymentSearchDto {
     private Integer joIdx;
     private Integer apRead;
-    private Integer poIdx;
     LocalDate startDate;
     LocalDate endDate;
-
 }

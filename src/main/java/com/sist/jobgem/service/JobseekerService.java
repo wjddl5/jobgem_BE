@@ -178,7 +178,7 @@ public class JobseekerService {
 
         map.put("지원완료", applymentRepository.countByJoIdx(id));
         map.put("이력서열람", applymentRepository.countByJoIdxAndApReadIsOne(id));
-        map.put("입사제안", "고민");
+        map.put("입사제안", offerRepository.countByJoIdxAndOfState(id, 1));
         map.put("스크랩공고", scrapRepository.countByJoIdxAndScStateIsOne(id));
         map.put("관심기업공고", interestCompanyRepository.countByJoIdx(id));
 

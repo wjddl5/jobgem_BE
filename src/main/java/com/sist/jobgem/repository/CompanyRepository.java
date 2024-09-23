@@ -43,4 +43,5 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
     @Query("SELECT c FROM Company c LEFT JOIN Block b ON c.id = b.coIdx WHERE b.coIdx IS NULL")
     List<Company> findAllcompanysNotInBlock();
 
+
 }
