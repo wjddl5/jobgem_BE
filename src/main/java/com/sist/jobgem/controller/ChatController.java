@@ -13,6 +13,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -39,28 +40,36 @@ public class ChatController {
 
     // 해당 채팅방의 채팅들
     @GetMapping("/chatroom/{id}/chat")
-    public ResponseEntity<List<ChatRedisDto>> getChatList(@PathVariable int id) {
+    public ResponseEntity<List<ChatRedisDto>> getChatList(@PathVariable int id, @RequestParam int usIdx) {
         boolean isRedis = redisService.hasKey("chatroom"+id);
         if(!isRedis){
-            List<ChatDto> chatList = chatService.getChatList(id);
+            List<ChatDto> chatList = chatService.getChatList(id, usIdx);
             for(ChatDto chat : chatList){
                 ChatRedisDto chatRedisDto = ChatRedisDto.builder()
                         .usIdx(chat.getUsIdx())
                         .cmIdx(chat.getCmIdx())
                         .chContent(chat.getChContent())
                         .chDate(chat.getChDate().toString())
+                        .chIsRead(chat.getChIsRead())
                         .build();
                 redisService.addToListWithTTL("chatroom"+id, chatRedisDto, 1, TimeUnit.HOURS);
             }
         }
-        return ResponseEntity.ok(redisService.getChatList("chatroom"+id));
+        return ResponseEntity.ok(redisService.getChatList("chatroom"+id, usIdx));
     }
 
     //메시지 송신 및 수신, /pub가 생략된 모습. 클라이언트 단에선 /pub/chat 요청
     @MessageMapping("/chat")
-    public void receiveMessage(@RequestBody ChatRequestDto chat) {
+    public void receiveMessage(ChatRequestDto chat) {
         template.convertAndSend("/sub/chatroom/"+chat.getCmIdx(), chat);
         chatService.addChat(chat);
-        redisService.addToListWithTTL("chatroom"+chat.getCmIdx(), chat, 1, TimeUnit.HOURS);
+        ChatRedisDto chatRedisDto = ChatRedisDto.builder()
+                .usIdx(chat.getUsIdx())
+                .cmIdx(chat.getCmIdx())
+                .chContent(chat.getChContent())
+                .chDate(LocalDateTime.now().toString())
+                .chIsRead(chat.getChIsRead())
+                .build();
+        redisService.addToListWithTTL("chatroom"+chat.getCmIdx(), chatRedisDto, 1, TimeUnit.HOURS);
     }
 }
