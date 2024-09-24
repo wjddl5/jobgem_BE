@@ -39,4 +39,12 @@ public class SwaggerConfig {
                 })
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi companyGroup() {
+        return GroupedOpenApi.builder()
+                .group("company")
+                .pathsToMatch("/api/company/**")
+                .build();
+    }
 }
