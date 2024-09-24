@@ -63,8 +63,9 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
 
         @Query("SELECT p FROM Post p JOIN Company c ON p.coIdx = c.id " +
                         "WHERE (" +
-                        "(:type IS NULL AND :value IS NULL) OR " +
                         "(:type = 'title' AND p.poTitle LIKE CONCAT('%', :value, '%')) OR " +
+                        "(:type = 'company' AND c.coName LIKE CONCAT('%', :value, '%')) OR " +
+                        "(:type = 'content' AND p.poContent LIKE CONCAT('%', :value, '%')) OR " +
                         "(:type = 'date' AND CAST(p.poDate AS string) LIKE CONCAT('%', :value, '%')) OR " +
                         "(:type = 'deadline' AND CAST(p.poDeadline AS string) LIKE CONCAT('%', :value, '%')) OR " +
                         "(:type = 'sal' AND p.poSal LIKE CONCAT('%', :value, '%')) OR " +
@@ -75,5 +76,5 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
                         "(:type = 'email' AND p.poEmail LIKE CONCAT('%', :value, '%')) OR " +
                         "(:type = 'fax' AND p.poFax LIKE CONCAT('%', :value, '%'))" +
                         ")")
-        Page<Post> findByTitleOrContent(@Param("value") String value, @Param("type") String type, Pageable pageable);
+        Page<Post> findByTitleOrContent(@Param("type") String type, @Param("value") String value, Pageable pageable);
 }

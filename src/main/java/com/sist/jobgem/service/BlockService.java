@@ -20,9 +20,9 @@ public class BlockService {
     @Autowired
     private BlockRepository blockRepository;
 
-    public Page<BlockDto> findAllJobseekerBlocks(Pageable pageable, String value, String type) {
-        if (value == null && type == null) {
-            return blockRepository.blackjobseeker(pageable).map(BlockMapper.INSTANCE::toDto);
+    public Page<BlockDto> findAllJobseekerBlocks(Pageable pageable, String type, String value) {
+        if(value == null && type == null){
+            return blockRepository.findAll(pageable).map(BlockMapper.INSTANCE::toDto);
         }
         return blockRepository.findByTypeAndValuejobseekerContaining(type, value, pageable).map(BlockMapper.INSTANCE::toDto);
     }
@@ -45,7 +45,7 @@ public class BlockService {
         }
     }
 
-    public Page<BlockDto> findAllCompanyBlocks(Pageable pageable, String value, String type) {
+    public Page<BlockDto> findAllCompanyBlocks(Pageable pageable, String type, String value) {
         if (value == null && type == null) {
             return blockRepository.blackcompany(pageable).map(BlockMapper.INSTANCE::toDto);
         }

@@ -61,7 +61,7 @@ public class CompanyService {
         return companyRepository.save(company).getId();
     }
 
-    public Page<CompanyDto> findAllCompanies(Pageable pageable, String value, String type) {
+    public Page<CompanyDto> findAllCompanies(Pageable pageable, String type, String value) {
         if (value == null && type == null) {
             return companyRepository.findAll(pageable).map(CompanyMapper.INSTANCE::toDto);
         }

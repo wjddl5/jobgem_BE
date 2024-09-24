@@ -69,8 +69,8 @@ public class JobseekerService {
         return fitJobseeker;
     }
 
-    public Page<JobseekerDto> getJobseekerList(Pageable pageable, String value, String type) {
-        if (value == null && type == null) {
+    public Page<JobseekerDto> getJobseekerList(Pageable pageable, String type, String value) {
+        if(value == null && type == null){
             return jobseekerRepository.findAll(pageable).map(JobseekerMapper.INSTANCE::toDto);
         }
         return jobseekerRepository.findByTypeAndValueContaining(type, value, pageable)
@@ -165,7 +165,7 @@ public class JobseekerService {
         return true;
     }
 
-    public List<JobseekerDto> findUnblockedJobseeker(String value, String type) {
+    public List<JobseekerDto> findUnblockedJobseeker(String type, String value) {
         if (value == null && type == null) {
             return JobseekerMapper.INSTANCE.toDtoList(jobseekerRepository.findAllJobseekersNotInBlock());
         } else {

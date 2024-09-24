@@ -53,37 +53,37 @@ public class AdminController {
         return ResponseEntity.ok(userService.findAllUsers());
     }
     @GetMapping("/jobseekers")
-    public ResponseEntity<Page<JobseekerDto>> getAllJobseekers(Pageable pageable, @RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
+    public ResponseEntity<Page<JobseekerDto>> getAllJobseekers(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
         return ResponseEntity.ok(jobseekerService.getJobseekerList(pageable, type, value));
     }
     
     @GetMapping("/companies")
-    public ResponseEntity<Page<CompanyDto>> getAllCompanies(Pageable pageable, @RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
-        return ResponseEntity.ok(companyService.findAllCompanies(pageable, value, type));
+    public ResponseEntity<Page<CompanyDto>> getAllCompanies(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
+        return ResponseEntity.ok(companyService.findAllCompanies(pageable, type, value));
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<Page<PostDto>> getAllPosts(Pageable pageable, @RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
-        return ResponseEntity.ok(postService.findAllPosts(pageable, value, type));
+    public ResponseEntity<Page<PostDto>> getAllPosts(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
+        return ResponseEntity.ok(postService.findAllPosts(pageable, type, value));
     }
 
     @GetMapping("/blocked-jobseekers")
-    public ResponseEntity<Page<BlockDto>> getJobseekerBlocklist(Pageable pageable, @RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
-        return ResponseEntity.ok(blockService.findAllJobseekerBlocks(pageable, value, type));
+    public ResponseEntity<Page<BlockDto>> getJobseekerBlocklist(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
+        return ResponseEntity.ok(blockService.findAllJobseekerBlocks(pageable, type, value));
     }
 
     @GetMapping("/blocked-companies")
-    public ResponseEntity<Page<BlockDto>> getCompanyBlocklist(Pageable pageable, @RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
-        return ResponseEntity.ok(blockService.findAllCompanyBlocks(pageable, value, type));
+    public ResponseEntity<Page<BlockDto>> getCompanyBlocklist(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
+        return ResponseEntity.ok(blockService.findAllCompanyBlocks(pageable, type, value));
     }
 
     @GetMapping("/unblocked-jobseekers")
-    public ResponseEntity<List<JobseekerDto>> getUnblockedJobseeker(@RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
+    public ResponseEntity<List<JobseekerDto>> getUnblockedJobseeker(@RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
         return ResponseEntity.ok(jobseekerService.findUnblockedJobseeker(type, value));
     }
 
     @GetMapping("/unblocked-companies")
-    public ResponseEntity<List<CompanyDto>> getUnblockedCompany(@RequestParam(required = false, name= "value") String type, @RequestParam(required = false, name= "type") String value) {
+    public ResponseEntity<List<CompanyDto>> getUnblockedCompany(@RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
         return ResponseEntity.ok(companyService.findUnblockedCompany(type, value));
     }
 
@@ -101,7 +101,7 @@ public class AdminController {
     }
 
     @PostMapping("/company-blocks")
-    public void addcompanyBlock(@RequestParam(value = "id") int id, @RequestParam(value = "value") String value) {
+    public void addcompanyBlock(@RequestParam(required = true, name = "id") int id, @RequestParam(required = true, name = "value") String value) {
         blockService.addcompanyBlock(id, value);
     }
     
