@@ -175,9 +175,6 @@ public class PostService {
     }
 
     public Page<PostDto> findAllPosts(Pageable pageable, String type, String value) {
-        if(value == null && type == null){
-            return postRepository.findAll(pageable).map(post -> PostMapper.INSTANCE.toDto(post));
-        }
         return postRepository.findByTitleOrContent(type, value, pageable).map(post -> PostMapper.INSTANCE.toDto(post));
     }
 

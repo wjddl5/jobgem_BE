@@ -62,7 +62,8 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
         Page<Post> findByPoTitleContainsAndPoState(String keyword, int poState, Pageable pageable);
 
         @Query("SELECT p FROM Post p JOIN Company c ON p.coIdx = c.id " +
-                        "WHERE (" +
+                        "WHERE p.poState = 1 AND " +
+                        "(:type IS NULL OR :value IS NULL OR " +
                         "(:type = 'title' AND p.poTitle LIKE CONCAT('%', :value, '%')) OR " +
                         "(:type = 'company' AND c.coName LIKE CONCAT('%', :value, '%')) OR " +
                         "(:type = 'content' AND p.poContent LIKE CONCAT('%', :value, '%')) OR " +
