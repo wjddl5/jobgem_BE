@@ -1,11 +1,10 @@
 package com.sist.jobgem.service;
 
-import com.sist.jobgem.dto.CompanyDto;
-import com.sist.jobgem.dto.CompanyIndexDto;
-import com.sist.jobgem.dto.JobseekerDto;
-import com.sist.jobgem.dto.TalentDto;
+import com.sist.jobgem.dto.*;
 import com.sist.jobgem.entity.Company;
+import com.sist.jobgem.entity.User;
 import com.sist.jobgem.mapper.CompanyMapper;
+import com.sist.jobgem.mapper.UserMapper;
 import com.sist.jobgem.repository.*;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,8 @@ public class CompanyService {
     private BlockRepository blockRepository;
     @Autowired
     private ChatroomRepository chatroomRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public CompanyIndexDto getCompany(int id) {
         return CompanyIndexDto.builder()
@@ -87,5 +88,11 @@ public class CompanyService {
     }
     public CompanyDto getCompanyById(int id) {
         return CompanyMapper.INSTANCE.toDto(companyRepository.findById(id).orElseThrow());
+    }
+
+    public Integer deleteCompany(int id) {
+        UserDto user = UserMapper.INSTANCE.toDto(userRepository.findById(id));
+        user.setUsState(0);
+        return userRepository.save(UserMapper.INSTANCE.toEntity(user)).getId();
     }
 }

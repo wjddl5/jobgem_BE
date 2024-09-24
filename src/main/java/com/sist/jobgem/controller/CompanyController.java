@@ -73,7 +73,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/wish")
-    public void removeWishJobseeker(@RequestParam int id) {
+    public void deleteWishJobseeker(@RequestParam int id) {
         talentService.removeTalent(id);
     }
 
@@ -108,6 +108,11 @@ public class CompanyController {
     @PostMapping("/offer")
     public ResponseEntity<OfferResponseDto> addOffer(@RequestBody OfferDto offerDto) {
         return ResponseEntity.ok(offerService.addOffer(offerDto));
+    }
+
+    @DeleteMapping("/leave")
+    public ResponseEntity<Integer> deleteCompany(@RequestParam int id) {
+        return ResponseEntity.ok(companyService.deleteCompany(id));
     }
     
 }
