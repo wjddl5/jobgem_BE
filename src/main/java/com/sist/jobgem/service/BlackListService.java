@@ -107,4 +107,8 @@ public class BlackListService {
     return blacklistRepository.save(BlacklistMapper.INSTANCE.toEntity(requestDto)).getId();
   }
 
+  public List<BlackListDto> findPendingBlackList() {
+    return BlackListDto.toDtoList(blacklistRepository.findByPending());
+  }
+
 }

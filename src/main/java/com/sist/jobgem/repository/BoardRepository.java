@@ -1,5 +1,7 @@
 package com.sist.jobgem.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -52,5 +54,8 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     @Modifying
     @Query("UPDATE Board b SET b.boHit = b.boHit+1 WHERE b.id = :id")
     void hitUp(@Param("id") int id);
+
+    @Query("SELECT b FROM Board b WHERE b.boType = 2 AND b.boStatus = 1 AND b.boAnswer = 0")
+    List<Board> findByUnanswered();
 
 }

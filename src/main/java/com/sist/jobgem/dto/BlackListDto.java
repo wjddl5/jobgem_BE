@@ -1,6 +1,9 @@
 package com.sist.jobgem.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sist.jobgem.entity.Blacklist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,6 +55,22 @@ public class BlackListDto {
         .build();
 
     return bDto.build();
+  }
+  
+   public static List<BlackListDto> toDtoList(List<Blacklist> blacklistList) {
+    List<BlackListDto> list = new ArrayList<>();
+    for (Blacklist blacklist : blacklistList) {
+      list.add(BlackListDto.builder()
+          .id(blacklist.getId())
+          .blTitle(blacklist.getBlTitle())
+          .blDate(blacklist.getBlDate())
+          .blProcess(blacklist.getBlProcess())
+          .blState(blacklist.getBlState())
+          .usId(blacklist.getUser().getUsId())
+          .usIdx(blacklist.getUser().getId())
+          .build());
+    }
+    return list;
   }
 
 }
