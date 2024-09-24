@@ -16,10 +16,10 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
                         "(:type = 'address' AND c.coAddress LIKE %:value%) OR " +
                         "(:type = 'tel' AND c.coTel LIKE %:value%) OR " +
                         "(:type = 'type' AND c.coType LIKE %:value%) OR " +
-                        "(:type = 'open' AND cast(c.coOpen as string) LIKE %:value%) OR " +
-                        "(:type = 'employee' AND c.coEmployee = CAST(:value AS int)) OR " +
+                        "(:type = 'open' AND CAST(c.coOpen AS string) LIKE %:value%) OR " +
+                        "(:type = 'employee' AND CAST(c.coEmployee AS string) LIKE %:value%) OR " +
                         "(:type = 'sales' AND c.coSales LIKE %:value%) OR " +
-                        "(:type = 'score' AND c.coScore = CAST(:value AS double)) OR " +
+                        "(:type = 'score' AND CAST(c.coScore AS string) LIKE %:value%) OR " +
                         "(:type = 'managerName' AND c.coManagerName LIKE %:value%) OR " +
                         "(:type = 'managerTel' AND c.coManagerTel LIKE %:value%)")
         Page<Company> findByTypeAndValueContaining(@Param("type") String type, @Param("value") String value,
@@ -32,9 +32,9 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
                         "(:type = 'tel' AND c.coTel LIKE %:value%) OR " +
                         "(:type = 'type' AND c.coType LIKE %:value%) OR " +
                         "(:type = 'open' AND CAST(c.coOpen AS string) LIKE %:value%) OR " +
-                        "(:type = 'employee' AND c.coEmployee = CAST(:value AS int)) OR " +
+                        "(:type = 'employee' AND CAST(c.coEmployee AS string) LIKE %:value%) OR " +
                         "(:type = 'sales' AND c.coSales LIKE %:value%) OR " +
-                        "(:type = 'score' AND c.coScore = CAST(:value AS double)) OR " +
+                        "(:type = 'score' AND CAST(c.coScore AS string) LIKE %:value%) OR " +
                         "(:type = 'managerName' AND c.coManagerName LIKE %:value%) OR " +
                         "(:type = 'managerTel' AND c.coManagerTel LIKE %:value%))")
         List<Company> findCompanysNotInBlock(@Param("type") String type, @Param("value") String value);

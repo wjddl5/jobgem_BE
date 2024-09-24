@@ -7,7 +7,6 @@ import com.sist.jobgem.dto.TalentDto;
 import com.sist.jobgem.entity.Company;
 import com.sist.jobgem.mapper.CompanyMapper;
 import com.sist.jobgem.repository.*;
-import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -85,6 +84,7 @@ public class CompanyService {
         return CompanyMapper.INSTANCE.toDtoList(companyRepository.findCompanysNotInBlock(type, value));
         }
     }
+
     public CompanyDto getCompanyById(int id) {
         return CompanyMapper.INSTANCE.toDto(companyRepository.findById(id).orElseThrow());
     }

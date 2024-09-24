@@ -70,7 +70,7 @@ public class JobseekerService {
     }
 
     public Page<JobseekerDto> getJobseekerList(Pageable pageable, String type, String value) {
-        if(value == null && type == null){
+        if (value == null && type == null) {
             return jobseekerRepository.findAll(pageable).map(JobseekerMapper.INSTANCE::toDto);
         }
         return jobseekerRepository.findByTypeAndValueContaining(type, value, pageable)
@@ -169,13 +169,12 @@ public class JobseekerService {
         if (value == null && type == null) {
             return JobseekerMapper.INSTANCE.toDtoList(jobseekerRepository.findAllJobseekersNotInBlock());
         } else {
-            return JobseekerMapper.INSTANCE.toDtoList(jobseekerRepository.findJobseekersNotInBlock(value, type));
+            return JobseekerMapper.INSTANCE.toDtoList(jobseekerRepository.findJobseekersNotInBlock(type, value));
         }
     }
 
     public Map<String, Object> getMypageCount(int id) {
         Map<String, Object> map = new HashMap<>();
-
         map.put("지원완료", applymentRepository.countByJoIdx(id));
         map.put("이력서열람", applymentRepository.countByJoIdxAndApReadIsOne(id));
         map.put("입사제안", offerRepository.countByJoIdxAndOfState(id, 1));

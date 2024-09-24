@@ -27,35 +27,35 @@ public interface BlockRepository extends JpaRepository<Block, Integer> {
                         @Param("name") String name,
                         Pageable pageable);
 
-        @Query("SELECT b FROM Block b " +
-                        "WHERE (:type = 'bldate' AND cast(b.blDate as string) LIKE %:value%) " +
+        @Query("SELECT b FROM Block b JOIN Jobseeker j ON b.joIdx = j.id " +
+                        "WHERE (:type = 'bldate' AND CAST(b.blDate as string) LIKE %:value%) " +
                         "OR (:type = 'blcontent' AND b.blContent LIKE %:value%) " +
-                        "OR (:type = 'joinDate' AND cast(b.jobseeker.user.usJoinDate as string) LIKE %:value%) " +
-                        "OR (:type = 'leaveDate' AND cast(b.jobseeker.user.usLeaveDate as string) LIKE %:value%) " +
-                        "OR (:type = 'name' AND b.jobseeker.joName LIKE %:value%) " +
-                        "OR (:type = 'phone' AND b.jobseeker.joTel LIKE %:value%) " +
-                        "OR (:type = 'gender' AND b.jobseeker.joGender LIKE %:value%) " +
-                        "OR (:type = 'birth' AND cast(b.jobseeker.joBirth as string) LIKE %:value%) " +
-                        "OR (:type = 'address' AND b.jobseeker.joAddress LIKE %:value%) " +
-                        "OR (:type = 'edu' AND b.jobseeker.joEdu LIKE %:value%) " +
-                        "OR (:type = 'sal' AND b.jobseeker.joSal LIKE %:value%)")
+                        "OR (:type = 'joinDate' AND CAST(j.user.usJoinDate as string) LIKE %:value%) " +
+                        "OR (:type = 'leaveDate' AND CAST(j.user.usLeaveDate as string) LIKE %:value%) " +
+                        "OR (:type = 'name' AND j.joName LIKE %:value%) " +
+                        "OR (:type = 'phone' AND j.joTel LIKE %:value%) " +
+                        "OR (:type = 'gender' AND j.joGender LIKE %:value%) " +
+                        "OR (:type = 'birth' AND CAST(j.joBirth as string) LIKE %:value%) " +
+                        "OR (:type = 'address' AND j.joAddress LIKE %:value%) " +
+                        "OR (:type = 'edu' AND j.joEdu LIKE %:value%) " +
+                        "OR (:type = 'sal' AND j.joSal LIKE %:value%)")
         Page<Block> findByTypeAndValuejobseekerContaining(@Param("type") String type, @Param("value") String value,
                         Pageable pageable);
 
-        @Query("SELECT b FROM Block b " +
-                        "WHERE (:type = 'bldate' AND cast(b.blDate as string) LIKE %:value%) OR " +
+        @Query("SELECT b FROM Block b JOIN Company c ON b.coIdx = c.id " +
+                        "WHERE (:type = 'bldate' AND CAST(b.blDate as string) LIKE %:value%) OR " +
                         "(:type = 'blcontent' AND b.blContent LIKE %:value%) OR " +
-                        "(:type = 'name' AND b.company.coName LIKE %:value%) OR " +
-                        "(:type = 'number' AND b.company.coNumber LIKE %:value%) OR " +
-                        "(:type = 'address' AND b.company.coAddress LIKE %:value%) OR " +
-                        "(:type = 'tel' AND b.company.coTel LIKE %:value%) OR " +
-                        "(:type = 'type' AND b.company.coType LIKE %:value%) OR " +
-                        "(:type = 'open' AND CAST(b.company.coOpen AS string) LIKE %:value%) OR " +
-                        "(:type = 'employee' AND CAST(b.company.coEmployee AS string) LIKE %:value%) OR " +
-                        "(:type = 'sales' AND b.company.coSales LIKE %:value%) OR " +
-                        "(:type = 'score' AND CAST(b.company.coScore AS string) LIKE %:value%) OR " +
-                        "(:type = 'managerName' AND b.company.coManagerName LIKE %:value%) OR " +
-                        "(:type = 'managerTel' AND b.company.coManagerTel LIKE %:value%)")
+                        "(:type = 'name' AND c.coName LIKE %:value%) OR " +
+                        "(:type = 'number' AND c.coNumber LIKE %:value%) OR " +
+                        "(:type = 'address' AND c.coAddress LIKE %:value%) OR " +
+                        "(:type = 'tel' AND c.coTel LIKE %:value%) OR " +
+                        "(:type = 'type' AND c.coType LIKE %:value%) OR " +
+                        "(:type = 'open' AND CAST(c.coOpen as string) LIKE %:value%) OR " +
+                        "(:type = 'employee' AND CAST(c.coEmployee as string) LIKE %:value%) OR " +
+                        "(:type = 'sales' AND c.coSales LIKE %:value%) OR " +
+                        "(:type = 'score' AND CAST(c.coScore as string) LIKE %:value%) OR " +
+                        "(:type = 'managerName' AND c.coManagerName LIKE %:value%) OR " +
+                        "(:type = 'managerTel' AND c.coManagerTel LIKE %:value%)")
         Page<Block> findByTypeAndValuecompanyContaining(@Param("type") String type, @Param("value") String value,
                         Pageable pageable);
 

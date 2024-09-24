@@ -21,12 +21,13 @@ public class BlockService {
     private BlockRepository blockRepository;
 
     public Page<BlockDto> findAllJobseekerBlocks(Pageable pageable, String type, String value) {
-        if(value == null && type == null){
-            return blockRepository.findAll(pageable).map(BlockMapper.INSTANCE::toDto);
+        if (type == null && value == null)
+            return blockRepository.blackjobseeker(pageable).map(BlockMapper.INSTANCE::toDto);
+        else {
+            return blockRepository.findByTypeAndValuejobseekerContaining(type, value, pageable)
+                    .map(BlockMapper.INSTANCE::toDto);
         }
-        return blockRepository.findByTypeAndValuejobseekerContaining(type, value, pageable).map(BlockMapper.INSTANCE::toDto);
     }
-
 
     // 그냥 리스트
     public List<BlockResponseDto> getBlockListByCoIdx(int coIdx) {
@@ -40,16 +41,18 @@ public class BlockService {
 
     // 차단 삭제
     public void deleteBlock(int[] blockList) {
-        for(int id : blockList){
+        for (int id : blockList) {
             blockRepository.deleteById(id);
         }
     }
 
     public Page<BlockDto> findAllCompanyBlocks(Pageable pageable, String type, String value) {
-        if (value == null && type == null) {
+        if (type == null || value == null)
             return blockRepository.blackcompany(pageable).map(BlockMapper.INSTANCE::toDto);
+        else {
+            return blockRepository.findByTypeAndValuecompanyContaining(type, value, pageable)
+                    .map(BlockMapper.INSTANCE::toDto);
         }
-        return blockRepository.findByTypeAndValuecompanyContaining(type, value, pageable).map(BlockMapper.INSTANCE::toDto);
     }
 
     public void addjobseekerBlock(int id, String value) {
@@ -67,7 +70,7 @@ public class BlockService {
         dto.setBlContent(value);
         blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto));
     }
-    
+
     @Transactional
     public boolean deletecomjobBlock(int id) {
         int chk = blockRepository.deletecomjobBlock(id);
