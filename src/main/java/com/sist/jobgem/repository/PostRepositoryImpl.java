@@ -40,6 +40,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         QApplyment applyment = QApplyment.applyment;
         BooleanBuilder builder = new BooleanBuilder();
         OrderSpecifier<?> sort = post.poDate.desc();
+        
+        builder.and(post.poState.ne(0));
+        
         if (map.get("coIdx") != null) {
             builder.and(post.coIdx.eq(Integer.parseInt(map.get("coIdx").toString())));
         }

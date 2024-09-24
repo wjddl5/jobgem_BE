@@ -54,7 +54,7 @@ public class PostController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<Map<String, Object>> getPostListInfo(@RequestParam int coIdx) {
+    public ResponseEntity<Map<String, Object>> getPostListInfo(@RequestParam("coIdx") int coIdx) {
         return ResponseEntity.ok(postService.getPostListInfo(coIdx));
     }
 
@@ -71,23 +71,23 @@ public class PostController {
     }
 
     @GetMapping("/{poIdx}")
-    public ResponseEntity<PostDto> getPost(@PathVariable int poIdx) {
+    public ResponseEntity<PostDto> getPost(@PathVariable("poIdx") int poIdx) {
         return ResponseEntity.ok(postService.getPost(poIdx));
     }
 
     @GetMapping("/{id}/applyments")
-    public ResponseEntity<Page<ApplymentDto>> getApply(@PathVariable int id, @RequestParam int curPage) {
+    public ResponseEntity<Page<ApplymentDto>> getApply(@PathVariable("id") int id, @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return ResponseEntity.ok(applymentService.getApplymentListByPoIdx(id, pageable));
     }
 
     @GetMapping("/{id}/detail")
-    public ResponseEntity<Map<String, Object>> getPostDetail(@PathVariable int id) {
+    public ResponseEntity<Map<String, Object>> getPostDetail(@PathVariable("id") int id) {
         return ResponseEntity.ok(postService.getDetail(id));
     }
 
     @GetMapping("/{id}/resume")
-    public ResponseEntity<Map<String, Object>> getResume(@PathVariable int id) {
+    public ResponseEntity<Map<String, Object>> getResume(@PathVariable("id") int id) {
         Map<String, Object> map = new HashMap<>();
         applymentService.view(id);
         ResumeDto resume = resumeService.getResume(id);
@@ -98,7 +98,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePost(@PathVariable int id) {
+    public ResponseEntity<String> deletePost(@PathVariable("id") int id) {
         int result = postService.delete(id);
         return result == 1 ? ResponseEntity.ok("success") : ResponseEntity.badRequest().body("fail");
     }

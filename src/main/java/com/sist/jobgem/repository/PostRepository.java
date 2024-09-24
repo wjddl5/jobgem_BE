@@ -34,9 +34,11 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
 
         int countByPoStateAndCoIdx(int poState, int coIdx);
 
-        int countByCoIdx(int coIdx);
+        @Query("SELECT COUNT(*) FROM Post p WHERE p.coIdx = :coIdx AND p.poState != 0")
+        int countByCoIdx(@Param("coIdx") int coIdx);
 
-        int countByCoIdxAndPoDeadline(int coIdx, LocalDate poDeadline);
+        @Query("SELECT COUNT(*) FROM Post p WHERE p.coIdx = :coIdx AND p.poDeadline = CURRENT_DATE AND p.poState != 0")
+        int countByCoIdxAndPoDeadline(@Param("coIdx") int coIdx);
 
         @Modifying
         @Transactional
