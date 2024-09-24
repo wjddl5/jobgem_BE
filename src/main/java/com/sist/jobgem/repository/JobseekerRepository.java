@@ -65,9 +65,9 @@ public interface JobseekerRepository extends JpaRepository<Jobseeker, Integer> {
         Slice<JobseekerDto> findByWithfitJobseeker(@Param("companyId") int id, Pageable pageable);
 
         @Query("SELECT j " +
-                        "FROM Jobseeker j " +
-                        "WHERE (:type = 'leaveDate' AND CAST(j.user.usLeaveDate AS string) LIKE %:value%) OR " +
-                        "(:type = 'joinDate' AND CAST(j.user.usJoinDate AS string) LIKE %:value%) OR " +
+                        "FROM Jobseeker j JOIN User u ON j.user.id = u.id " +
+                        "WHERE (:type = 'leaveDate' AND CAST(u.usLeaveDate AS string) LIKE %:value%) OR " +
+                        "(:type = 'joinDate' AND CAST(u.usJoinDate AS string) LIKE %:value%) OR " +
                         "(:type = 'name' AND j.joName LIKE %:value%) OR " +
                         "(:type = 'tel' AND j.joTel LIKE %:value%) OR " +
                         "(:type = 'address' AND j.joAddress LIKE %:value%) OR " +
