@@ -12,4 +12,6 @@ public interface ScrapRepository extends JpaRepository<Scrap, Integer> {
     // joIdx로 scState가 1인 Scrap 개수를 세는 쿼리 메서드
     @Query("SELECT COUNT(s) FROM Scrap s WHERE s.joIdx = :joIdx AND s.scState = 1")
     int countByJoIdxAndScStateIsOne(@Param("joIdx") Integer joIdx);
+
+    Scrap findByJoIdxAndPoIdx(Integer joIdx, Integer poIdx);
 }
