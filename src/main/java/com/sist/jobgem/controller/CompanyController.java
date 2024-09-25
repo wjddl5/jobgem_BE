@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Company", description = "기업 API")
 @RestController
@@ -32,6 +30,8 @@ public class CompanyController {
     private OfferService offerService;
     @Autowired
     private BlackListService blackListService;
+    @Autowired
+    private InterestCompanyService interestCompanyService;
 
     @Operation(summary = "기업 메인 페이지", description = "기업 idx로 기업 정보를 가져옵니다.")
     @GetMapping("")
@@ -125,7 +125,7 @@ public class CompanyController {
     public ResponseEntity<OfferResponseDto> addOffer(@RequestBody OfferDto offerDto) {
         return ResponseEntity.ok(offerService.addOffer(offerDto));
     }
-
+    
     @Operation(summary = "기업 삭제", description = "기업 id로 해당 기업 정보를 삭제합니다.")
     @DeleteMapping("/leave")
     public ResponseEntity<Integer> deleteCompany(@RequestParam int id) {

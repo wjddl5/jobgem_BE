@@ -1,13 +1,19 @@
 package com.sist.jobgem.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Getter
 @Entity
+@Builder
 @Table(name = "interest_companies")
+@NoArgsConstructor
+@AllArgsConstructor
 public class InterestCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

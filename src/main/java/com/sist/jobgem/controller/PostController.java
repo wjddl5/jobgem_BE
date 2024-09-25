@@ -122,5 +122,4 @@ public class PostController {
     public ResponseEntity<Page<PostDto>> recruitPost(@RequestBody RecruitRequest recruitRequest) {
         return ResponseEntity.ok(postService.findByRecruit(recruitRequest));
     }
-    
 }
