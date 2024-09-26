@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sist.jobgem.dto.CompanyJoinRequest;
 import com.sist.jobgem.dto.JobseekerJoinRequest;
 import com.sist.jobgem.dto.LoginRequest;
+import com.sist.jobgem.dto.LoginResponse;
 import com.sist.jobgem.entity.User;
 import com.sist.jobgem.enums.LoginStatusEnum;
 import com.sist.jobgem.service.UserService;
+import com.sist.jobgem.util.jwt.TokenDto;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 
@@ -34,12 +38,26 @@ public class UserController {
     }
     
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-        LoginStatusEnum result = userService.login(request.getUsId(), request.getUsPw());
-        if (result != LoginStatusEnum.LOGIN_SUCCESS) {
-            return ResponseEntity.badRequest().body(result.getMessage());
+    public ResponseEntity<String> login(@RequestBody LoginRequest request, HttpServletResponse response) {
+        LoginResponse result = userService.login(request.getUsId(), request.getUsPw());
+        
+        if (result.getMsg() != LoginStatusEnum.LOGIN_SUCCESS.getMessage()) {
+            return ResponseEntity.badRequest().body(result.getMsg());
         }
-        return ResponseEntity.ok(result.getMessage());
+
+        TokenDto token = userService.createToken(result.getUser());
+
+        Cookie accessTokenCookie = new Cookie("accessToken", token.getAccessToken());
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/");
+        response.addCookie(accessTokenCookie);
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", token.getRefreshToken());
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        response.addCookie(refreshTokenCookie);
+
+        return ResponseEntity.ok(result.getMsg());
     }
     
     @GetMapping("/join/check/email")
