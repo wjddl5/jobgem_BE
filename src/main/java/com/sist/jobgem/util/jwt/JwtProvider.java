@@ -11,6 +11,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -74,5 +75,23 @@ public class JwtProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public AccessTokenClaims getAccessTokenClaims(String token) {
+        Claims payload = Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token).getPayload();
+
+        int idx = payload.get("IDX", int.class);
+        String email = payload.get("EMAIL", String.class);
+        String name = payload.get("NAME", String.class);
+        String img = payload.get("IMG", String.class);
+        int role = payload.get("ROLE", int.class);
+
+        return AccessTokenClaims.builder()
+                .idx(idx)
+                .email(email)
+                .name(name)
+                .img(img)
+                .role(role)
+                .build();
     }
 }
