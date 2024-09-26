@@ -1,6 +1,7 @@
 package com.sist.jobgem.entity;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,8 +10,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "logs")
 public class Log {
@@ -29,6 +32,6 @@ public class Log {
     private String loContent;
 
     @Column(name = "lo_time", nullable = false)
-    private Instant loTime;
+    private LocalDateTime loTime;
 
 }
