@@ -70,8 +70,11 @@ public class BoardService {
 
   // 게시글 상세보기
   public BoardDto getView(int id) {
+    BoardDto boardDto = null;
     Board board = boardRepository.findById(id);
-    BoardDto boardDto = convertToDto(board);
+    if (board.getBoStatus() == 1) {
+      boardDto = convertToDto(board);
+    }
     return boardDto;
   }
 
