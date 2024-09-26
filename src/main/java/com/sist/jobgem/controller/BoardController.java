@@ -60,10 +60,12 @@ public class BoardController {
   public ResponseEntity<Map<String, Object>> getView(@PathVariable int id) {
     Map<String, Object> map = new HashMap<>();
     BoardDto vo = boardService.getView(id);
-    List<CommentDto> commentList = commentService.getCommList(id);
 
-    map.put("vo", vo);
-    map.put("commentList", commentList);
+    if (vo != null) {
+      List<CommentDto> commentList = commentService.getCommList(id);
+      map.put("vo", vo);
+      map.put("commentList", commentList);
+    }
 
     return ResponseEntity.ok(map);
   }
