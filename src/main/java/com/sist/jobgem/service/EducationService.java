@@ -30,7 +30,7 @@ public class EducationService {
     return educationRepository.save(e) != null;
   }
 
-  public boolean removeEdu(int id) {
+  public boolean deleteEdu(int id) {
     try {
       educationRepository.deleteById(id);
       return true;
@@ -40,11 +40,7 @@ public class EducationService {
   }
 
   @Transactional
-  public boolean editEdu(int id, String editItemName) {
-    return educationRepository.editEdu(id, editItemName) > 0;
-  }
-
-  public List<Education> findByIdIn(List<Integer> edIdx) {
-    return educationRepository.findByIdIn(edIdx);
+  public boolean updateEdu(int id, String editItemName) {
+    return educationRepository.updateEdu(id, editItemName) > 0;
   }
 }

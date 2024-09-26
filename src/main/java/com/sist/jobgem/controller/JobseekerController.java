@@ -134,7 +134,7 @@ public class JobseekerController {
     @Operation(summary = "기술 목록 불러오기", description = "마이페이지 수정 시 사용 할 기술목록 불러오기")
     @GetMapping("/skills")
     public ResponseEntity<List<SkillDto>> getSkillList() {
-        return ResponseEntity.ok(skillService.getSkillList());
+        return ResponseEntity.ok(skillService.getSki());
     }
 
     @Operation(summary = "회사 후기 작성하기", description = "회사 후기 작성하기")

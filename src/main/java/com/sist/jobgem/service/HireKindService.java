@@ -31,7 +31,7 @@ public class HireKindService {
         return hireKindRepository.save(e) != null;
     }
 
-    public boolean removeHir(int id) {
+    public boolean deleteHir(int id) {
         try {
             hireKindRepository.deleteById(id);
             return true;
@@ -41,12 +41,7 @@ public class HireKindService {
     }
 
     @Transactional
-    public boolean editHir(int id, String editItemName) {
-        return hireKindRepository.editHir(id, editItemName) > 0;
-    }
-
-
-    public List<HireKind> findByIdIn(List<Integer> hkIdx) {
-        return hireKindRepository.findByIdIn(hkIdx);
+    public boolean updateHir(int id, String editItemName) {
+        return hireKindRepository.updateHir(id, editItemName) > 0;
     }
 }

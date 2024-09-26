@@ -19,19 +19,19 @@ public class CommentController {
   private CommentService commentService;
 
   @PostMapping("/write")
-  public boolean writeComment(@RequestParam(value = "boIdx") int boIdx, @RequestParam(value = "usIdx") int usIdx,
+  public boolean addComment(@RequestParam(value = "boIdx") int boIdx, @RequestParam(value = "usIdx") int usIdx,
       @RequestParam(value = "content") String content) {
-    return commentService.writeComment(boIdx, usIdx, content);
+    return commentService.addComment(boIdx, usIdx, content);
   }
 
   @PutMapping("/{id}")
-  public boolean editComment(@PathVariable int id, @RequestParam(value = "content") String content) {
-    return commentService.editComment(id, content);
+  public boolean updateComment(@PathVariable int id, @RequestParam(value = "content") String content) {
+    return commentService.updateComment(id, content);
   }
 
   @DeleteMapping("/{id}")
-  public boolean removeComment(@PathVariable int id) {
-    return commentService.removeComment(id);
+  public boolean deleteComment(@PathVariable int id) {
+    return commentService.deleteComment(id);
   }
 
 }

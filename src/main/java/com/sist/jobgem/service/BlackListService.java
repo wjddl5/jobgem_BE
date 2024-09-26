@@ -75,14 +75,17 @@ public class BlackListService {
   }
 
   public BlackListDto getView(int id) {
+    BlackListDto bDto = null;
     Optional<Blacklist> ob = blacklistRepository.findById(id);
     Blacklist b = ob.get();
-    BlackListDto bDto = convertToDto(b);
+    if (b.getBlState() == 1) {
+      bDto = convertToDto(b);
+    }
     return bDto;
   }
 
   @Transactional
-  public boolean removeBlackList(int id) {
+  public boolean deleteBlackList(int id) {
     return blacklistRepository.updateStateById(id) == 1;
   }
 
@@ -103,7 +106,7 @@ public class BlackListService {
       return false;
   }
 
-  public int addBlackList(BlackListRequestDto requestDto){
+  public int addBlackList(BlackListRequestDto requestDto) {
     return blacklistRepository.save(BlacklistMapper.INSTANCE.toEntity(requestDto)).getId();
   }
 

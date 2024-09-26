@@ -10,14 +10,12 @@ import java.util.List;
 
 @Repository
 public interface LocationGuSiRepository extends JpaRepository<LocationGuSi, Integer> {
-    List<LocationGuSi> findByIdIn(List<Integer> lgIdx);
-
     @Query("SELECT l FROM LocationGuSi l WHERE l.ldIdx = :ldIdx")
     List<LocationGuSi> findByLdIdx(int ldIdx);
 
     @Modifying
     @Query("UPDATE LocationGuSi l SET l.lgName = :editItemName WHERE l.id = :id")
-    int editLoc(@Param("id") int id, @Param("editItemName") String editItemName);
+    int updateLoc(@Param("id") int id, @Param("editItemName") String editItemName);
 
     @Modifying
     @Query("DELETE FROM LocationGuSi l WHERE l.ldIdx = :id")

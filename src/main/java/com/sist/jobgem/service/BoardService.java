@@ -77,7 +77,7 @@ public class BoardService {
 
   // 게시글 삭제
   @Transactional
-  public boolean removeBbs(int id) {
+  public boolean deleteBbs(int id) {
     int chk = boardRepository.updateBoardStatus(id);
     if (chk == 1)
       return true;
@@ -86,7 +86,7 @@ public class BoardService {
   }
 
   // 게시글 저장
-  public boolean writeBbs(int boType, int usIdx, String title, String content) {
+  public boolean addBbs(int boType, int usIdx, String title, String content) {
     BoardDto bDto = new BoardDto();
     bDto.setBoType(boType);
     bDto.setUsIdx(usIdx);
@@ -115,7 +115,7 @@ public class BoardService {
 
   // 게시물 수정
   @Transactional
-  public boolean editBbs(String boTitle, String boContent, int boId) {
+  public boolean updateBbs(String boTitle, String boContent, int boId) {
     int chk = boardRepository.editBoard(boTitle, boContent, boId);
     if (chk == 1)
       return true;

@@ -36,7 +36,7 @@ public class LocationDoService {
   }
 
   @Transactional
-  public boolean removeLoc(int id) {
+  public boolean deleteLoc(int id) {
     try {
       locationDoRepository.deleteById(id);
       locationGuSiRepository.deleteByLdIdx(id);
@@ -47,7 +47,7 @@ public class LocationDoService {
   }
 
   @Transactional
-  public boolean editLoc(int id, String editItemName) {
-    return locationDoRepository.editLoc(id, editItemName) > 0;
+  public boolean updateLoc(int id, String editItemName) {
+    return locationDoRepository.updateLoc(id, editItemName) > 0;
   }
 }
