@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 
 import com.sist.jobgem.service.LogService;
 import com.sist.jobgem.util.jwt.JwtProvider;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.sist.jobgem.util.jwt.AccessTokenClaims;
 
 @Aspect
@@ -20,6 +24,9 @@ public class LoggingAspect {
 
     @Autowired
     private JwtProvider jwtProvider; // JWT Provider를 통해 JWT 클레임을 추출
+
+    @Autowired
+    HttpServletRequest request;
 
     // Create 메서드가 실행될 때
     @Pointcut("execution(* com.sist.jobgem.service.*.add*(..))")
@@ -46,11 +53,30 @@ public class LoggingAspect {
     public void uploadOperation() {
     }
 
-    // JWT 토큰에서 idx와 role을 추출하는 메서드
     private AccessTokenClaims getClaimsFromJwt() {
-        // JWT 토큰은 보통 Authorization 헤더에 있습니다.
-        // 이를 가져와서 JwtProvider로부터 AccessTokenClaims를 추출
-        String token = ""; // JWT 토큰을 요청 헤더에서 가져와야 함
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies == null) {
+            System.out.println("No cookies received.");
+            throw new IllegalStateException("No cookies found in the request.");
+        }
+
+        for (Cookie cookie : cookies) {
+            System.out.println("Cookie name: " + cookie.getName() + ", value: " + cookie.getValue());
+        }
+
+        String token = null;
+        for (Cookie cookie : cookies) {
+            if ("accessToken".equals(cookie.getName())) {
+                token = cookie.getValue();
+                break;
+            }
+        }
+
+        if (token == null) {
+            throw new IllegalArgumentException("JWT token not found in cookies.");
+        }
+
         return jwtProvider.getAccessTokenClaims(token);
     }
 
