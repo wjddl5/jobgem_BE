@@ -62,11 +62,6 @@ public class AdminController {
         return ResponseEntity.ok(companyService.findAllCompanies(pageable, type, value));
     }
 
-    @GetMapping("/posts")
-    public ResponseEntity<Page<PostDto>> getAllPosts(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
-        return ResponseEntity.ok(postService.findAllPosts(pageable, type, value));
-    }
-
     @GetMapping("/blocked-jobseekers")
     public ResponseEntity<Page<BlockDto>> getJobseekerBlocklist(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
         return ResponseEntity.ok(blockService.findAllJobseekerBlocks(pageable, type, value));
