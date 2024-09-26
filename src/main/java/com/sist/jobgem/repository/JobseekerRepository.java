@@ -1,7 +1,8 @@
 package com.sist.jobgem.repository;
 
-import com.sist.jobgem.dto.JobseekerDto;
-import com.sist.jobgem.entity.Jobseeker;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -10,7 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.entity.Jobseeker;
 
 @Repository
 public interface JobseekerRepository extends JpaRepository<Jobseeker, Integer> {
@@ -94,4 +96,5 @@ public interface JobseekerRepository extends JpaRepository<Jobseeker, Integer> {
         @Query("SELECT j FROM Jobseeker j LEFT JOIN Block b ON j.id = b.joIdx WHERE b.joIdx IS NULL")
         List<Jobseeker> findAllJobseekersNotInBlock();
 
+        Optional<Jobseeker> findByUser_Id(int id);
 }
