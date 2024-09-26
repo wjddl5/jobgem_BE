@@ -8,7 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,6 +61,9 @@ public class PostService {
     public Page<PostCountApplyDto> getPosts(Map<String, Object> map, int coIdx) {
         int currentPage = Integer.parseInt(map.get("curPage").toString());
         int pageSize = 10;
+        if(map.get("size") != null){
+            pageSize = Integer.parseInt(map.get("size").toString());
+        }
         Pageable pageable = PageRequest.of(currentPage, pageSize);
         Page<PostCountApplyDto> postList = postRepository.findByFilterWithApplyCount(map, pageable);
         return postList;
@@ -172,10 +174,6 @@ public class PostService {
         List<PostDto> postDtos = PostMapper.INSTANCE.toDtoList(posts.getContent());
         
         return new PageImpl<>(postDtos, pageable, posts.getTotalElements());
-    }
-
-    public Page<PostDto> findAllPosts(Pageable pageable, String type, String value) {
-        return postRepository.findByTitleOrContent(type, value, pageable).map(post -> PostMapper.INSTANCE.toDto(post));
     }
 
 }

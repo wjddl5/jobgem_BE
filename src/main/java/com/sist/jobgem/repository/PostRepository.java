@@ -61,21 +61,4 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
 
         Page<Post> findByPoTitleContainsAndPoState(String keyword, int poState, Pageable pageable);
 
-        @Query("SELECT p FROM Post p JOIN Company c ON p.coIdx = c.id " +
-                        "WHERE p.poState = 1 AND " +
-                        "(:type IS NULL OR :value IS NULL OR " +
-                        "(:type = 'title' AND p.poTitle LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'company' AND c.coName LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'content' AND p.poContent LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'date' AND CAST(p.poDate AS string) LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'deadline' AND CAST(p.poDeadline AS string) LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'sal' AND p.poSal LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'startTime' AND p.wsStartTime LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'endTime' AND p.wsEndTime LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'type' AND p.poSubType LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'addr' AND p.poAddr LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'email' AND p.poEmail LIKE CONCAT('%', :value, '%')) OR " +
-                        "(:type = 'fax' AND p.poFax LIKE CONCAT('%', :value, '%'))" +
-                        ")")
-        Page<Post> findByTitleOrContent(@Param("type") String type, @Param("value") String value, Pageable pageable);
 }

@@ -72,6 +72,18 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 sort = post.poDate.asc();
             }
         }
+        if(map.get("minSal") != null){
+            builder.and(post.poSal.goe((String)map.get("minSal"))); 
+        }
+        if(map.get("maxSal") != null){
+            builder.and(post.poSal.loe((String)map.get("maxSal")));
+        }
+        if(map.get("startDate") != null){
+            builder.and(post.poDate.goe(LocalDate.parse(map.get("startDate").toString())));
+        }
+        if(map.get("endDate") != null){
+            builder.and(post.poDate.loe(LocalDate.parse(map.get("endDate").toString())));
+        }
         List<PostCountApplyDto> content = queryFactory
             .select(Projections.constructor(PostCountApplyDto.class,
                 post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
