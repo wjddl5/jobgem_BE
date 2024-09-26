@@ -16,10 +16,6 @@ public class LocationGuSiService {
     @Autowired
     private LocationGuSiRepository locationGuSiRepository;
 
-    public List<LocationGuSi> findByIdIn(List<Integer> lgIdx) {
-        return locationGuSiRepository.findByIdIn(lgIdx);
-    }
-
     public List<LocationGuSiDto> getLocGuSi(int ldIdx) {
         List<LocationGuSi> list = locationGuSiRepository.findByLdIdx(ldIdx);
         return LocationGuSiMapper.INSTANCE.toDtoList(list);
@@ -35,7 +31,7 @@ public class LocationGuSiService {
         return locationGuSiRepository.save(e) != null;
     }
 
-    public boolean removeLocGuSi(int id) {
+    public boolean deleteLocGuSi(int id) {
         try {
             locationGuSiRepository.deleteById(id);
             return true;
@@ -45,7 +41,7 @@ public class LocationGuSiService {
     }
 
     @Transactional
-    public boolean editLocGuSi(int id, String editItemName) {
-        return locationGuSiRepository.editLoc(id, editItemName) > 0;
+    public boolean updateLocGuSi(int id, String editItemName) {
+        return locationGuSiRepository.updateLoc(id, editItemName) > 0;
     }
 }

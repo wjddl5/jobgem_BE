@@ -3,6 +3,8 @@ package com.sist.jobgem.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,27 +27,27 @@ public class BlackListController {
   BlackListService blackListService;
 
   @GetMapping("/list")
-  public Page<BlackListDto> getList(Pageable pageable,
+  public ResponseEntity<Page<BlackListDto>> getList(Pageable pageable,
       @RequestParam(value = "searchType", required = false) String searchType,
       @RequestParam(value = "searchValue", required = false) String searchValue,
       @RequestParam(value = "selectType", required = false) String selectType) {
-    return blackListService.getList(1, pageable, searchType, searchValue, selectType);
+    return ResponseEntity.ok(blackListService.getList(1, pageable, searchType, searchValue, selectType));
   }
 
   @GetMapping("/{id}")
-  public BlackListDto view(@PathVariable int id) {
-    return blackListService.getView(id);
+  public ResponseEntity<BlackListDto> view(@PathVariable int id) {
+    return ResponseEntity.ok(blackListService.getView(id));
   }
 
   @DeleteMapping("/{id}")
-  public boolean removeOne(@PathVariable int id) {
-    return blackListService.removeBlackList(id);
+  public boolean deleteOne(@PathVariable int id) {
+    return blackListService.deleteBlackList(id);
   }
 
   @DeleteMapping("/removeList")
-  public boolean removeList(@RequestParam(value = "chkList") List<String> chkList) {
+  public boolean deleteList(@RequestParam(value = "chkList") List<String> chkList) {
     for (int i = 0; i < chkList.size(); i++) {
-      Boolean chk = blackListService.removeBlackList(Integer.parseInt(chkList.get(i)));
+      Boolean chk = blackListService.deleteBlackList(Integer.parseInt(chkList.get(i)));
       if (!chk)
         return false;
     }

@@ -30,7 +30,7 @@ public class CareerService {
         return careerRepository.save(e) != null;
     }
 
-    public boolean removeCar(int id) {
+    public boolean deleteCar(int id) {
         try {
             careerRepository.deleteById(id);
             return true;
@@ -40,11 +40,7 @@ public class CareerService {
     }
 
     @Transactional
-    public boolean editCar(int id, String editItemName) {
-        return careerRepository.editCar(id, editItemName) > 0;
-    }
-
-    public List<Career> findByIdIn(List<Integer> crIdx) {
-        return careerRepository.findByIdIn(crIdx);
+    public boolean updateCar(int id, String editItemName) {
+        return careerRepository.updateCar(id, editItemName) > 0;
     }
 }

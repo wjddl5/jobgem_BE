@@ -30,7 +30,7 @@ public class SkillService {
         return skillRepository.save(e) != null;
     }
 
-    public boolean removeSki(int id) {
+    public boolean deleteSki(int id) {
         try {
             skillRepository.deleteById(id);
             return true;
@@ -40,16 +40,7 @@ public class SkillService {
     }
 
     @Transactional
-    public boolean editSki(int id, String editItemName) {
-        return skillRepository.editSki(id, editItemName) > 0;
+    public boolean updateSki(int id, String editItemName) {
+        return skillRepository.updateSki(id, editItemName) > 0;
     }
-
-    public List<Skill> findByIdIn(List<Integer> skIdx) {
-        return skillRepository.findByIdIn(skIdx);
-    }
-
-    public List<SkillDto> getSkillList() {
-        return SkillMapper.INSTANCE.toDtoList(skillRepository.findAll());
-    }
-
 }

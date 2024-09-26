@@ -34,7 +34,7 @@ public class CommentService {
 
   // 댓글 삭제
   @Transactional
-  public boolean removeComment(int id) {
+  public boolean deleteComment(int id) {
     int chk = commentRepository.updateCommentStatus(id);
     if (chk == 1)
       return true;
@@ -43,7 +43,7 @@ public class CommentService {
   }
 
   // 댓글 입력
-  public boolean writeComment(int boIdx, int usIdx, String content) {
+  public boolean addComment(int boIdx, int usIdx, String content) {
     CommentDto cDto = new CommentDto();
     cDto.setBoIdx(boIdx);
     cDto.setUsIdx(usIdx);
@@ -57,7 +57,7 @@ public class CommentService {
 
   // 댓글 수정
   @Transactional
-  public boolean editComment(int id, String content) {
+  public boolean updateComment(int id, String content) {
     int chk = commentRepository.editComment(id, content);
     if (chk == 1)
       return true;

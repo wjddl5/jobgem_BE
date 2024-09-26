@@ -173,7 +173,7 @@ public class JobseekerController {
     // 기술 목록 불러오기
     @GetMapping("/skills")
     public ResponseEntity<List<SkillDto>> getSkillList() {
-        return ResponseEntity.ok(skillService.getSkillList());
+        return ResponseEntity.ok(skillService.getSki());
     }
 
     // 회사 후기 추가하기

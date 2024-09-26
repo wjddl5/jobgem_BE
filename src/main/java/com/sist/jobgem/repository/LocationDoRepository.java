@@ -12,6 +12,6 @@ public interface LocationDoRepository extends JpaRepository<LocationDo, Integer>
 
   @Modifying
   @Query("UPDATE LocationDo l SET l.ldName = :editItemName WHERE l.id = :id")
-  int editLoc(@Param("id") int id, @Param("editItemName") String editItemName);
+  int updateLoc(@Param("id") int id, @Param("editItemName") String editItemName);
 
 }
