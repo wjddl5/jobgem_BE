@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.dto.LoginResponse;
 import com.sist.jobgem.dto.UserDto;
+import com.sist.jobgem.entity.Company;
+import com.sist.jobgem.entity.Jobseeker;
 import com.sist.jobgem.entity.User;
 import com.sist.jobgem.enums.LoginStatusEnum;
 import com.sist.jobgem.mapper.CompanyMapper;
@@ -19,6 +22,9 @@ import com.sist.jobgem.mapper.UserMapper;
 import com.sist.jobgem.repository.CompanyRepository;
 import com.sist.jobgem.repository.JobseekerRepository;
 import com.sist.jobgem.repository.UserRepository;
+import com.sist.jobgem.util.jwt.AccessTokenClaims;
+import com.sist.jobgem.util.jwt.JwtProvider;
+import com.sist.jobgem.util.jwt.TokenDto;
 
 @Service
 public class UserService {
@@ -38,20 +44,62 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtProvider jwtProvider;
+
     public User getUser(int id) {
         return userRepository.findById(id);
     }
 
-    public LoginStatusEnum login(String usId, String usPw) {
+    public LoginResponse login(String usId, String usPw) {
         Optional<User> user = userRepository.findByUsId(usId);
         
-        if (user.isPresent()) {
+        if (user.isPresent() && user.get().getUsState() == 1) {
             if (passwordEncoder.matches(usPw, user.get().getUsPw())) {
-                return LoginStatusEnum.LOGIN_SUCCESS;
+                return new LoginResponse(UserMapper.INSTANCE.toDto(user.get()), LoginStatusEnum.LOGIN_SUCCESS.getMessage());
             }
-            return LoginStatusEnum.LOGIN_WRONG_PW;
+            return new LoginResponse(null, LoginStatusEnum.LOGIN_WRONG_PW.getMessage());
         }
-        return LoginStatusEnum.LOGIN_WRONG_EMAIL;
+        return new LoginResponse(null, LoginStatusEnum.LOGIN_WRONG_EMAIL.getMessage());
+    }
+
+    public TokenDto createToken(UserDto userDto) {
+        int idx = 0;
+        int usType = 0;
+        String name = "";
+        String img = "";
+        String email = userDto.getUsId();
+
+        if(userDto.getUsType() == USER_TYPE_JOBSEEKER) {
+            Optional<Jobseeker> jobseeker = jobseekerRepository.findByUser_Id(userDto.getId());
+            idx = jobseeker.get().getId();
+            name = jobseeker.get().getJoName();
+            img = jobseeker.get().getJoImgUrl();
+            usType = USER_TYPE_JOBSEEKER;
+        } else if(userDto.getUsType() == USER_TYPE_COMPANY) {
+            Optional<Company> company = companyRepository.findByUser_Id(userDto.getId());
+            idx = company.get().getId();
+            name = company.get().getCoName();
+            img = company.get().getCoImgUrl();
+            usType = USER_TYPE_COMPANY;
+        }
+
+        AccessTokenClaims accessTokenClaims = AccessTokenClaims.builder()
+            .idx(idx)
+            .email(email)
+            .name(name)
+            .img(img)
+            .role(usType)
+            .build();
+
+        TokenDto token = jwtProvider.createToken(accessTokenClaims);
+        String refreshToken = token.getRefreshToken();
+
+        userDto.setRefreshToken(refreshToken);
+
+        userRepository.save(UserMapper.INSTANCE.toEntity(userDto));
+
+        return token;
     }
 
     public boolean isEmailExist(String email) {
@@ -73,7 +121,6 @@ public class UserService {
 
         return null;
     }
-
 
     public int addJobseeker(UserDto userDto, JobseekerDto jobseekerDto) {
         User user = addUser(userDto, USER_TYPE_JOBSEEKER);
