@@ -31,8 +31,6 @@ public class OfferService {
     @Autowired
     private ChatRepository chatRepository;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private CompanyRepository companyRepository;
     @Autowired
     private JobseekerRepository jobseekerRepository;
