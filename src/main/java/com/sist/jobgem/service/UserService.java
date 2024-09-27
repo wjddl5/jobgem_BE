@@ -29,6 +29,7 @@ import com.sist.jobgem.util.jwt.TokenDto;
 @Service
 public class UserService {
 
+    private final int USER_TYPE_ADMIN = 0;
     private final int USER_TYPE_JOBSEEKER = 1;
     private final int USER_TYPE_COMPANY = 2;
 
@@ -65,6 +66,7 @@ public class UserService {
     }
 
     public TokenDto createToken(UserDto userDto) {
+        int usIdx = userDto.getId();
         int idx = 0;
         int usType = 0;
         String name = "";
@@ -84,12 +86,13 @@ public class UserService {
             img = company.get().getCoImgUrl();
             usType = USER_TYPE_COMPANY;
         } else {
-            idx = 1;
+            idx = userDto.getId();
             name = "관리자";
-            usType = 0;
+            usType = USER_TYPE_ADMIN;
         }
 
         AccessTokenClaims accessTokenClaims = AccessTokenClaims.builder()
+                .usIdx(usIdx)
                 .idx(idx)
                 .email(email)
                 .name(name)
@@ -112,31 +115,31 @@ public class UserService {
         return user.isPresent();
     }
 
-    private User addUser(UserDto userDto, int userType) {
+    private User joinUser(UserDto userDto, int userType) {
         userDto.setUsPw(passwordEncoder.encode(userDto.getUsPw()));
         userDto.setUsJoinDate(Instant.now());
         userDto.setUsType(userType);
 
         User userEntity = UserMapper.INSTANCE.toEntity(userDto);
-        User addUserResult = userRepository.save(userEntity);
+        User joinUserResult = userRepository.save(userEntity);
 
-        if (addUserResult != null) {
-            return addUserResult;
+        if (joinUserResult != null) {
+            return joinUserResult;
         }
 
         return null;
     }
 
-    public int addJobseeker(UserDto userDto, JobseekerDto jobseekerDto) {
-        User user = addUser(userDto, USER_TYPE_JOBSEEKER);
+    public int joinJobseeker(UserDto userDto, JobseekerDto jobseekerDto) {
+        User user = joinUser(userDto, USER_TYPE_JOBSEEKER);
         jobseekerDto.setUser(user);
         int jobseekerIdx = jobseekerRepository.save(JobseekerMapper.INSTANCE.toEntity(jobseekerDto)).getId();
 
         return jobseekerIdx;
     }
 
-    public int addCompany(UserDto userDto, CompanyDto companyDto) {
-        User user = addUser(userDto, USER_TYPE_COMPANY);
+    public int joinCompany(UserDto userDto, CompanyDto companyDto) {
+        User user = joinUser(userDto, USER_TYPE_COMPANY);
         companyDto.setUser(user);
         int companyIdx = companyRepository.save(CompanyMapper.INSTANCE.toEntity(companyDto)).getId();
 

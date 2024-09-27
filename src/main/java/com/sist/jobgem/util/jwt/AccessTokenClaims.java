@@ -16,6 +16,7 @@ import lombok.Setter;
 @Builder
 public class AccessTokenClaims {
     
+    private int usIdx;
     private int idx;
     private String email;
     private String name;
@@ -24,6 +25,7 @@ public class AccessTokenClaims {
 
     Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
+        map.put("USIDX", usIdx);
         map.put("ROLE", role);
         map.put("IDX", idx);
         map.put("EMAIL", email);

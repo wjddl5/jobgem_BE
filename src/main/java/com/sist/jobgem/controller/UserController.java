@@ -67,7 +67,7 @@ public class UserController {
     
     @PostMapping("/join/jobseeker")
     public ResponseEntity<Integer> joinJobseeker(@Valid @RequestBody JobseekerJoinRequest request) {
-        int result = userService.addJobseeker(request.getUser(), request.getJobseeker());
+        int result = userService.joinJobseeker(request.getUser(), request.getJobseeker());
         if (result == 0) {
             return ResponseEntity.badRequest().body(0);
         }
@@ -76,7 +76,7 @@ public class UserController {
 
     @PostMapping("/join/company")
     public ResponseEntity<Integer> joinCompany(@Valid @RequestBody CompanyJoinRequest request) {
-        int result = userService.addCompany(request.getUser(), request.getCompany());
+        int result = userService.joinCompany(request.getUser(), request.getCompany());
         if (result == 0) {
             return ResponseEntity.badRequest().body(0);
         }
