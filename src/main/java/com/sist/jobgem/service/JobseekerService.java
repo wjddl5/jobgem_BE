@@ -8,6 +8,7 @@ import com.sist.jobgem.repository.InterestCompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -51,6 +52,9 @@ public class JobseekerService {
 
     @Autowired
     InterestCompanyRepository interestCompanyRepository;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     public JobseekerDto getJobseeker(int id) {
         JobseekerDto jobseeker = null;
@@ -116,8 +120,8 @@ public class JobseekerService {
 
         String usPw = jobseeker.getUser().getUsPw(); // DB에 저장된 비밀번호
 
-        // 비밀번호가 해시로 저장된 경우 해시 비교 (예: BCrypt 사용)
-        return usPw.equals(chkPw);
+        // 비밀번호가 해시로 저장된 경우 해시 비교 (예: 사용)
+        return passwordEncoder.matches(chkPw, usPw);
         // return passwordEncoder.matches(chkPw, usPw);
     }
 
@@ -135,7 +139,7 @@ public class JobseekerService {
         UserDto uDto = UserMapper.INSTANCE.toDto(user);
 
         // String encodedPassword = passwordEncoder.encode(newPwd);
-        uDto.setUsPw(newPwd); // 새로운 비밀번호 설정
+        uDto.setUsPw(passwordEncoder.encode(newPwd)); // 새로운 비밀번호 설정
 
         // DTO를 다시 엔티티로 변환
         User updatedUser = UserMapper.INSTANCE.toEntity(uDto);

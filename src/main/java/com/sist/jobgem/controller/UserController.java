@@ -31,16 +31,16 @@ public class UserController {
 
     @Autowired
     UserService userService;
-    
+
     @GetMapping("/user")
     public ResponseEntity<User> all(int id) {
         return ResponseEntity.ok(userService.getUser(id));
     }
-    
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request, HttpServletResponse response) {
         LoginResponse result = userService.login(request.getUsId(), request.getUsPw());
-        
+
         if (result.getMsg() != LoginStatusEnum.LOGIN_SUCCESS.getMessage()) {
             return ResponseEntity.badRequest().body(result.getMsg());
         }
@@ -59,12 +59,12 @@ public class UserController {
 
         return ResponseEntity.ok(result.getMsg());
     }
-    
+
     @GetMapping("/join/check/email")
-    public ResponseEntity<Boolean> checkEmail(@Email @RequestParam String email) {
+    public ResponseEntity<Boolean> checkEmail(@Email @RequestParam("email") String email) {
         return ResponseEntity.ok(userService.isEmailExist(email));
     }
-    
+
     @PostMapping("/join/jobseeker")
     public ResponseEntity<Integer> joinJobseeker(@Valid @RequestBody JobseekerJoinRequest request) {
         int result = userService.joinJobseeker(request.getUser(), request.getJobseeker());

@@ -1,15 +1,20 @@
 package com.sist.jobgem.dto;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
-public class JobseekerJoinRequest{
+@NoArgsConstructor
+@AllArgsConstructor
+public class JobseekerJoinRequest {
 
     @Getter
     @Setter
@@ -17,7 +22,7 @@ public class JobseekerJoinRequest{
 
         @Email
         private String usId;
-        @NotBlank    
+        @NotBlank
         private String usPw;
     }
 
