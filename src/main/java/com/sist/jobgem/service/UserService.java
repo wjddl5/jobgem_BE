@@ -112,31 +112,31 @@ public class UserService {
         return user.isPresent();
     }
 
-    private User addUser(UserDto userDto, int userType) {
+    private User joinUser(UserDto userDto, int userType) {
         userDto.setUsPw(passwordEncoder.encode(userDto.getUsPw()));
         userDto.setUsJoinDate(Instant.now());
         userDto.setUsType(userType);
 
         User userEntity = UserMapper.INSTANCE.toEntity(userDto);
-        User addUserResult = userRepository.save(userEntity);
+        User joinUserResult = userRepository.save(userEntity);
 
-        if (addUserResult != null) {
-            return addUserResult;
+        if (joinUserResult != null) {
+            return joinUserResult;
         }
 
         return null;
     }
 
-    public int addJobseeker(UserDto userDto, JobseekerDto jobseekerDto) {
-        User user = addUser(userDto, USER_TYPE_JOBSEEKER);
+    public int joinJobseeker(UserDto userDto, JobseekerDto jobseekerDto) {
+        User user = joinUser(userDto, USER_TYPE_JOBSEEKER);
         jobseekerDto.setUser(user);
         int jobseekerIdx = jobseekerRepository.save(JobseekerMapper.INSTANCE.toEntity(jobseekerDto)).getId();
 
         return jobseekerIdx;
     }
 
-    public int addCompany(UserDto userDto, CompanyDto companyDto) {
-        User user = addUser(userDto, USER_TYPE_COMPANY);
+    public int joinCompany(UserDto userDto, CompanyDto companyDto) {
+        User user = joinUser(userDto, USER_TYPE_COMPANY);
         companyDto.setUser(user);
         int companyIdx = companyRepository.save(CompanyMapper.INSTANCE.toEntity(companyDto)).getId();
 
