@@ -101,13 +101,13 @@ public class BoardController {
   }
 
   @PutMapping("/answer/{id}/yes")
-  public void updateAnswerStatusYes(@PathVariable int id) {
-    boardService.updateAnswerStatusYes(id);
+  public int updateAnswerStatusYes(@PathVariable int id) {
+    return boardService.updateAnswerStatusYes(id);
   }
 
   @PutMapping("/answer/{id}/no")
-  public void updateAnswerStatusNo(@PathVariable int id) {
-    boardService.updateAnswerStatusNo(id);
+  public int updateAnswerStatusNo(@PathVariable int id) {
+    return boardService.updateAnswerStatusNo(id);
   }
 
   @PutMapping("/hit/{id}")

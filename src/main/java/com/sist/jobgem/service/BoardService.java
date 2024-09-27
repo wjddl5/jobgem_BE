@@ -128,13 +128,13 @@ public class BoardService {
 
   // 게시글 답변상태 업데이트
   @Transactional
-  public void updateAnswerStatusYes(int id) {
-    boardRepository.updateAnswerStatusYes(id);
+  public int updateAnswerStatusYes(int id) {
+    return boardRepository.updateAnswerStatusYes(id);
   }
 
   @Transactional
-  public void updateAnswerStatusNo(int id) {
-    boardRepository.updateAnswerStatusNo(id);
+  public int updateAnswerStatusNo(int id) {
+    return boardRepository.updateAnswerStatusNo(id);
   }
 
   @Transactional
