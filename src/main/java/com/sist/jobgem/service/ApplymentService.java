@@ -44,6 +44,7 @@ public class ApplymentService {
     public Applyment addApplyment(ApplymentDto applyment) {
         int reIdx = resumeService.getReDefaultResumeIdx(applyment.getJoIdx());
         applyment.setReIdx(reIdx);
+        applyment.setApRead(0);
         applyment.setApState(1);
         return applymentRepository.save(ApplymentMapper.INSTANCE.toEntity(applyment));
     }
