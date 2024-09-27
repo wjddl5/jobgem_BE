@@ -53,10 +53,11 @@ public class UserService {
 
     public LoginResponse login(String usId, String usPw) {
         Optional<User> user = userRepository.findByUsId(usId);
-        
+
         if (user.isPresent() && user.get().getUsState() == 1) {
             if (passwordEncoder.matches(usPw, user.get().getUsPw())) {
-                return new LoginResponse(UserMapper.INSTANCE.toDto(user.get()), LoginStatusEnum.LOGIN_SUCCESS.getMessage());
+                return new LoginResponse(UserMapper.INSTANCE.toDto(user.get()),
+                        LoginStatusEnum.LOGIN_SUCCESS.getMessage());
             }
             return new LoginResponse(null, LoginStatusEnum.LOGIN_WRONG_PW.getMessage());
         }
@@ -70,27 +71,31 @@ public class UserService {
         String img = "";
         String email = userDto.getUsId();
 
-        if(userDto.getUsType() == USER_TYPE_JOBSEEKER) {
+        if (userDto.getUsType() == USER_TYPE_JOBSEEKER) {
             Optional<Jobseeker> jobseeker = jobseekerRepository.findByUser_Id(userDto.getId());
             idx = jobseeker.get().getId();
             name = jobseeker.get().getJoName();
             img = jobseeker.get().getJoImgUrl();
             usType = USER_TYPE_JOBSEEKER;
-        } else if(userDto.getUsType() == USER_TYPE_COMPANY) {
+        } else if (userDto.getUsType() == USER_TYPE_COMPANY) {
             Optional<Company> company = companyRepository.findByUser_Id(userDto.getId());
             idx = company.get().getId();
             name = company.get().getCoName();
             img = company.get().getCoImgUrl();
             usType = USER_TYPE_COMPANY;
+        } else {
+            idx = 1;
+            name = "관리자";
+            usType = 0;
         }
 
         AccessTokenClaims accessTokenClaims = AccessTokenClaims.builder()
-            .idx(idx)
-            .email(email)
-            .name(name)
-            .img(img)
-            .role(usType)
-            .build();
+                .idx(idx)
+                .email(email)
+                .name(name)
+                .img(img)
+                .role(usType)
+                .build();
 
         TokenDto token = jwtProvider.createToken(accessTokenClaims);
         String refreshToken = token.getRefreshToken();
