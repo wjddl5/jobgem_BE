@@ -80,11 +80,11 @@ public class JwtProvider {
     public AccessTokenClaims getAccessTokenClaims(String token) {
         Claims payload = Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token).getPayload();
 
-        int idx = payload.get("IDX", int.class);
+        Integer idx = payload.get("IDX", Integer.class);
         String email = payload.get("EMAIL", String.class);
         String name = payload.get("NAME", String.class);
         String img = payload.get("IMG", String.class);
-        int role = payload.get("ROLE", int.class);
+        Integer role = payload.get("ROLE", Integer.class);
 
         return AccessTokenClaims.builder()
                 .idx(idx)
