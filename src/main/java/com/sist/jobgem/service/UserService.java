@@ -29,6 +29,7 @@ import com.sist.jobgem.util.jwt.TokenDto;
 @Service
 public class UserService {
 
+    private final int USER_TYPE_ADMIN = 0;
     private final int USER_TYPE_JOBSEEKER = 1;
     private final int USER_TYPE_COMPANY = 2;
 
@@ -65,6 +66,7 @@ public class UserService {
     }
 
     public TokenDto createToken(UserDto userDto) {
+        int usIdx = userDto.getId();
         int idx = 0;
         int usType = 0;
         String name = "";
@@ -84,12 +86,13 @@ public class UserService {
             img = company.get().getCoImgUrl();
             usType = USER_TYPE_COMPANY;
         } else {
-            idx = 1;
+            idx = userDto.getId();
             name = "관리자";
-            usType = 0;
+            usType = USER_TYPE_ADMIN;
         }
 
         AccessTokenClaims accessTokenClaims = AccessTokenClaims.builder()
+                .usIdx(usIdx)
                 .idx(idx)
                 .email(email)
                 .name(name)
