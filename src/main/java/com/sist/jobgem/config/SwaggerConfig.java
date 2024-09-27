@@ -53,4 +53,12 @@ public class SwaggerConfig {
                 .pathsToMatch("/api/jobseeker/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi postGroup() {
+        return GroupedOpenApi.builder()
+                .group("posts")
+                .pathsToMatch("/api/posts/**")
+                .build();
+    }
 }

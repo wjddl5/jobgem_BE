@@ -31,6 +31,15 @@ import com.sist.jobgem.service.ApplymentService;
 import com.sist.jobgem.service.JobseekerService;
 import com.sist.jobgem.service.PostService;
 import com.sist.jobgem.service.ResumeService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Post", description = "채용공고 API")
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
@@ -47,17 +56,28 @@ public class PostController {
     @Autowired
     private JobseekerService jobseekerService;
 
+    @Operation(summary = "채용공고 목록 불러오기", description = "채용공고 목록을 페이지네이션하여 불러옵니다.",
+               responses = {
+                   @ApiResponse(responseCode = "200", description = "성공적으로 채용공고 목록을 불러옴",
+                                content = @Content(schema = @Schema(implementation = Page.class)))
+               })
     @GetMapping("")
-    public ResponseEntity<Page<PostCountApplyDto>> getPosts(@RequestParam Map<String, Object> params) {
+    public ResponseEntity<Page<PostCountApplyDto>> getPosts(@Parameter(description = "페이지네이션 및 필터링 파라미터") @RequestParam Map<String, Object> params) {
         int coIdx = 1; // Consider making this a path variable or part of the params
         return ResponseEntity.ok(postService.getPosts(params, coIdx));
     }
-
+    
+    @Operation(summary = "채용공고 정보 불러오기", description = "특정 회사의 채용공고 정보를 불러옵니다.",
+               responses = {
+                   @ApiResponse(responseCode = "200", description = "성공적으로 채용공고 정보를 불러옴",
+                                content = @Content(schema = @Schema(implementation = Map.class)))
+               })
     @GetMapping("/info")
-    public ResponseEntity<Map<String, Object>> getPostListInfo(@RequestParam("coIdx") int coIdx) {
+    public ResponseEntity<Map<String, Object>> getPostListInfo(@Parameter(description = "회사 인덱스") @RequestParam("coIdx") int coIdx) {
         return ResponseEntity.ok(postService.getPostListInfo(coIdx));
     }
 
+    @Operation(summary = "채용공고 생성 및 수정", description = "채용공고 생성 및 수정")
     @PostMapping("")
     public ResponseEntity<String> createPost(@RequestBody PostWriteDto data) {
         PostDto pvo = new PostDto(data);
@@ -65,27 +85,32 @@ public class PostController {
         return ResponseEntity.ok("success");
     }
 
+    @Operation(summary = "채용공고 설정 불러오기", description = "채용공고 설정 불러오기")
     @GetMapping("/set")
     public ResponseEntity<PostSetDto> getPostSet() {
         return ResponseEntity.ok(postService.getPostSet());
     }
 
+    @Operation(summary = "채용공고 정보 불러오기", description = "채용공고 정보 불러오기")
     @GetMapping("/{poIdx}")
     public ResponseEntity<PostDto> getPost(@PathVariable("poIdx") int poIdx) {
         return ResponseEntity.ok(postService.getPost(poIdx));
     }
 
+    @Operation(summary = "채용공고 지원자 목록 불러오기", description = "채용공고 지원자 목록 불러오기")
     @GetMapping("/{id}/applyments")
     public ResponseEntity<Page<ApplymentDto>> getApply(@PathVariable("id") int id, @RequestParam("curPage") int curPage) {
         PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
         return ResponseEntity.ok(applymentService.getApplymentListByPoIdx(id, pageable));
     }
 
+    @Operation(summary = "채용공고 상세 정보 불러오기", description = "채용공고 상세 정보 불러오기")
     @GetMapping("/{id}/detail")
     public ResponseEntity<Map<String, Object>> getPostDetail(@PathVariable("id") int id) {
         return ResponseEntity.ok(postService.getDetail(id));
     }
 
+    @Operation(summary = "채용공고 지원자 이력서 불러오기", description = "채용공고 지원자 이력서 불러오기")
     @GetMapping("/{id}/resume")
     public ResponseEntity<Map<String, Object>> getResume(@PathVariable("id") int id) {
         Map<String, Object> map = new HashMap<>();
@@ -97,12 +122,14 @@ public class PostController {
         return ResponseEntity.ok(map);
     }
 
+    @Operation(summary = "채용공고 삭제", description = "채용공고 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePost(@PathVariable("id") int id) {
+    public ResponseEntity<String> deletePost(@Parameter(description = "삭제할 채용공고 ID") @PathVariable("id") int id) {
         int result = postService.delete(id);
         return result == 1 ? ResponseEntity.ok("success") : ResponseEntity.badRequest().body("fail");
     }
-
+    
+    @Operation(summary = "채용공고 지원자 목록 검색", description = "채용공고 지원자 목록 검색")
     @GetMapping("/applyments/search")
     public ResponseEntity<Page<ApplymentDto>> getApplymentListByFilters(@ModelAttribute ApplymentSearchDto dto,
             @RequestParam(required = false) int curPage) {
@@ -110,6 +137,7 @@ public class PostController {
         return ResponseEntity.ok(applymentService.searchApplymentwithJobseeker(dto, pageable));
     }
 
+    @Operation(summary = "채용공고 검색", description = "채용공고 검색")
     @GetMapping("/search")
     public ResponseEntity<Page<PostDto>> searchPosts(@RequestParam(value = "keyword", required = true) String keyword, @RequestParam(value = "curPage", required = true) int curPage) {
         if(keyword.equals("")){
@@ -118,6 +146,7 @@ public class PostController {
         return ResponseEntity.ok(postService.searchPosts(keyword, curPage));
     }
 
+    @Operation(summary = "채용공고 채용 요청", description = "채용공고 채용 요청")
     @PostMapping("/recruit")
     public ResponseEntity<Page<PostDto>> recruitPost(@RequestBody RecruitRequest recruitRequest) {
         return ResponseEntity.ok(postService.findByRecruit(recruitRequest));
