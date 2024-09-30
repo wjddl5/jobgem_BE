@@ -8,15 +8,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.sist.jobgem.service.CompanyService;
 import com.sist.jobgem.service.JobseekerService;
 import com.sist.jobgem.service.PostService;
 import com.sist.jobgem.service.UserService;
+
 import com.sist.jobgem.service.BlackListService;
 import com.sist.jobgem.service.BlockService;
 import com.sist.jobgem.service.BoardService;
@@ -25,14 +27,12 @@ import com.sist.jobgem.dto.BlockDto;
 import com.sist.jobgem.dto.BoardDto;
 import com.sist.jobgem.dto.CompanyDto;
 import com.sist.jobgem.dto.JobseekerDto;
-import com.sist.jobgem.dto.PostDto;
 import com.sist.jobgem.dto.UserDto;
-
 
 @RestController
 @RequestMapping("api/admin")
 public class AdminController {
-    
+
     @Autowired
     UserService userService;
     @Autowired
@@ -47,43 +47,57 @@ public class AdminController {
     BoardService boardService;
     @Autowired
     BlackListService blackListService;
-    
+
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.findAllUsers());
     }
+
     @GetMapping("/jobseekers")
-    public ResponseEntity<Page<JobseekerDto>> getAllJobseekers(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
+    public ResponseEntity<Page<JobseekerDto>> getAllJobseekers(Pageable pageable,
+            @RequestParam(required = false, name = "type") String type,
+            @RequestParam(required = false, name = "value") String value) {
         return ResponseEntity.ok(jobseekerService.getJobseekerList(pageable, type, value));
     }
-    
+
     @GetMapping("/companies")
-    public ResponseEntity<Page<CompanyDto>> getAllCompanies(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
+    public ResponseEntity<Page<CompanyDto>> getAllCompanies(Pageable pageable,
+            @RequestParam(required = false, name = "type") String type,
+            @RequestParam(required = false, name = "value") String value) {
         return ResponseEntity.ok(companyService.findAllCompanies(pageable, type, value));
     }
 
     @GetMapping("/blocked-jobseekers")
-    public ResponseEntity<Page<BlockDto>> getJobseekerBlocklist(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
+    public ResponseEntity<Page<BlockDto>> getJobseekerBlocklist(Pageable pageable,
+            @RequestParam(required = false, name = "type") String type,
+            @RequestParam(required = false, name = "value") String value) {
         return ResponseEntity.ok(blockService.findAllJobseekerBlocks(pageable, type, value));
     }
 
     @GetMapping("/blocked-companies")
-    public ResponseEntity<Page<BlockDto>> getCompanyBlocklist(Pageable pageable, @RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
+    public ResponseEntity<Page<BlockDto>> getCompanyBlocklist(Pageable pageable,
+            @RequestParam(required = false, name = "type") String type,
+            @RequestParam(required = false, name = "value") String value) {
         return ResponseEntity.ok(blockService.findAllCompanyBlocks(pageable, type, value));
     }
 
     @GetMapping("/unblocked-jobseekers")
-    public ResponseEntity<List<JobseekerDto>> getUnblockedJobseeker(@RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
+    public ResponseEntity<List<JobseekerDto>> getUnblockedJobseeker(
+            @RequestParam(required = false, name = "type") String type,
+            @RequestParam(required = false, name = "value") String value) {
         return ResponseEntity.ok(jobseekerService.findUnblockedJobseeker(type, value));
     }
 
     @GetMapping("/unblocked-companies")
-    public ResponseEntity<List<CompanyDto>> getUnblockedCompany(@RequestParam(required = false, name= "type") String type, @RequestParam(required = false, name= "value") String value) {
+    public ResponseEntity<List<CompanyDto>> getUnblockedCompany(
+            @RequestParam(required = false, name = "type") String type,
+            @RequestParam(required = false, name = "value") String value) {
         return ResponseEntity.ok(companyService.findUnblockedCompany(type, value));
     }
 
     @PostMapping("/jobseeker-blocks")
-    public void addjobseekerBlock(@RequestParam(required = true, name= "id") int id, @RequestParam(required = true ,name= "value") String value) {
+    public void addjobseekerBlock(@RequestParam(required = true, name = "id") int id,
+            @RequestParam(required = true, name = "value") String value) {
         blockService.addjobseekerBlock(id, value);
     }
 
@@ -96,10 +110,11 @@ public class AdminController {
     }
 
     @PostMapping("/company-blocks")
-    public void addcompanyBlock(@RequestParam(required = true, name = "id") int id, @RequestParam(required = true, name = "value") String value) {
+    public void addcompanyBlock(@RequestParam(required = true, name = "id") int id,
+            @RequestParam(required = true, name = "value") String value) {
         blockService.addcompanyBlock(id, value);
     }
-    
+
     @DeleteMapping("/company-blocks")
     public int deletecompanyBlock(@RequestParam(value = "chkList", required = true) List<String> chkList) {
         for (int i = 0; i < chkList.size(); i++) {
@@ -118,5 +133,23 @@ public class AdminController {
         return ResponseEntity.ok(blackListService.findPendingBlackList());
     }
 
-}
+    @GetMapping("/password/{id}")
+    public ResponseEntity<String> checkPwd(@PathVariable("id") int id, @RequestParam("usPw") String chkPw) {
+        boolean isPwdCorrect = userService.checkPwd(id, chkPw);
+        if (isPwdCorrect) {
+            return ResponseEntity.ok("pwd match");
+        } else {
+            return ResponseEntity.badRequest().body("pwd mismatch");
+        }
+    }
 
+    @PutMapping("/password/{id}")
+    public ResponseEntity<String> updatePwd(@PathVariable("id") int id, @RequestParam("newPwd") String newPwd) {
+        boolean isUpdated = userService.updatePwd(id, newPwd);
+        if (isUpdated) {
+            return ResponseEntity.ok("change pwd success");
+        } else {
+            return ResponseEntity.badRequest().body("change pwd fail");
+        }
+    }
+}
