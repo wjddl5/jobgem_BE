@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BlockRepository extends JpaRepository<Block, Integer> {
+public interface BlockRepository extends JpaRepository<Block, Integer>, BlockRepositoryCustom {
 
         @Query("SELECT new com.sist.jobgem.dto.BlockResponseDto(b) FROM Block b WHERE b.coIdx = :coIdx ORDER BY b.blDate DESC LIMIT 3")
         List<BlockResponseDto> findAllByCoIdx(@Param("coIdx") int coIdx);
