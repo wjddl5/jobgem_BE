@@ -109,12 +109,6 @@ public class JobseekerRepositoryImpl implements JobseekerRepositoryCustom {
         if (params.get("leaveEndDate") != null) {
             builder.and(jobseeker.user.usLeaveDate.loe(LocalDate.parse(params.get("leaveEndDate").toString())));
         }
-        if (params.get("birthStartDate") != null) {
-            builder.and(jobseeker.joBirth.goe(LocalDate.parse(params.get("birthStartDate").toString())));
-        }
-        if (params.get("birthEndDate") != null) {
-            builder.and(jobseeker.joBirth.loe(LocalDate.parse(params.get("birthEndDate").toString())));
-        }
         if (params.get("minSal") != null) {
             builder.and(jobseeker.joSal.goe((String) params.get("minSal")));
         }
