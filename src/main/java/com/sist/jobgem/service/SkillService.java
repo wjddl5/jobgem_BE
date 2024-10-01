@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.jobgem.repository.HaveSkillRepository;
+import com.sist.jobgem.repository.SkillBridgeRepository;
 import com.sist.jobgem.repository.SkillRepository;
 import com.sist.jobgem.dto.SkillDto;
 import com.sist.jobgem.entity.Skill;
@@ -15,6 +17,12 @@ import java.util.List;
 public class SkillService {
     @Autowired
     private SkillRepository skillRepository;
+
+    @Autowired
+    private SkillBridgeRepository skillBridgeRepository;
+
+    @Autowired
+    private HaveSkillRepository haveSkillRepository;
 
     public List<SkillDto> getSki() {
         List<Skill> list = skillRepository.findAll();
@@ -30,8 +38,11 @@ public class SkillService {
         return skillRepository.save(e) != null;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteSki(int id) {
         try {
+            haveSkillRepository.deleteBySkIdx(id);
+            skillBridgeRepository.deleteBySkIdx(id);
             skillRepository.deleteById(id);
             return true;
         } catch (Exception e) {

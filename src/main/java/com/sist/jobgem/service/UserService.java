@@ -149,4 +149,29 @@ public class UserService {
     public List<UserDto> findAllUsers() {
         return UserMapper.INSTANCE.toDtoList(userRepository.findAll());
     }
+
+    public boolean checkPwd(int id, String chkPw) {
+        User user = userRepository.findById(id);
+        // .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. ID: " + id));
+        if (user != null) {
+            String usPw = user.getUsPw();
+
+            return passwordEncoder.matches(chkPw, usPw);
+        } else
+            return false;
+    }
+
+    public boolean updatePwd(int id, String newPwd) {
+        User user = userRepository.findById(id);
+        if (user == null) {
+            throw new IllegalArgumentException("해당 사용자의 유저 정보가 없습니다.");
+        }
+        UserDto uDto = UserMapper.INSTANCE.toDto(user);
+        uDto.setUsPw(passwordEncoder.encode(newPwd));
+
+        User updatedUser = UserMapper.INSTANCE.toEntity(uDto);
+        userRepository.save(updatedUser);
+
+        return true;
+    }
 }
