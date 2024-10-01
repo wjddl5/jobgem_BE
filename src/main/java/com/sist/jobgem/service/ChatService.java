@@ -20,7 +20,7 @@ public class ChatService {
     @Autowired
     private ChatroomRepository chatroomRepository;
 
-    public void addChat(ChatRequestDto chatRequestDto) {
+    public ChatDto addChat(ChatRequestDto chatRequestDto) {
         ChatDto chatDto = ChatDto.builder()
                 .usIdx(chatRequestDto.getUsIdx())
                 .cmIdx(chatRequestDto.getCmIdx())
@@ -28,7 +28,7 @@ public class ChatService {
                 .chContent(chatRequestDto.getChContent())
                 .chIsRead(chatRequestDto.getChIsRead())
                 .build();
-        ChatMapper.INSTANCE.toDto(chatRepository.save(ChatMapper.INSTANCE.toEntity(chatDto)));
+        return ChatMapper.INSTANCE.toDto(chatRepository.save(ChatMapper.INSTANCE.toEntity(chatDto)));
     }
 
     public List<ChatDto> getChatList(int cmIdx, int usIdx) {
