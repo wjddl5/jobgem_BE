@@ -93,12 +93,16 @@ public class ResumeService {
     }
 
     @Transactional
-    public void updateDefaultResume(int resumeId, int joIdx) {
+    public void changeDefaultResume(int resumeId, int joIdx) {
         // 1. joIdx에 해당하는 모든 이력서의 reDefault 값을 0으로 설정
         resumeRepository.resetDefaultResume(joIdx);
 
         // 2. resumeId에 해당하는 이력서를 reDefault = 1로 설정
         resumeRepository.setDefaultResume(resumeId);
+    }
+
+    public boolean hasDefaultResume(int joIdx) {
+        return resumeRepository.findByJoIdxAndReDefault(joIdx, 1).isPresent();
     }
 
 }
