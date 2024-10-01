@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.jobgem.repository.LocationBridgeRepository;
 import com.sist.jobgem.repository.LocationGuSiRepository;
 import com.sist.jobgem.dto.LocationGuSiDto;
 import com.sist.jobgem.entity.LocationGuSi;
@@ -15,6 +16,9 @@ import java.util.List;
 public class LocationGuSiService {
     @Autowired
     private LocationGuSiRepository locationGuSiRepository;
+
+    @Autowired
+    private LocationBridgeRepository locationBridgeRepository;
 
     public List<LocationGuSiDto> getLocGuSi(int ldIdx) {
         List<LocationGuSi> list = locationGuSiRepository.findByLdIdx(ldIdx);
@@ -31,8 +35,10 @@ public class LocationGuSiService {
         return locationGuSiRepository.save(e) != null;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteLocGuSi(int id) {
         try {
+            locationBridgeRepository.deleteByLgIdx(id);
             locationGuSiRepository.deleteById(id);
             return true;
         } catch (Exception e) {

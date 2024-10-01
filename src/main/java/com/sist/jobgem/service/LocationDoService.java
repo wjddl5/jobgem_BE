@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sist.jobgem.dto.LocationDoDto;
 import com.sist.jobgem.entity.LocationDo;
 import com.sist.jobgem.mapper.LocationDoMapper;
+import com.sist.jobgem.repository.LocationBridgeRepository;
 import com.sist.jobgem.repository.LocationDoRepository;
 import com.sist.jobgem.repository.LocationGuSiRepository;
 
@@ -20,6 +21,9 @@ public class LocationDoService {
 
   @Autowired
   LocationGuSiRepository locationGuSiRepository;
+
+  @Autowired
+  LocationBridgeRepository locationBridgeRepository;
 
   public List<LocationDoDto> getLoc() {
     List<LocationDo> list = locationDoRepository.findAll();
@@ -35,11 +39,12 @@ public class LocationDoService {
     return locationDoRepository.save(e) != null;
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public boolean deleteLoc(int id) {
     try {
-      locationDoRepository.deleteById(id);
+      locationBridgeRepository.deleteByLgIdx(id);
       locationGuSiRepository.deleteByLdIdx(id);
+      locationDoRepository.deleteById(id);
       return true;
     } catch (Exception e) {
       return false;
