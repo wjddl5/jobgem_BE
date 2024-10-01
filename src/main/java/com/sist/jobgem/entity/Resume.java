@@ -39,7 +39,7 @@ public class Resume {
     @Column(name = "re_content", nullable = false, length = 100)
     private String reContent;
 
-    @Column(name = "re_file_url", length = 30)
+    @Column(name = "re_file_url", length = 100)
     private String reFileUrl;
 
     @Column(name = "re_write_date", nullable = false)

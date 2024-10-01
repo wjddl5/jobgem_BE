@@ -14,7 +14,7 @@ import lombok.Getter;
 public class HkBridge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "hkb__idx", nullable = false)
+    @Column(name = "hkb_idx", nullable = false)
     private Integer id;
 
     @Column(name = "po_idx", nullable = false)
