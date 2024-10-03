@@ -244,10 +244,18 @@ public class JobseekerController {
         return ResponseEntity.ok(interviewService.deleteInterview(id));
     }
 
-    @Operation(summary = "이력서 삭제 ", description = "ID값으로 이력서 삭제하기")
+    @Operation(summary = "이력서 삭제", description = "ID값으로 이력서 삭제하기")
     @DeleteMapping("/resume/{id}")
-    public ResponseEntity<Integer> deleteResume(@PathVariable("id") int id) {
-        return ResponseEntity.ok(resumeService.deleteResume(id));
+    public ResponseEntity<String> deleteResume(@PathVariable("id") int id) {
+        int result = resumeService.deleteResume(id); // 서비스 메서드 호출
+
+        if (result == 0) {
+            // 기본 이력서라서 삭제 불가
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("기본 이력서는 삭제할 수 없습니다.");
+        } else {
+            // 성공적으로 삭제
+            return ResponseEntity.ok("이력서 삭제가 완료되었습니다.");
+        }
     }
 
     @Operation(summary = "비밀번호 확인", description = "ID값으로 현재 비밀번호와 chkPw가 일치하는지 검사하기")
