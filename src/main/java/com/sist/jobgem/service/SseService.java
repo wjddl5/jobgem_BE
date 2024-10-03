@@ -11,17 +11,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 @RequiredArgsConstructor
 public class SseService {
-    private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
+    private final Map<Integer, SseEmitter> emitters = new ConcurrentHashMap<>();
     private static final Long DEFAULT_TIMEOUT = 600L * 1000 * 60;
     private final AlertRepository alertRepository;
 
-    public SseEmitter subscribe(Long userId) {
+    public SseEmitter subscribe(int userId) {
         SseEmitter emitter = createEmitter(userId);
         sendToClient(userId, "sse 접속 성공 [userid : "+ userId + "]");
         return emitter;
     }
 
-    public void sendToClient(Long userId, Object data) {
+    public void sendToClient(int userId, Object data) {
         SseEmitter emitter = emitters.get(userId);
 
         if (emitter != null) {
@@ -40,7 +40,7 @@ public class SseService {
         }
     }
 
-    public SseEmitter createEmitter(Long userId) {
+    public SseEmitter createEmitter(int userId) {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         emitters.put(userId, emitter);
 

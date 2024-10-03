@@ -12,7 +12,7 @@ import java.time.Instant;
 public class AlertRequestDto {
     private Integer usIdx;
     private String alContent;
-    private Instant alDate = Instant.now();
-    private Integer alIsRead = 0;
-    private Integer alState = 1;
+    private Instant alDate;
+    private Integer alIsRead;
+    private Integer alState;
 }

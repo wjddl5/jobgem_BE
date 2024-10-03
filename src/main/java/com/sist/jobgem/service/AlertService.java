@@ -8,6 +8,7 @@ import com.sist.jobgem.repository.AlertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -27,7 +28,15 @@ public class AlertService {
             alertRepository.save(AlertMapper.INSTANCE.toEntity(dto));
         }
     }
-    public Integer addAlert(AlertRequestDto dto){
+    public Integer addAlert(int usIdx, String alContent) {
+        AlertRequestDto dto = AlertRequestDto.builder()
+                .usIdx(usIdx)
+                .alContent(alContent)
+                .alIsRead(0)
+                .alState(1)
+                .alDate(Instant.now())
+                .build();
         return alertRepository.save(AlertMapper.INSTANCE.toEntity(dto)).getId();
     }
+
 }

@@ -19,12 +19,12 @@ public class AlertController {
     private final AlertService alertService;
 
     @GetMapping(value = "/subscribe/{userId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(@PathVariable Long userId) {
+    public SseEmitter subscribe(@PathVariable int userId) {
         return sseService.subscribe(userId);
     }
 
     @GetMapping(value = "/send/{userId}/{data}")
-    public void send(@PathVariable Long userId, @PathVariable Object data) {
+    public void send(@PathVariable int userId, @PathVariable Object data) {
         sseService.sendToClient(userId, data);
     }
 
