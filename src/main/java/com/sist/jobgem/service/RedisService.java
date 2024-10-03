@@ -66,7 +66,7 @@ public class RedisService {
     }
 
     // 리스트에 TTL 설정 저장
-    public void addToListWithTTL(String key, Object value, long timeout, TimeUnit unit) {
+    public Object addToListWithTTL(String key, Object value, long timeout, TimeUnit unit) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             // 값을 JSON 문자열로 변환하여 저장
@@ -76,6 +76,8 @@ public class RedisService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+
+        return value;
     }
 
     // 채팅 리스트 조회
