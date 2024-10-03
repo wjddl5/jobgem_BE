@@ -50,7 +50,7 @@ public class OfferService {
         return OfferDto.fromEntity(offer);
     }
 
-    public OfferResponseDto addOffer(OfferDto offerDto) {
+    public Integer addOffer(OfferDto offerDto) {
         Company company = companyRepository.findById(offerDto.getCoIdx()).orElseThrow();
         int openUser = company.getUser().getId();
 
@@ -78,7 +78,7 @@ public class OfferService {
                 .chat(chatRepository.save(ChatMapper.INSTANCE.toEntity(chat)))
                 .build();
 
-        return offerResponseDto;
-    }
 
+        return joinUser;
+    }
 }

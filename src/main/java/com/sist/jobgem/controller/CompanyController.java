@@ -1,6 +1,7 @@
 package com.sist.jobgem.controller;
 
 import com.sist.jobgem.dto.*;
+import com.sist.jobgem.enums.AlertMessageEnum;
 import com.sist.jobgem.service.*;
 
 
@@ -31,7 +32,9 @@ public class CompanyController {
     @Autowired
     private BlackListService blackListService;
     @Autowired
-    private InterestCompanyService interestCompanyService;
+    private SseService sseService;
+    @Autowired
+    private AlertService alertService;
 
     @Operation(summary = "기업 메인 페이지", description = "기업 idx로 기업 정보를 가져옵니다.")
     @GetMapping("")
@@ -122,8 +125,11 @@ public class CompanyController {
 
     @Operation(summary = "오퍼 추가", description = "기업이 구직자에게 오퍼를 보냅니다.")
     @PostMapping("/offer")
-    public ResponseEntity<OfferResponseDto> addOffer(@RequestBody OfferDto offerDto) {
-        return ResponseEntity.ok(offerService.addOffer(offerDto));
+    public ResponseEntity<Integer> addOffer(@RequestBody OfferDto offerDto) {
+        Integer jobseekerId = offerService.addOffer(offerDto);
+        sseService.sendToClient(jobseekerId, AlertMessageEnum.ALERT_OFFER.getMessage());
+        alertService.addAlert(jobseekerId, AlertMessageEnum.ALERT_OFFER.getMessage());
+        return ResponseEntity.ok(jobseekerId);
     }
     
     @Operation(summary = "기업 삭제", description = "기업 id로 해당 기업 정보를 삭제합니다.")
