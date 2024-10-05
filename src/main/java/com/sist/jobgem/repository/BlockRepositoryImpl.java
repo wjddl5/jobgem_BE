@@ -14,7 +14,7 @@ import com.sist.jobgem.entity.Block;
 import com.sist.jobgem.entity.QBlock;
 import com.sist.jobgem.entity.QJobseeker;
 import com.sist.jobgem.entity.QUser;
-import com.sist.jobgem.entity.QCompany; // 추가
+import com.sist.jobgem.entity.QCompany;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -37,42 +37,50 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
             pageSize = Integer.parseInt(params.get("size").toString());
         }
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        
+
         QBlock block = QBlock.block;
         QJobseeker jobseeker = QJobseeker.jobseeker;
         QUser user = QUser.user;
-        
+
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(block.joIdx.isNotNull());
         builder.and(block.coIdx.isNull());
-        if(params.get("blockStartDate") != null){
+        if (params.get("blockStartDate") != null) {
             builder.and(block.blDate.goe(LocalDate.parse(params.get("blockStartDate").toString())));
         }
-        if(params.get("blockEndDate") != null){
+        if (params.get("blockEndDate") != null) {
             builder.and(block.blDate.loe(LocalDate.parse(params.get("blockEndDate").toString())));
         }
-        if(params.get("joinStartDate") != null){
-            builder.and(user.usJoinDate.goe(LocalDate.parse(params.get("joinStartDate").toString()).atStartOfDay(ZoneOffset.UTC).toInstant()));
+        if (params.get("birthStartDate") != null) {
+            builder.and(jobseeker.joBirth.goe(LocalDate.parse(params.get("birthStartDate").toString())));
         }
-        if(params.get("joinEndDate") != null){
-            builder.and(user.usJoinDate.loe(LocalDate.parse(params.get("joinEndDate").toString()).atStartOfDay(ZoneOffset.UTC).toInstant()));
+        if (params.get("birthEndDate") != null) {
+            builder.and(jobseeker.joBirth.loe(LocalDate.parse(params.get("birthEndDate").toString())));
         }
-        if(params.get("leaveStartDate") != null){
+        if (params.get("joinStartDate") != null) {
+            builder.and(user.usJoinDate.goe(
+                    LocalDate.parse(params.get("joinStartDate").toString()).atStartOfDay(ZoneOffset.UTC).toInstant()));
+        }
+        if (params.get("joinEndDate") != null) {
+            builder.and(user.usJoinDate.loe(
+                    LocalDate.parse(params.get("joinEndDate").toString()).atStartOfDay(ZoneOffset.UTC).toInstant()));
+        }
+        if (params.get("leaveStartDate") != null) {
             builder.and(user.usLeaveDate.goe(LocalDate.parse(params.get("leaveStartDate").toString())));
         }
-        if(params.get("leaveEndDate") != null){
+        if (params.get("leaveEndDate") != null) {
             builder.and(user.usLeaveDate.loe(LocalDate.parse(params.get("leaveEndDate").toString())));
         }
-        if(params.get("minSal") != null){
+        if (params.get("minSal") != null) {
             builder.and(jobseeker.joSal.goe(params.get("minSal").toString()));
         }
-        if(params.get("maxSal") != null){
+        if (params.get("maxSal") != null) {
             builder.and(jobseeker.joSal.loe(params.get("maxSal").toString()));
         }
 
-        if (params.get("type") != null && params.get("value") != null) {
-            String type = params.get("type").toString();
-            String value = params.get("value").toString();
+        if (params.get("searchType") != null && params.get("searchValue") != null) {
+            String type = params.get("searchType").toString();
+            String value = params.get("searchValue").toString();
             switch (type) {
                 case "blcontent":
                     builder.and(block.blContent.contains(value));
@@ -85,7 +93,7 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
                     break;
                 case "tel":
                     builder.and(jobseeker.joTel.contains(value));
-                    break;  
+                    break;
                 case "address":
                     builder.and(jobseeker.joAddress.contains(value));
                     break;
@@ -107,7 +115,7 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
                     break;
             }
         }
-        
+
         List<Block> blocks = queryFactory.selectFrom(block)
                 .where(builder)
                 .offset(pageable.getOffset())
@@ -118,7 +126,7 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
                 .fetchCount();
         return new PageImpl<>(blocks, pageable, total);
     }
-    
+
     @Override
     public Page<Block> findByCompany(Map<String, Object> params) {
         int pageNumber = 0;
@@ -133,32 +141,32 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
 
         QBlock block = QBlock.block;
         QCompany company = QCompany.company;
-        
+
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(block.coIdx.isNotNull());
         builder.and(block.joIdx.isNull());
-        if(params.get("blockStartDate") != null){
+        if (params.get("blockStartDate") != null) {
             builder.and(block.blDate.goe(LocalDate.parse(params.get("blockStartDate").toString())));
         }
-        if(params.get("blockEndDate") != null){
+        if (params.get("blockEndDate") != null) {
             builder.and(block.blDate.loe(LocalDate.parse(params.get("blockEndDate").toString())));
         }
-        if(params.get("OpenStartDate") != null){
+        if (params.get("OpenStartDate") != null) {
             builder.and(company.coOpen.goe(LocalDate.parse(params.get("OpenStartDate").toString())));
         }
-        if(params.get("OpenEndDate") != null){
+        if (params.get("OpenEndDate") != null) {
             builder.and(company.coOpen.loe(LocalDate.parse(params.get("OpenEndDate").toString())));
         }
-        if(params.get("minSal") != null){
+        if (params.get("minSal") != null) {
             builder.and(company.coSales.goe(params.get("minSal").toString()));
         }
-        if(params.get("maxSal") != null){
+        if (params.get("maxSal") != null) {
             builder.and(company.coSales.loe(params.get("maxSal").toString()));
         }
 
-        if (params.get("searchType") != null && params.get("search") != null) {
+        if (params.get("searchType") != null && params.get("searchValue") != null) {
             String type = params.get("searchType").toString();
-            String value = params.get("search").toString();
+            String value = params.get("searchValue").toString();
             switch (type) {
                 case "name":
                     builder.and(company.coName.contains(value));
@@ -194,7 +202,7 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
                     break;
             }
         }
-        
+
         List<Block> result = queryFactory.selectFrom(block)
                 .where(builder)
                 .offset(pageable.getOffset())
@@ -205,7 +213,5 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
                 .fetchCount();
         return new PageImpl<>(result, pageable, total);
     }
-
-    
 
 }

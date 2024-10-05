@@ -22,17 +22,19 @@ import com.sist.jobgem.entity.Block;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BlockService {
     @Autowired
     private BlockRepository blockRepository;
 
-
-    public Page<BlockDto> findAllJobseekerBlocks(Map<String,Object> params) {
-        Page<Block> jobseekerPage = blockRepository.findByJobseeker(params);
-        List<BlockDto> jobseekerList = BlockMapper.INSTANCE.toDtoList(jobseekerPage.getContent());
-        return new PageImpl<>(jobseekerList, jobseekerPage.getPageable(), jobseekerPage.getTotalElements());
+    public Page<BlockDto> findAllJobseekerBlocks(Map<String, Object> params) {
+        Page<Block> blockPage = blockRepository.findByJobseeker(params);
+        List<BlockDto> blockList = blockPage.getContent().stream()
+                .map(block -> new BlockDto(block, block.getJobseeker()))
+                .collect(Collectors.toList());
+        return new PageImpl<>(blockList, blockPage.getPageable(), blockPage.getTotalElements());
     }
 
     // 그냥 리스트
@@ -52,26 +54,22 @@ public class BlockService {
         }
     }
 
-    public Page<BlockDto> findAllCompanyBlocks(Map<String,Object> params) {
-       Page<Block> companyPage = blockRepository.findByCompany(params);
-       List<BlockDto> companyList = BlockMapper.INSTANCE.toDtoList(companyPage.getContent());
-       return new PageImpl<>(companyList, companyPage.getPageable(), companyPage.getTotalElements());
+    public Page<BlockDto> findAllCompanyBlocks(Map<String, Object> params) {
+        Page<Block> companyPage = blockRepository.findByCompany(params);
+        List<BlockDto> companyList = BlockMapper.INSTANCE.toDtoList(companyPage.getContent());
+        return new PageImpl<>(companyList, companyPage.getPageable(), companyPage.getTotalElements());
     }
 
-    public void addjobseekerBlock(int id, String value) {
-        BlockDto dto = new BlockDto();
+    public Block addjobseekerBlock(BlockDto dto) {
         dto.setBlDate(LocalDate.now());
-        dto.setJoIdx(id);
-        dto.setBlContent(value);
-        blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto));
+        Block newBlock = blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto));
+        return newBlock;
     }
 
-    public void addcompanyBlock(int id, String value) {
-        BlockDto dto = new BlockDto();
+    public Block addcompanyBlock(BlockDto dto) {
         dto.setBlDate(LocalDate.now());
-        dto.setCoIdx(id);
-        dto.setBlContent(value);
-        blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto));
+        Block newBlock = blockRepository.save(BlockMapper.INSTANCE.ToEntity(dto));
+        return newBlock;
     }
 
     @Transactional
