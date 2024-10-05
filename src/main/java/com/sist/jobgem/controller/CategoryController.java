@@ -4,13 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sist.jobgem.dto.AllCategoryResponse;
 import com.sist.jobgem.dto.CareerDto;
 import com.sist.jobgem.dto.EducationDto;
 import com.sist.jobgem.dto.HireKindDto;
 import com.sist.jobgem.dto.LocationDoDto;
 import com.sist.jobgem.dto.LocationGuSiDto;
 import com.sist.jobgem.dto.SkillDto;
+import com.sist.jobgem.mapper.CareerMapper;
+import com.sist.jobgem.mapper.EducationMapper;
+import com.sist.jobgem.mapper.HireKindMapper;
+import com.sist.jobgem.mapper.LocationDoMapper;
+import com.sist.jobgem.mapper.SkillMapper;
 import com.sist.jobgem.service.CareerService;
+import com.sist.jobgem.service.CategoryService;
 import com.sist.jobgem.service.EducationService;
 import com.sist.jobgem.service.HireKindService;
 import com.sist.jobgem.service.LocationDoService;
@@ -48,6 +55,9 @@ public class CategoryController {
 
   @Autowired
   private LocationGuSiService locationGuSiService;
+
+  @Autowired
+  private CategoryService categoryService;
 
   // 학력
   @GetMapping("/edu")
@@ -205,6 +215,11 @@ public class CategoryController {
   public boolean updateLocGuSi(@PathVariable int id,
       @RequestParam(value = "editItemName") String editItemName) {
     return locationGuSiService.updateLocGuSi(id, editItemName);
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<AllCategoryResponse> getAllCategory() {
+    return ResponseEntity.ok(categoryService.getAll());
   }
 
 }
