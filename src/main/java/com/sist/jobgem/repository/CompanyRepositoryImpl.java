@@ -36,9 +36,9 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
             pageSize = Integer.parseInt(params.get("size").toString());
         }
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        if (params.get("type") != null && params.get("value") != null) {
-            String type = params.get("type").toString();
-            String value = params.get("value").toString();
+        if (params.get("searchType") != null && params.get("searchValue") != null) {
+            String type = params.get("searchType").toString();
+            String value = params.get("searchValue").toString();
             switch (type) {
                 case "name":
                     builder.and(company.coName.contains(value));

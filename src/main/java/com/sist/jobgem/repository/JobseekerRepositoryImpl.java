@@ -115,9 +115,9 @@ public class JobseekerRepositoryImpl implements JobseekerRepositoryCustom {
         if (params.get("maxSal") != null) {
             builder.and(jobseeker.joSal.loe((String) params.get("maxSal")));
         }
-        if (params.get("searchType") != null && params.get("search") != null) {
+        if (params.get("searchType") != null && params.get("searchValue") != null) {
             String type = params.get("searchType").toString();
-            String value = params.get("search").toString();
+            String value = params.get("searchValue").toString();
 
             if (type.equals("name")) {
                 builder.and(jobseeker.joName.contains(value));
