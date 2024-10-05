@@ -29,4 +29,8 @@ public class InterestCompany {
     @Column(name = "ic_date", nullable = false)
     private LocalDate icDate;
 
+    @ManyToOne(fetch =  FetchType.LAZY)
+    @JoinColumn(name = "co_idx", referencedColumnName = "co_idx", insertable = false, updatable = false)
+    private Company company;
+
 }
