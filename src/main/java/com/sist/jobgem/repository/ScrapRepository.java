@@ -1,10 +1,13 @@
 package com.sist.jobgem.repository;
 
-import com.sist.jobgem.entity.Scrap;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import com.sist.jobgem.entity.Scrap;
 
 @Repository
 public interface ScrapRepository extends JpaRepository<Scrap, Integer> {
@@ -14,4 +17,6 @@ public interface ScrapRepository extends JpaRepository<Scrap, Integer> {
     int countByJoIdxAndScStateIsOne(@Param("joIdx") Integer joIdx);
 
     Scrap findByJoIdxAndPoIdx(Integer joIdx, Integer poIdx);
+
+    List<Scrap> findByJoIdx(Integer joIdx);
 }
