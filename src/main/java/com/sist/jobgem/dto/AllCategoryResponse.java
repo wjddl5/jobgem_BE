@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 public class AllCategoryResponse {
     
-    private List<LocationDoDto> locationDoList;
+    private List<LocationDto> locationList;
     private List<EducationDto> educationList;
     private List<CareerDto> careerList;
     private List<HireKindDto> hireKindList;
