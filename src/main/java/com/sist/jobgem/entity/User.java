@@ -52,7 +52,6 @@ public class User {
     @Column(name = "us_type")
     private Integer usType;
 
-    @JsonIgnore
     @ColumnDefault("1")
     @Column(name = "us_state")
     private Integer usState;

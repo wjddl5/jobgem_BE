@@ -176,4 +176,8 @@ public class PostService {
         return new PageImpl<>(postDtos, pageable, posts.getTotalElements());
     }
 
+    public List<PostDto> findAllPosts() {
+        return postRepository.findAllWithDto();
+    }
+
 }
