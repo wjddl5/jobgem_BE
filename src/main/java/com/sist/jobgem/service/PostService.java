@@ -4,6 +4,7 @@ package com.sist.jobgem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -167,13 +168,12 @@ public class PostService {
         return new PageImpl<>(postDtos, pageable, posts.getTotalElements());
     }
 
-    public Page<PostDto> findByRecruit(RecruitRequest request) {
+    public Slice<PostDto> findByRecruit(RecruitRequest request) {
         int pageSize = 12;
         Pageable pageable = PageRequest.of(request.getCurPage(), pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Post> posts = postRepository.findByRecruit(request, pageable);
+        Slice<Post> posts = postRepository.findByRecruit(request, pageable);
         List<PostDto> postDtos = PostMapper.INSTANCE.toDtoList(posts.getContent());
         
-        return new PageImpl<>(postDtos, pageable, posts.getTotalElements());
+        return new SliceImpl<>(postDtos, posts.getPageable(), posts.hasNext());
     }
-
 }

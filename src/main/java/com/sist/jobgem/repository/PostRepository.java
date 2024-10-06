@@ -59,6 +59,6 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
         @Query("UPDATE Post p SET p.poState = 0 WHERE p.id = :id")
         int updateStateById(@Param("id") int id);
 
-        Page<Post> findByPoTitleContainsAndPoState(String keyword, int poState, Pageable pageable);
+        Page<Post> findByPoTitleContainsAndPoState(String poTitle, int poState, Pageable pageable);
 
 }

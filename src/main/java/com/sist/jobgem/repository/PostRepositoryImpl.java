@@ -21,6 +21,9 @@ import com.sist.jobgem.entity.QSkillBridge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Repository;
@@ -112,13 +115,22 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     }
     
     @Override
-    public Page<Post> findByRecruit(RecruitRequest request, Pageable pageable) {
+    public Slice<Post> findByRecruit(RecruitRequest request, Pageable pageable) {
         QPost qPost = QPost.post;
         QCareersBridge qCareersBridge = QCareersBridge.careersBridge;
         QEducationBridge qEducationBridge = QEducationBridge.educationBridge;
         QHkBridge qHkBridge = QHkBridge.hkBridge;
         QLocationBridge qLocationBridge = QLocationBridge.locationBridge;
         QSkillBridge qSkillBridge = QSkillBridge.skillBridge;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(buildCondition(qSkillBridge.skIdx, request.getSkList()));
+        builder.and(buildCondition(qEducationBridge.edIdx, request.getEdList()));
+        builder.and(buildCondition(qHkBridge.hkIdx, request.getHkList()));
+        builder.and(buildCondition(qLocationBridge.lgIdx, request.getLgList()));
+        builder.and(buildCondition(qCareersBridge.crIdx, request.getCrList()));
+        builder.and(qPost.poState.eq(1));
+        builder.and(qPost.poDeadline.goe(LocalDate.now()));
 
         JPQLQuery<Post> query = queryFactory.select(qPost)
                 .distinct()
@@ -127,20 +139,20 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .leftJoin(qEducationBridge).on(qPost.id.eq(qEducationBridge.poIdx))
                 .leftJoin(qHkBridge).on(qPost.id.eq(qHkBridge.poIdx))
                 .leftJoin(qLocationBridge).on(qPost.id.eq(qLocationBridge.poIdx))
-                .leftJoin(qSkillBridge).on(qPost.id.eq(qSkillBridge.poIdx))
-                .where(
-                        buildCondition(qCareersBridge.crIdx, request.getCrList())
-                                .and(buildCondition(qEducationBridge.edIdx, request.getEdList()))
-                                .and(buildCondition(qHkBridge.hkIdx, request.getHkList()))
-                                .and(buildCondition(qLocationBridge.lgIdx, request.getLgList()))
-                                .and(buildCondition(qSkillBridge.skIdx, request.getSkList())))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .leftJoin(qSkillBridge).on(qPost.id.eq(qSkillBridge.poIdx)) 
+                .where(builder)
+                .offset(pageable.getPageNumber() * pageable.getPageSize())
+                .limit(pageable.getPageSize() + 1);
 
         List<Post> content = query.fetch();
-        long total = query.fetchCount();
 
-        return new PageImpl<>(content, pageable, total);
+        boolean hasNext = false;
+        if (content.size() > pageable.getPageSize()) {
+            content.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+
+        return new SliceImpl<>(content, pageable, hasNext);
     }
 
     private BooleanExpression buildCondition(NumberPath<Integer> path, List<Integer> idxList) {
