@@ -47,7 +47,6 @@ public class PostDto {
         this.poContent = post.getPoContent();
         this.poDate = post.getPoDate();
         this.poDeadline = post.getPoDeadline();
-        this.poImgurl = post.getPoImgurl();
         this.poSal = post.getPoSal();
         this.poSubType = post.getPoSubType();
         this.poAddr = post.getPoAddr();
@@ -86,7 +85,6 @@ public class PostDto {
         this.poSal = postDto.getSalary().toString();
         this.wsStartTime = postDto.getWorkStartTime();
         this.wsEndTime = postDto.getWorkEndTime();
-        this.poImgurl = postDto.getImgUrl();
     }
 
     private Integer id;
@@ -95,7 +93,6 @@ public class PostDto {
     private String poContent;
     private LocalDate poDate;
     private LocalDate poDeadline;
-    private String poImgurl;
     private String poSal;
     private String poSubType;
     private String poAddr;
