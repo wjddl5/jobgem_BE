@@ -69,4 +69,13 @@ public class SwaggerConfig {
                 .pathsToMatch("/api/files/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi adminGroup() {
+        return GroupedOpenApi.builder()
+                .group("admin")
+                .pathsToMatch("/api/admin/**")
+                .build();
+    }
+
 }

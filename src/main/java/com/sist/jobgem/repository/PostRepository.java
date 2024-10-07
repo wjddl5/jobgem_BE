@@ -61,4 +61,6 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
 
         Page<Post> findByPoTitleContainsAndPoState(String poTitle, int poState, Pageable pageable);
 
+        @Query("SELECT new com.sist.jobgem.dto.PostDto(p) FROM Post p LEFT JOIN FETCH p.company WHERE p.poState = 1")
+        List<PostDto> findAllWithDto();
 }

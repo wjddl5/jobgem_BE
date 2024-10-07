@@ -1,25 +1,22 @@
 package com.sist.jobgem.service;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.PageRequest;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.HashMap;
-import com.sist.jobgem.repository.PostRepository;
-import com.sist.jobgem.repository.EducationRepository;
-import com.sist.jobgem.repository.CareerRepository;
-import com.sist.jobgem.repository.SkillRepository;
-import com.sist.jobgem.repository.LocationDoRepository;
-import com.sist.jobgem.repository.LocationGuSiRepository;
-import com.sist.jobgem.repository.HireKindRepository;
+
 import com.sist.jobgem.dto.IdNameDto;
 import com.sist.jobgem.dto.PostCountApplyDto;
 import com.sist.jobgem.dto.PostDto;
@@ -29,8 +26,13 @@ import com.sist.jobgem.dto.RecruitRequest;
 import com.sist.jobgem.entity.Post;
 import com.sist.jobgem.mapper.PostMapper;
 import com.sist.jobgem.repository.ApplymentRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import com.sist.jobgem.repository.CareerRepository;
+import com.sist.jobgem.repository.EducationRepository;
+import com.sist.jobgem.repository.HireKindRepository;
+import com.sist.jobgem.repository.LocationDoRepository;
+import com.sist.jobgem.repository.LocationGuSiRepository;
+import com.sist.jobgem.repository.PostRepository;
+import com.sist.jobgem.repository.SkillRepository;
 
 @Service
 public class PostService {
@@ -175,5 +177,9 @@ public class PostService {
         List<PostDto> postDtos = PostMapper.INSTANCE.toDtoList(posts.getContent());
         
         return new SliceImpl<>(postDtos, posts.getPageable(), posts.hasNext());
+    }
+
+    public List<PostDto> findAllPosts() {
+        return postRepository.findAllWithDto();
     }
 }
