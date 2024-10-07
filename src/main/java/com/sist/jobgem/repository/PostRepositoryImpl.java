@@ -89,16 +89,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         }
         List<PostCountApplyDto> content = queryFactory
             .select(Projections.constructor(PostCountApplyDto.class,
-                post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
-                post.poImgurl, post.poSal, post.poSubType, post.poAddr,
+                post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline, post.poSal, post.poSubType, post.poAddr,
                 post.poEmail, post.poFax, post.poState,
                 applyment.count().intValue().as("applyCount")))
             .from(post)
             .leftJoin(applyment).on(post.id.eq(applyment.poIdx))
             
             .where(builder)
-            .groupBy(post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
-                post.poImgurl, post.poSal, post.poSubType, post.poAddr,
+            .groupBy(post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline, post.poSal, post.poSubType, post.poAddr,
                 post.poEmail, post.poFax, post.poState)
             .orderBy(sort)
             .offset(pageable.getOffset())

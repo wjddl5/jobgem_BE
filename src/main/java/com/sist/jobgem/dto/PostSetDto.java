@@ -1,3 +1,4 @@
+
 package com.sist.jobgem.dto;
 
 import java.util.List;
