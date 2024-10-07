@@ -25,7 +25,7 @@ public interface JobseekerRepository extends JpaRepository<Jobseeker, Integer>, 
                         "    JOIN p.company c " +
                         "    WHERE c.id = :companyId " +
                         "    GROUP BY h.jobseeker.id " +
-                        "    HAVING COUNT(DISTINCT h.skill.id) >= 5" +
+                        "    HAVING COUNT(DISTINCT h.skill.id) >= 3" +
                         ") AND j.user.usState = 1" +
                         "AND j.id NOT IN (" +
                         "    SELECT t.joIdx " +
@@ -50,7 +50,7 @@ public interface JobseekerRepository extends JpaRepository<Jobseeker, Integer>, 
                         "    JOIN p.company c " +
                         "    WHERE c.id = :companyId " +
                         "    GROUP BY h.jobseeker.id " +
-                        "    HAVING COUNT(DISTINCT h.skill.id) >= 5" +
+                        "    HAVING COUNT(DISTINCT h.skill.id) >= 3" +
                         ") AND j.user.usState = 1" +
                         "AND j.id NOT IN (" +
                         "    SELECT t.joIdx " +
