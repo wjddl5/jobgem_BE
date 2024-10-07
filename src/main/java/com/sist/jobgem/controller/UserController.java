@@ -60,6 +60,26 @@ public class UserController {
         return ResponseEntity.ok(result.getMsg());
     }
 
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletResponse response) {
+        // 쿠키 삭제를 위한 빈 쿠키 생성
+        Cookie accessTokenCookie = new Cookie("accessToken", null);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge(0); // 쿠키 만료 시간 설정 (0: 즉시 만료)
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", null);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(0); // 쿠키 만료 시간 설정 (0: 즉시 만료)
+
+        // 응답에 쿠키 추가
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
+
+        return ResponseEntity.ok("로그아웃 되었습니다.");
+    }
+    
     @GetMapping("/join/check/email")
     public ResponseEntity<Boolean> checkEmail(@Email @RequestParam("email") String email) {
         return ResponseEntity.ok(userService.isEmailExist(email));
