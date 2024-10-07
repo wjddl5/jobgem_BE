@@ -38,6 +38,7 @@ public class CompanyService {
     private UserRepository userRepository;
 
     public CompanyIndexDto getCompany(int id) {
+        Company company = companyRepository.findById(id).orElseThrow();
         return CompanyIndexDto.builder()
                 .company(CompanyMapper.INSTANCE.toDto(companyRepository.findById(id).orElseThrow()))
                 .postCount(postRepository.countByCoIdxAndPoState(id, 1))
@@ -47,7 +48,7 @@ public class CompanyService {
                 .talentCount(talentRepository.countByCoIdx(id))
                 .fitJobseekerCount(jobseekerRepository.countByWithfitJobseeker(id))
                 .blockList(blockRepository.findAllByCoIdx(id))
-                .chatList(chatroomRepository.findByOpIdx(id))
+                .chatList(chatroomRepository.findByOpIdx(company.getUsIdx()))
                 .build();
     }
 
