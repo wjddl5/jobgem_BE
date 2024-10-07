@@ -40,7 +40,7 @@ public class CategoryService {
     public AllCategoryResponse getAll() {
         AllCategoryResponse response = new AllCategoryResponse();
 
-        response.setLocationDoList(LocationDoMapper.INSTANCE.toDtoList(locationDoRepository.findAll()));
+        response.setLocationList(LocationDoMapper.INSTANCE.toLocationDtoList(locationDoRepository.findAll()));
         response.setEducationList(EducationMapper.INSTANCE.toDtoList(educationRepository.findAll()));
         response.setCareerList(CareerMapper.INSTANCE.toDtoList(careerRepository.findAll()));
         response.setHireKindList(HireKindMapper.INSTANCE.toDtoList(hireKindRepository.findAll()));
