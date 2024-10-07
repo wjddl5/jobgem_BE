@@ -20,7 +20,7 @@ public class ChatService {
     @Autowired
     private ChatroomRepository chatroomRepository;
 
-    public ChatDto addChat(ChatRequestDto chatRequestDto) {
+    public ChatDto createChat(ChatRequestDto chatRequestDto) {
         ChatDto chatDto = ChatDto.builder()
                 .usIdx(chatRequestDto.getUsIdx())
                 .cmIdx(chatRequestDto.getCmIdx())
