@@ -52,7 +52,7 @@ public class ChatController {
                         .chDate(chat.getChDate().toString())
                         .chIsRead(chat.getChIsRead())
                         .build();
-                redisService.addToListWithTTL("chatroom"+id, chatRedisDto, 1, TimeUnit.HOURS);
+                redisService.createToListWithTTL("chatroom"+id, chatRedisDto, 1, TimeUnit.HOURS);
             }
         }
         return ResponseEntity.ok(redisService.getChatList("chatroom"+id, usIdx));
@@ -62,7 +62,7 @@ public class ChatController {
     @MessageMapping("/chat")
     public Object receiveMessage(ChatRequestDto chat) {
         template.convertAndSend("/sub/chatroom/"+chat.getCmIdx(), chat);
-        chatService.addChat(chat);
+        chatService.createChat(chat);
         ChatRedisDto chatRedisDto = ChatRedisDto.builder()
                 .usIdx(chat.getUsIdx())
                 .cmIdx(chat.getCmIdx())
@@ -70,6 +70,6 @@ public class ChatController {
                 .chDate(LocalDateTime.now().toString())
                 .chIsRead(chat.getChIsRead())
                 .build();
-        return redisService.addToListWithTTL("chatroom"+chat.getCmIdx(), chatRedisDto, 1, TimeUnit.HOURS);
+        return redisService.createToListWithTTL("chatroom"+chat.getCmIdx(), chatRedisDto, 1, TimeUnit.HOURS);
     }
 }
