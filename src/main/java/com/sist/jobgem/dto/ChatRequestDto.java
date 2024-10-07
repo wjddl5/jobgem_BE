@@ -1,9 +1,10 @@
 package com.sist.jobgem.dto;
 
-import lombok.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Setter
 @Getter
@@ -14,6 +15,6 @@ public class ChatRequestDto {
     private Integer usIdx;
     private Integer cmIdx;
     private String chContent;
-    private Integer chIsRead = 0;
-    private String chDate = LocalDateTime.now().toString();
+    private Integer chIsRead;
+    private String chDate;
 }

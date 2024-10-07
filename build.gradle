@@ -55,8 +55,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	//S3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-	 // AOP 의존성 추가
+	// AOP 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-aop'
+	// JSON 라이브러리
+	implementation 'org.json:json:20220320'
 }
 
 tasks.named('test') {
