@@ -1,10 +1,13 @@
 package com.sist.jobgem.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sist.jobgem.dto.InterestCompanyDto;
+import com.sist.jobgem.dto.InterestCompanyResponse;
 import com.sist.jobgem.entity.InterestCompany;
 import com.sist.jobgem.mapper.InterestCompanyMapper;
 import com.sist.jobgem.repository.InterestCompanyRepository;
@@ -34,5 +37,13 @@ public class InterestCompanyService {
             return false;
         }
         return true;
+    }
+
+    public List<InterestCompanyResponse> getInterestCompanies(Integer joIdx) {
+        List<InterestCompany> interestCompanies = interestCompanyRepository.findByJoIdx(joIdx);
+        for(int i = 0; i < interestCompanies.size(); i++) {
+            System.out.println(interestCompanies.get(i));
+        }
+        return InterestCompanyMapper.INSTANCE.toInterestCompanyResponseList(interestCompanies);
     }
 }

@@ -1,11 +1,13 @@
 package com.sist.jobgem.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sist.jobgem.dto.ScrapDto;
+import com.sist.jobgem.dto.ScrapResponse;
 import com.sist.jobgem.entity.Scrap;
 import com.sist.jobgem.mapper.ScrapMapper;
 import com.sist.jobgem.repository.ScrapRepository;
@@ -37,6 +39,12 @@ public class ScrapService {
         } 
         scrapRepository.delete(scrap);
         return "delete";
+    }
+
+    public List<ScrapResponse> getScrapByJoIdx(Integer joIdx) {
+        List<ScrapResponse> responses = ScrapMapper.INSTANCE.toScrapResponseList(scrapRepository.findByJoIdx(joIdx));
+        System.out.println(responses);
+        return responses;
     }
 }   
 

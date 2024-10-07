@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -145,9 +146,9 @@ public class PostController {
         return ResponseEntity.ok(postService.searchPosts(keyword, curPage));
     }
 
-    @Operation(summary = "채용공고 채용 요청", description = "채용공고 채용 요청")
+    @Operation(summary = "채용공고 채용 검색", description = "채용공고 채용 요청")
     @PostMapping("/recruit")
-    public ResponseEntity<Page<PostDto>> recruitPost(@RequestBody RecruitRequest recruitRequest) {
+    public ResponseEntity<Slice<PostDto>> recruitPost(@RequestBody RecruitRequest recruitRequest) {
         return ResponseEntity.ok(postService.findByRecruit(recruitRequest));
     }
 }

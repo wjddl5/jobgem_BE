@@ -9,7 +9,6 @@ import com.sist.jobgem.entity.Offer;
 import com.sist.jobgem.entity.Skill;
 import com.sist.jobgem.entity.User;
 
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -66,7 +65,11 @@ public class JobseekerDto {
         this.skillIds = jobseeker.getSkills().stream()
                 .map(Skill::getId)
                 .collect(Collectors.toList()); // Skill ID 목록 추출
-        this.joAge = LocalDate.now().getYear() - joBirth.getYear();
+        if (jobseeker.getJoBirth() != null) {
+            this.joAge = LocalDate.now().getYear() - jobseeker.getJoBirth().getYear();
+        } else {
+            this.joAge = null;
+        }
     }
 
 }

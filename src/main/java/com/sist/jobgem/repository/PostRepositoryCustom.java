@@ -9,11 +9,12 @@ import com.sist.jobgem.entity.Post;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 @Repository
 public interface PostRepositoryCustom {
 
     Page<PostCountApplyDto> findByFilterWithApplyCount(Map<String, Object> map, Pageable pageable);
     
-    Page<Post> findByRecruit(RecruitRequest request, Pageable pageable);
+    Slice<Post> findByRecruit(RecruitRequest request, Pageable pageable);
 }

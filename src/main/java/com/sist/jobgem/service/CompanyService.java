@@ -2,17 +2,18 @@ package com.sist.jobgem.service;
 
 import com.sist.jobgem.dto.*;
 import com.sist.jobgem.entity.Company;
-import com.sist.jobgem.entity.User;
 import com.sist.jobgem.mapper.CompanyMapper;
 import com.sist.jobgem.mapper.UserMapper;
 import com.sist.jobgem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CompanyService {
@@ -49,6 +50,7 @@ public class CompanyService {
                 .chatList(chatroomRepository.findByOpIdx(id))
                 .build();
     }
+
     public Integer updateCompany(int id, String coThumbimgUrl) {
         CompanyDto joinCompany = CompanyMapper.INSTANCE.toDto(companyRepository.findById(id).orElseThrow());
         joinCompany.setCoThumbimgUrl(coThumbimgUrl);
@@ -61,12 +63,10 @@ public class CompanyService {
         return companyRepository.save(company).getId();
     }
 
-    public Page<CompanyDto> findAllCompanies(Pageable pageable, String type, String value) {
-        if (value == null && type == null) {
-            return companyRepository.findAll(pageable).map(CompanyMapper.INSTANCE::toDto);
-        }
-        return companyRepository.findByTypeAndValueContaining(type, value, pageable)
-                .map(CompanyMapper.INSTANCE::toDto);
+    public Page<CompanyDto> findAllCompanies(Map<String, Object> params) {
+        Page<Company> companyPage = companyRepository.findByTypeAndValueContaining(params);
+        List<CompanyDto> companyDtoList = CompanyMapper.INSTANCE.toDtoList(companyPage.getContent());
+        return new PageImpl<>(companyDtoList, companyPage.getPageable(), companyPage.getTotalElements());
     }
 
     public Slice<JobseekerDto> getFitJobseekerList(int id, Pageable pageable) {
@@ -78,12 +78,8 @@ public class CompanyService {
         return talentList;
     }
 
-    public List<CompanyDto> findUnblockedCompany(String type, String value) {
-        if (value == null && type == null) {
-            return CompanyMapper.INSTANCE.toDtoList(companyRepository.findAllcompanysNotInBlock());
-        }else{
-        return CompanyMapper.INSTANCE.toDtoList(companyRepository.findCompanysNotInBlock(type, value));
-        }
+    public List<CompanyDto> findUnblockedCompany(Map<String, Object> params) {
+        return CompanyMapper.INSTANCE.toDtoList(companyRepository.findCompanysNotInBlock(params));
     }
 
     public CompanyDto getCompanyById(int id) {

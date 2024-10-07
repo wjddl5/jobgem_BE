@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.sist.jobgem.dto.*;
 import com.sist.jobgem.entity.*;
@@ -161,12 +160,20 @@ public class JobseekerController {
     @Operation(summary = "회사 공고 지원하기", description = "DTO에 있는 ID값으로 대표이력서를 구한 후 회사 공고 지원하기")
     @PostMapping("/applyment")
     public ResponseEntity<?> addApplyment(@RequestBody ApplymentDto dto) {
+        // 이미 지원한 공고인지 확인
         if (applymentService.isAlreadyApplied(dto)) {
-            return ResponseEntity.badRequest().body("applyment fail");
-        } else {
-            Applyment applyment = applymentService.addApplyment(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(applyment);
+            return ResponseEntity.badRequest().body("이미 지원한 공고입니다.");
         }
+
+        // 대표 이력서가 있는지 확인
+        boolean hasDefaultResume = resumeService.hasDefaultResume(dto.getJoIdx());
+        if (!hasDefaultResume) {
+            return ResponseEntity.badRequest().body("대표 이력서가 없습니다.");
+        }
+
+        // 지원하기 로직 실행
+        Applyment applyment = applymentService.addApplyment(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(applyment);
     }
 
     @Operation(summary = "회사후기 조회", description = "ID값으로 회사후기 페이지 데이터 불러오기")
@@ -213,13 +220,14 @@ public class JobseekerController {
     }
 
     @Operation(summary = "대표이력서 설정 ", description = "joIdx가 갖고있는 이력서의 ID값으로 대표이력서 설정하기")
-    @PutMapping("/resume/default/{id}")
-    public ResponseEntity<String> updateDefaultResume(@PathVariable("id") int resumeId,
+    @PutMapping("/resume/default/{resumeId}")
+    public ResponseEntity<?> updateDefaultResume(@PathVariable("resumeId") int resumeId,
             @RequestParam("joIdx") int joIdx) {
         try {
-            resumeService.updateDefaultResume(resumeId, joIdx); // 서비스에서 대표 이력서 업데이트 로직 실행
+            resumeService.changeDefaultResume(resumeId, joIdx);
             return ResponseEntity.ok("change default resume success");
         } catch (Exception e) {
+            System.out.println("확인!" + resumeId + joIdx);
             return ResponseEntity.badRequest().body("change default resume fail");
         }
     }
@@ -236,10 +244,18 @@ public class JobseekerController {
         return ResponseEntity.ok(interviewService.deleteInterview(id));
     }
 
-    @Operation(summary = "이력서 삭제 ", description = "ID값으로 이력서 삭제하기")
+    @Operation(summary = "이력서 삭제", description = "ID값으로 이력서 삭제하기")
     @DeleteMapping("/resume/{id}")
-    public ResponseEntity<Integer> deleteResume(@PathVariable("id") int id) {
-        return ResponseEntity.ok(resumeService.deleteResume(id));
+    public ResponseEntity<String> deleteResume(@PathVariable("id") int id) {
+        int result = resumeService.deleteResume(id); // 서비스 메서드 호출
+
+        if (result == 0) {
+            // 기본 이력서라서 삭제 불가
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("기본 이력서는 삭제할 수 없습니다.");
+        } else {
+            // 성공적으로 삭제
+            return ResponseEntity.ok("이력서 삭제가 완료되었습니다.");
+        }
     }
 
     @Operation(summary = "비밀번호 확인", description = "ID값으로 현재 비밀번호와 chkPw가 일치하는지 검사하기")

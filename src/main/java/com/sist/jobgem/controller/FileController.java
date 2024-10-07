@@ -12,8 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sist.jobgem.service.S3UploadService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "File", description = "파일처리 API")
 @RestController
 @RequestMapping("/api/files")
 @RequiredArgsConstructor
@@ -21,7 +24,7 @@ public class FileController {
 
     private final S3UploadService s3UploadService;
 
-    // 파일 업로드
+    @Operation(summary = "파일 업로드", description = "선택한 파일 업로드하기")
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
@@ -33,7 +36,7 @@ public class FileController {
         }
     }
 
-    // 파일 다운로드
+    @Operation(summary = "파일 다운로드", description = "선택한 파일 다운받기")
     @GetMapping("/download/{filename}")
     public ResponseEntity<UrlResource> downloadFile(@PathVariable("filename") String filename) {
         try {
@@ -48,16 +51,11 @@ public class FileController {
         }
     }
 
-    // 파일 삭제
+    @Operation(summary = "파일 삭제", description = "선택한 파일 삭제하기")
     @DeleteMapping("/delete/{filename}")
     public ResponseEntity<String> deleteFile(@PathVariable("filename") String filename) {
         s3UploadService.deleteImage(filename);
         return ResponseEntity.ok("File deleted successfully");
-    }
-
-    @GetMapping("viewFile")
-    public String viewFile(@RequestParam("filename") String filename) {
-        return s3UploadService.viewFile(filename);
     }
 
 }

@@ -14,11 +14,9 @@ public class LocationBridgeService {
     @Autowired
     private LocationBridgeRepository locationBridgeRepository;
 
-
-
     public LocationBridgeDto create(LocationBridgeDto locationBridgeDto) {
         LocationBridge locationBridge = LocationBridgeMapper.INSTANCE.toEntity(locationBridgeDto);
         locationBridge = locationBridgeRepository.save(locationBridge);
         return LocationBridgeMapper.INSTANCE.toDto(locationBridge);
     }
-}   
+}

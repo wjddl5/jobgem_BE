@@ -1,8 +1,9 @@
 package com.sist.jobgem.repository;
 
+import java.util.List;
+
 import com.sist.jobgem.entity.InterestCompany;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,6 @@ public interface InterestCompanyRepository extends JpaRepository<InterestCompany
 
     @Query("SELECT i FROM InterestCompany i WHERE i.coIdx = :coIdx AND i.joIdx = :joIdx")
     InterestCompany findByCoIdxAndJoIdx(@Param("coIdx") Integer coIdx, @Param("joIdx") Integer joIdx);
+
+    List<InterestCompany> findByJoIdx(Integer joIdx);
 }

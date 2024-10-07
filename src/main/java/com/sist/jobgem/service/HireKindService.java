@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.jobgem.repository.HireKindRepository;
+import com.sist.jobgem.repository.HkBridgeRepository;
 import com.sist.jobgem.dto.HireKindDto;
 import com.sist.jobgem.entity.HireKind;
 import com.sist.jobgem.mapper.HireKindMapper;
@@ -16,6 +17,9 @@ public class HireKindService {
 
     @Autowired
     private HireKindRepository hireKindRepository;
+
+    @Autowired
+    private HkBridgeRepository hkBridgeRepository;
 
     public List<HireKindDto> getHir() {
         List<HireKind> list = hireKindRepository.findAll();
@@ -31,8 +35,10 @@ public class HireKindService {
         return hireKindRepository.save(e) != null;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteHir(int id) {
         try {
+            hkBridgeRepository.deleteByHkIdx(id);
             hireKindRepository.deleteById(id);
             return true;
         } catch (Exception e) {

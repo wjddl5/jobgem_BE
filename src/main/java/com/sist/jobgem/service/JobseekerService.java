@@ -2,15 +2,16 @@ package com.sist.jobgem.service;
 
 import com.sist.jobgem.dto.FitJobseekerDto;
 import com.sist.jobgem.repository.ApplymentRepository;
-import com.sist.jobgem.repository.HaveSkillRepository;
 import com.sist.jobgem.repository.InterestCompanyRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.sist.jobgem.dto.JobseekerDto;
 import com.sist.jobgem.dto.UserDto;
@@ -33,10 +34,7 @@ public class JobseekerService {
     private JobseekerRepository jobseekerRepository;
 
     @Autowired
-    private HaveSkillRepository haveSkillRepository;
-
-    @Autowired
-    ScrapRepository scrapRepository;
+    private ScrapRepository scrapRepository;
 
     @Autowired
     ApplymentRepository applymentRepository;
@@ -73,12 +71,14 @@ public class JobseekerService {
         return fitJobseeker;
     }
 
-    public Page<JobseekerDto> getJobseekerList(Pageable pageable, String type, String value) {
-        if (value == null && type == null) {
-            return jobseekerRepository.findAll(pageable).map(JobseekerMapper.INSTANCE::toDto);
-        }
-        return jobseekerRepository.findByTypeAndValueContaining(type, value, pageable)
-                .map(JobseekerMapper.INSTANCE::toDto);
+    public Page<JobseekerDto> getJobseekerList(Map<String, Object> params) {
+        Page<Jobseeker> jobseekerPage = jobseekerRepository.findByTypeAndValueContaining(params);
+
+        List<JobseekerDto> jobseekerDtoList = jobseekerPage.getContent().stream()
+                .map(JobseekerDto::new)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(jobseekerDtoList, jobseekerPage.getPageable(), jobseekerPage.getTotalElements());
     }
 
     @Transactional
@@ -169,12 +169,11 @@ public class JobseekerService {
         return true;
     }
 
-    public List<JobseekerDto> findUnblockedJobseeker(String type, String value) {
-        if (value == null && type == null) {
-            return JobseekerMapper.INSTANCE.toDtoList(jobseekerRepository.findAllJobseekersNotInBlock());
-        } else {
-            return JobseekerMapper.INSTANCE.toDtoList(jobseekerRepository.findJobseekersNotInBlock(type, value));
-        }
+    public List<JobseekerDto> findUnblockedJobseeker(Map<String, Object> params) {
+        List<Jobseeker> jobseekers = jobseekerRepository.findJobseekersNotInBlock(params);
+        return jobseekers.stream()
+                .map(JobseekerDto::new)
+                .collect(Collectors.toList());
     }
 
     public Map<String, Object> getMypageCount(int id) {

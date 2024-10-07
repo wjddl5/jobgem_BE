@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sist.jobgem.dto.EducationDto;
 import com.sist.jobgem.entity.Education;
 import com.sist.jobgem.mapper.EducationMapper;
+import com.sist.jobgem.repository.EducationBridgeRepository;
 import com.sist.jobgem.repository.EducationRepository;
 import java.util.List;
 
@@ -15,6 +16,9 @@ public class EducationService {
 
   @Autowired
   private EducationRepository educationRepository;
+
+  @Autowired
+  private EducationBridgeRepository educationBridgeRepository;
 
   public List<EducationDto> getEdu() {
     List<Education> list = educationRepository.findAll();
@@ -30,8 +34,10 @@ public class EducationService {
     return educationRepository.save(e) != null;
   }
 
+  @Transactional(rollbackFor = Exception.class)
   public boolean deleteEdu(int id) {
     try {
+      educationBridgeRepository.deleteByEdIdx(id);
       educationRepository.deleteById(id);
       return true;
     } catch (Exception e) {
