@@ -38,9 +38,6 @@ public class Post {
     @Column(name = "po_deadline")
     private LocalDate poDeadline;
 
-    @Column(name = "po_imgUrl", length = 100)
-    private String poImgurl;
-
     @Column(name = "po_sal", length = 10)
     private String poSal;
 

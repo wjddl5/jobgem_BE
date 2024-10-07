@@ -1,6 +1,4 @@
 package com.sist.jobgem.dto;
-
-import java.sql.Date;
 import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +20,6 @@ public class PostCountApplyDto {
     private String poContent;
     private LocalDate poDate;
     private LocalDate poDeadline;
-    private String poImgurl;
     private String poSal;
     private String poSubType;
     private String poAddr;
