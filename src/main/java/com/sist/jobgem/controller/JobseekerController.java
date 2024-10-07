@@ -36,9 +36,6 @@ public class JobseekerController {
     ResumeService resumeService;
 
     @Autowired
-    BlockService blockService;
-
-    @Autowired
     SkillService skillService;
 
     @Autowired
