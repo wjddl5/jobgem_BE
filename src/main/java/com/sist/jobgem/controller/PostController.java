@@ -63,8 +63,7 @@ public class PostController {
                })
     @GetMapping("")
     public ResponseEntity<Page<PostCountApplyDto>> getPosts(@Parameter(description = "페이지네이션 및 필터링 파라미터") @RequestParam Map<String, Object> params) {
-        int coIdx = 1; // Consider making this a path variable or part of the params
-        return ResponseEntity.ok(postService.getPosts(params, coIdx));
+        return ResponseEntity.ok(postService.getPosts(params));
     }
     
     @Operation(summary = "채용공고 정보 불러오기", description = "특정 회사의 채용공고 정보를 불러옵니다.",

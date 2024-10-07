@@ -58,7 +58,7 @@ public class PostService {
     @Autowired
     private HireKindRepository hireKindRepository;
 
-    public Page<PostCountApplyDto> getPosts(Map<String, Object> map, int coIdx) {
+    public Page<PostCountApplyDto> getPosts(Map<String, Object> map) {
         int currentPage = Integer.parseInt(map.get("curPage").toString());
         int pageSize = 10;
         if(map.get("size") != null){
