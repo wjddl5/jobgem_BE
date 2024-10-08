@@ -10,13 +10,13 @@ import lombok.Setter;
 public class PostScheduleDays {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "psd_idx")
+    @Column(name = "psd_idx", nullable = false)
     private Integer id;
 
-    @Column(name = "po_idx")
+    @Column(name = "po_idx", nullable = false)
     private Integer poIdx;
 
-    @Column(name = "wd_idx")
+    @Column(name = "wd_idx", nullable = false)
     private Integer wdIdx;
 }
 

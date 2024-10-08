@@ -29,7 +29,7 @@ public class Post {
     @Column(name = "po_title", nullable = false, length = 50)
     private String poTitle;
 
-    @Column(name = "po_content", nullable = false, length = 300)
+    @Column(name = "po_content", nullable = false, columnDefinition = "TEXT")
     private String poContent;
 
     @Column(name = "po_date", nullable = false)
@@ -38,7 +38,7 @@ public class Post {
     @Column(name = "po_deadline")
     private LocalDate poDeadline;
 
-    @Column(name = "po_sal", length = 10)
+    @Column(name = "po_sal", length = 20)
     private String poSal;
 
     @Column(name = "ws_start_time")
