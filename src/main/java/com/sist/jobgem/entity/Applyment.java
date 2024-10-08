@@ -39,14 +39,8 @@ public class Applyment {
         }
     }
 
-    @Column(name = "ap_pass")
-    private Integer apPass;
-
     @Column(name = "ap_read")
     private Integer apRead;
-
-    @Column(name = "ap_state", nullable = false)
-    private Integer apState;
 
     @ManyToOne
     @JoinColumn(name = "po_idx", referencedColumnName = "po_idx", insertable = false, updatable = false)

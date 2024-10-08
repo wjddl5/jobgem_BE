@@ -31,9 +31,7 @@ public class ApplymentDto {
                 .joIdx(applyment.getJoIdx())
                 .reIdx(applyment.getReIdx())
                 .apDate(applyment.getApDate())
-                .apPass(applyment.getApPass())
                 .apRead(applyment.getApRead())
-                .apState(applyment.getApState())
                 .post(applyment.getPost())
                 .jobseeker(applyment.getJobseeker())
                 .build();
@@ -45,7 +43,6 @@ public class ApplymentDto {
         this.post = applyment.getPost();
         this.joIdx = applyment.getJoIdx();
         this.reIdx = applyment.getReIdx();
-        this.apState = applyment.getApState();
         this.apRead = applyment.getApRead();
         this.apDate = applyment.getApDate();
     }

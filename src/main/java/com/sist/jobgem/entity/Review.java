@@ -39,11 +39,11 @@ public class Review {
     @Column(name = "co_idx", nullable = false)
     private Integer coIdx;
 
-    @Column(name = "re_title", nullable = false, length = 20)
+    @Column(name = "re_title", nullable = false, length = 50)
     private String reTitle;
 
     @Lob
-    @Column(name = "re_content", nullable = false)
+    @Column(name = "re_content", nullable = false, length = 500)
     private String reContent;
 
     @Column(name = "re_score", nullable = false)
