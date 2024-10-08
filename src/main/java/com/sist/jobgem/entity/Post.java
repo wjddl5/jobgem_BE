@@ -38,7 +38,7 @@ public class Post {
     @Column(name = "po_deadline")
     private LocalDate poDeadline;
 
-    @Column(name = "po_sal", length = 10)
+    @Column(name = "po_sal", length = 20)
     private String poSal;
 
     @Column(name = "ws_start_time")

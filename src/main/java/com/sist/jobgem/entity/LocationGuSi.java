@@ -30,8 +30,8 @@ public class LocationGuSi {
     @Column(name = "ld_idx", nullable = false)
     private Integer ldIdx;
 
-    @Size(max = 10)
-    @Column(name = "lg_name", nullable = false, length = 10)
+    @Size(max = 20)
+    @Column(name = "lg_name", nullable = false, length = 20)
     private String lgName;
 
     @ManyToOne
