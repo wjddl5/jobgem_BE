@@ -28,7 +28,7 @@ public class Log {
     @Column(name = "us_type", nullable = false)
     private Integer usType;
 
-    @Column(name = "lo_content", nullable = false, length = 100)
+    @Column(name = "lo_content", nullable = false, length = 200)
     private String loContent;
 
     @Column(name = "lo_time", nullable = false)

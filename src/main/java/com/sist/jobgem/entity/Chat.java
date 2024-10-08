@@ -27,7 +27,7 @@ public class Chat {
     @Column(name = "cm_idx", nullable = false)
     private Integer cmIdx;
 
-    @Column(name = "ch_content", nullable = false)
+    @Column(name = "ch_content", nullable = false, length = 500)
     private String chContent;
 
     @Column(name = "ch_date", nullable = false)
