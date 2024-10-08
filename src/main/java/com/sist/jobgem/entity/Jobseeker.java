@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Jobseeker {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "jo_idx", nullable = false)
@@ -46,7 +47,7 @@ public class Jobseeker {
     @Column(name = "jo_tel", nullable = false, length = 15)
     private String joTel;
 
-    @Column(name = "jo_gender", nullable = false, length = 1)
+    @Column(name = "jo_gender", length = 1)
     private String joGender;
 
     @Column(name = "jo_img_url", length = 100)
