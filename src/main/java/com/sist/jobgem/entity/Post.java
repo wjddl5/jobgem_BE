@@ -29,7 +29,7 @@ public class Post {
     @Column(name = "po_title", nullable = false, length = 50)
     private String poTitle;
 
-    @Column(name = "po_content", nullable = false, length = 300)
+    @Column(name = "po_content", nullable = false, columnDefinition = "TEXT")
     private String poContent;
 
     @Column(name = "po_date", nullable = false)
