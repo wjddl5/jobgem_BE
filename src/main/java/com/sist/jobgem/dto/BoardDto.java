@@ -22,7 +22,6 @@ public class BoardDto {
   private Integer boType;
   private String boTitle;
   private String boContent;
-  private String boImage;
   private LocalDate boWritedate;
   private Integer boHit;
   private Integer boLike;
@@ -45,7 +44,6 @@ public class BoardDto {
         .boTitle(board.getBoTitle())
         .boContent(board.getBoContent())
         .boWritedate(board.getBoWritedate())
-        .boImage(board.getBoImage())
         .boHit(board.getBoHit())
         .boLike(board.getBoLike())
         .boAnswer(board.getBoAnswer())
@@ -57,17 +55,17 @@ public class BoardDto {
 
   public static List<BoardDto> toDtoList(List<Board> boardList) {
     List<BoardDto> list = new ArrayList<>();
-    for(Board board : boardList){
-        list.add(BoardDto.builder()
-        .id(board.getId())
-        .usIdx(board.getUser().getId())
-        .boTitle(board.getBoTitle())
-        .boWritedate(board.getBoWritedate())
-        .boStatus(board.getBoStatus())
-        .boType(board.getBoType())
-        .boAnswer(board.getBoAnswer())
-        .usId(board.getUser().getUsId())
-        .build());
+    for (Board board : boardList) {
+      list.add(BoardDto.builder()
+          .id(board.getId())
+          .usIdx(board.getUser().getId())
+          .boTitle(board.getBoTitle())
+          .boWritedate(board.getBoWritedate())
+          .boStatus(board.getBoStatus())
+          .boType(board.getBoType())
+          .boAnswer(board.getBoAnswer())
+          .usId(board.getUser().getUsId())
+          .build());
     }
     return list;
   }
