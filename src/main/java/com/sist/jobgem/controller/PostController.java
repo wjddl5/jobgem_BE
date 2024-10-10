@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -109,12 +110,17 @@ public class PostController {
     public ResponseEntity<Map<String, Object>> getPostDetail(@PathVariable("id") int id) {
         return ResponseEntity.ok(postService.getDetail(id));
     }
-
+    @Operation(summary = "이력서 열람", description = "채용공고에 지원한 이력서를 열람합니다.")
+    @PutMapping("/{id}/read")
+    public ResponseEntity<String> viewResume(@PathVariable("id") int id) {
+        applymentService.view(id);
+        return ResponseEntity.ok("이력서가 성공적으로 열람되었습니다.");
+    }
+    
     @Operation(summary = "채용공고 지원자 이력서 불러오기", description = "채용공고 지원자 이력서 불러오기")
     @GetMapping("/{id}/resume")
     public ResponseEntity<Map<String, Object>> getResume(@PathVariable("id") int id) {
         Map<String, Object> map = new HashMap<>();
-        applymentService.view(id);
         ResumeDto resume = resumeService.getResume(id);
         JobseekerDto jobseeker = jobseekerService.getJobseeker(id);
         map.put("resume", resume);
