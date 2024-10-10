@@ -27,6 +27,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
     public Page<Company> findByTypeAndValueContaining(Map<String, Object> params) {
         QCompany company = QCompany.company;
         BooleanBuilder builder = new BooleanBuilder();
+        builder.and(company.user.usType.ne(0));
         int pageNumber = 0;
         int pageSize = 10;
         if (params.get("page") != null) {
@@ -95,6 +96,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
         QBlock block = QBlock.block;
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(block.coIdx.isNull());
+        builder.and(company.user.usType.ne(0));
         if (params.get("searchType") != null && params.get("searchValue") != null) {
             String type = params.get("searchType").toString();
             String value = params.get("searchValue").toString();
