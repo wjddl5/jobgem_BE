@@ -57,7 +57,6 @@ public class OfferService {
         Jobseeker jobseeker = jobseekerRepository.findById(offerDto.getJoIdx()).orElseThrow();
         int joinUser = jobseeker.getUser().getId();
 
-
         ChatroomDto chatroomDto = ChatroomDto.builder()
                 .opIdx(openUser)
                 .jnIdx(joinUser)
@@ -78,7 +77,20 @@ public class OfferService {
                 .chat(chatRepository.save(ChatMapper.INSTANCE.toEntity(chat)))
                 .build();
 
-
         return joinUser;
+    }
+
+    // Offer 거절 처리 메서드
+    public boolean rejectOffer(int offerId) {
+        Offer offer = offerRepository.findById(offerId)
+                .orElseThrow(() -> new IllegalArgumentException("Offer not found with ID: " + offerId));
+
+        OfferDto oDto = OfferMapper.INSTANCE.toDto(offer);
+        oDto.setOfState(0);
+
+        Offer rejectOffer = OfferMapper.INSTANCE.toEntity(oDto);
+        // 변경된 상태 저장
+        offerRepository.save(rejectOffer);
+        return true;
     }
 }
