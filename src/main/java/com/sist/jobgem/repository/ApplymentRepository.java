@@ -17,8 +17,12 @@ import java.time.LocalDate;
 
 @Repository
 public interface ApplymentRepository extends JpaRepository<Applyment, Integer> {
-
-        int countByPoIdx(int poIdx);
+        
+        @Query("SELECT COUNT(a) FROM Applyment a " +
+               "WHERE a.poIdx = :poIdx " +
+               "AND a.joIdx IN (SELECT j.id FROM Jobseeker j " +
+               "                WHERE j.user.id IN (SELECT u.id FROM User u WHERE u.usState = 1))")
+        int countByPoIdx(@Param("poIdx") int poIdx);
 
         int countByJoIdxAndApState(int joIdx, int apState);
 
@@ -45,7 +49,8 @@ public interface ApplymentRepository extends JpaRepository<Applyment, Integer> {
         Page<Applyment> findByPoIdxAndApState(@Param("poIdx") int poIdx, @Param("apState") int apState,
                         Pageable pageable);
 
-        int countByPoIdxAndApRead(int poIdx, int apRead);
+        
+        int countByPoIdxAndApReadAndJobseekerUserUsState(int poIdx, int apRead, int usState);
 
         @Modifying
         @Transactional
