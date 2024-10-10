@@ -122,7 +122,7 @@ public class PostController {
     public ResponseEntity<Map<String, Object>> getResume(@PathVariable("id") int id) {
         Map<String, Object> map = new HashMap<>();
         ResumeDto resume = resumeService.getResume(id);
-        JobseekerDto jobseeker = jobseekerService.getJobseeker(id);
+        JobseekerDto jobseeker = jobseekerService.getJobseeker(resume.getJoIdx());
         map.put("resume", resume);
         map.put("jobseeker", jobseeker);
         return ResponseEntity.ok(map);
