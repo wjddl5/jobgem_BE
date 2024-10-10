@@ -32,7 +32,7 @@ public class JobseekerRepositoryImpl implements JobseekerRepositoryCustom {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(block.joIdx.isNull());
         builder.and(user.usState.eq(1));
-
+        builder.and(user.usType.ne(0));
         if (params.get("searchType") != null && params.get("searchValue") != null) {
             String type = params.get("searchType").toString();
             String value = params.get("searchValue").toString();
@@ -89,6 +89,7 @@ public class JobseekerRepositoryImpl implements JobseekerRepositoryCustom {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         QJobseeker jobseeker = QJobseeker.jobseeker;
         BooleanBuilder builder = new BooleanBuilder();
+        builder.and(jobseeker.user.usType.ne(0));
         if (params.get("birthStartDate") != null) {
             builder.and(jobseeker.joBirth.goe(LocalDate.parse(params.get("birthStartDate").toString())));
         }
