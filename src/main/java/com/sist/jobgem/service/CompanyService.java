@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -90,6 +91,7 @@ public class CompanyService {
     public Integer deleteCompany(int id) {
         UserDto user = UserMapper.INSTANCE.toDto(userRepository.findById(id));
         user.setUsState(0);
+        user.setUsLeaveDate(LocalDate.now());
         return userRepository.save(UserMapper.INSTANCE.toEntity(user)).getId();
     }
 }
