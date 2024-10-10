@@ -118,7 +118,7 @@ public class JobseekerController {
     }
 
     @Operation(summary = "입사지원 거절하기", description = "ID값으로 특정 입사지원을 거절하기")
-    @PutMapping("/offers/{loginId}/{offerId}")
+    @PutMapping("/offers/{id}/{offerId}")
     public ResponseEntity<Page<OfferDto>> updateOfferList(@PathVariable("id") int id,
             @PathVariable("offerId") int offerId,
             @RequestParam("curPage") int curPage) {
