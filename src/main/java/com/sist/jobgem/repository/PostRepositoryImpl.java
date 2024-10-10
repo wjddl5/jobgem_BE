@@ -12,6 +12,7 @@ import com.sist.jobgem.dto.RecruitRequest;
 import com.sist.jobgem.entity.Post;
 import com.sist.jobgem.entity.QApplyment;
 import com.sist.jobgem.entity.QCareersBridge;
+import com.sist.jobgem.entity.QCompany;
 import com.sist.jobgem.entity.QEducationBridge;
 import com.sist.jobgem.entity.QHkBridge;
 import com.sist.jobgem.entity.QLocationBridge;
@@ -41,6 +42,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     public Page<PostCountApplyDto> findByFilterWithApplyCount(Map<String, Object> map, Pageable pageable) {
         QPost post = QPost.post;
         QApplyment applyment = QApplyment.applyment;
+        QCompany company = QCompany.company;
         BooleanBuilder builder = new BooleanBuilder();
         OrderSpecifier<?> sort = post.poDate.desc();
         
@@ -91,10 +93,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
             .select(Projections.constructor(PostCountApplyDto.class,
                 post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline, post.poSal, post.poSubType, post.poAddr,
                 post.poEmail, post.poFax, post.poState,
-                applyment.count().intValue().as("applyCount")))
+                applyment.count().intValue().as("applyCount"), company))
             .from(post)
             .leftJoin(applyment).on(post.id.eq(applyment.poIdx))
-            
+            .leftJoin(company).on(post.coIdx.eq(company.id))
             .where(builder)
             .groupBy(post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
                 post.poSal, post.poSubType, post.poAddr,
