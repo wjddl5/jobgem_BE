@@ -36,10 +36,10 @@ public class Resume {
     @Column(name = "re_title", nullable = false, length = 50)
     private String reTitle;
 
-    @Column(name = "re_content", nullable = false, length = 100)
+    @Column(name = "re_content", nullable = false, length = 500)
     private String reContent;
 
-    @Column(name = "re_file_url", length = 100)
+    @Column(name = "re_file_url", length = 200)
     private String reFileUrl;
 
     @Column(name = "re_write_date", nullable = false)

@@ -39,9 +39,6 @@ public class Applyment {
         }
     }
 
-    @Column(name = "ap_pass")
-    private Integer apPass;
-
     @Column(name = "ap_read")
     private Integer apRead;
 

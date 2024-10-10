@@ -28,7 +28,7 @@ public class Alert {
     @Column(name = "us_idx", nullable = false)
     private Integer usIdx;
 
-    @Column(name = "al_content", nullable = false, length = 100)
+    @Column(name = "al_content", nullable = false, length = 200)
     private String alContent;
 
     @Column(name = "al_date", nullable = false)

@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -160,7 +162,7 @@ public class JobseekerService {
         }
 
         UserDto uDto = UserMapper.INSTANCE.toDto(user);
-
+        uDto.setUsLeaveDate(LocalDate.now());
         uDto.setUsState(0);
 
         User updatedUser = UserMapper.INSTANCE.toEntity(uDto);

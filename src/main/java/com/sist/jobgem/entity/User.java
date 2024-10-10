@@ -3,11 +3,12 @@ package com.sist.jobgem.entity;
 import java.time.Instant;
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -57,6 +58,6 @@ public class User {
     private Integer usState;
 
     @JsonIgnore
-    @Column(name = "refresh_token", length = 100)
+    @Column(name = "refresh_token", length = 200)
     private String refreshToken;
 }

@@ -14,6 +14,9 @@ import com.sist.jobgem.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Jobseeker", description = "구직자 API")
@@ -279,10 +282,24 @@ public class JobseekerController {
 
     @Operation(summary = "회원탈퇴", description = "ID값으로 회원탈퇴하기")
     @DeleteMapping("/account/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") int id) {
+    public ResponseEntity<String> deleteUser(@PathVariable("id") int id, HttpServletResponse response) {
         boolean isDeleted = jobseekerService.deleteUser(id);
 
         if (isDeleted) {
+            Cookie accessTokenCookie = new Cookie("accessToken", null);
+            accessTokenCookie.setHttpOnly(true);
+            accessTokenCookie.setPath("/");
+            accessTokenCookie.setMaxAge(0); // 쿠키 만료 시간 설정 (0: 즉시 만료)
+
+            Cookie refreshTokenCookie = new Cookie("refreshToken", null);
+            refreshTokenCookie.setHttpOnly(true);
+            refreshTokenCookie.setPath("/");
+            refreshTokenCookie.setMaxAge(0); // 쿠키 만료 시간 설정 (0: 즉시 만료)
+
+            // 응답에 쿠키 추가
+            response.addCookie(accessTokenCookie);
+            response.addCookie(refreshTokenCookie);
+
             return ResponseEntity.ok("delete account success");
         } else {
             return ResponseEntity.badRequest().body("delete account fail");

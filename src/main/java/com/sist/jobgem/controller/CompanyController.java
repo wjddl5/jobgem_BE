@@ -4,9 +4,11 @@ import com.sist.jobgem.dto.*;
 import com.sist.jobgem.enums.AlertMessageEnum;
 import com.sist.jobgem.service.*;
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +54,7 @@ public class CompanyController {
     @PutMapping("")
     public ResponseEntity<String> putCompany(@RequestBody CompanyDto companyDto) {
         int result = companyService.updateCompany(companyDto);
-        if(result == companyDto.getId()){
+        if (result == companyDto.getId()) {
             return ResponseEntity.ok("success");
         }
         return ResponseEntity.badRequest().body("fail");
@@ -60,7 +62,8 @@ public class CompanyController {
 
     @Operation(summary = "기업 로고 수정", description = "기업의 id와 새로운 로고 URL을 받아 로고를 수정합니다.")
     @PutMapping("/logo")
-    public ResponseEntity<Integer> updateCompany(@RequestParam("id") int id, @RequestParam("coThumbimgUrl") String coThumbimgUrl) {
+    public ResponseEntity<Integer> updateCompany(@RequestParam("id") int id,
+            @RequestParam("coThumbimgUrl") String coThumbimgUrl) {
         return ResponseEntity.ok(companyService.updateCompany(id, coThumbimgUrl));
     }
 
@@ -92,7 +95,8 @@ public class CompanyController {
 
     @Operation(summary = "차단 목록 조회", description = "기업 id와 구직자 이름을 받아 차단 목록을 조회합니다.")
     @GetMapping("/block")
-    public ResponseEntity<Page<BlockDto>> getBlockListbyCoIdxAndJoName(@RequestParam int id, @RequestParam String name, @RequestParam int loadPage) {
+    public ResponseEntity<Page<BlockDto>> getBlockListbyCoIdxAndJoName(@RequestParam int id, @RequestParam String name,
+            @RequestParam int loadPage) {
         PageRequest pageable = PageRequest.of(loadPage, 5, Sort.by(Sort.Direction.DESC, "blDate"));
         return ResponseEntity.ok(blockService.getBlockListByCoIdxAndJoName(id, name, pageable));
     }
@@ -112,13 +116,14 @@ public class CompanyController {
 
     @Operation(summary = "블랙리스트 추가", description = "블랙리스트에 구직자를 추가합니다.")
     @PostMapping("/blacklist")
-    public ResponseEntity<Integer> addBlackList(@RequestBody BlackListRequestDto requestDto){
+    public ResponseEntity<Integer> addBlackList(@RequestBody BlackListRequestDto requestDto) {
         return ResponseEntity.ok(blackListService.addBlackList(requestDto));
     }
 
     @Operation(summary = "면접 목록 조회", description = "기업 id로 면접 목록을 가져옵니다.")
     @GetMapping("/interview")
-    public ResponseEntity<Page<InterviewDto>> getInterviewListByCoIdx(@RequestParam int id, @RequestParam int loadPage, @RequestParam String sortBy) {
+    public ResponseEntity<Page<InterviewDto>> getInterviewListByCoIdx(@RequestParam int id, @RequestParam int loadPage,
+            @RequestParam String sortBy) {
         PageRequest pageable = PageRequest.of(loadPage, 3, Sort.by(Sort.Direction.DESC, sortBy));
         return ResponseEntity.ok(interviewService.getInterviewListByCoIdx(id, pageable));
     }
@@ -131,10 +136,23 @@ public class CompanyController {
         alertService.addAlert(jobseekerId, AlertMessageEnum.ALERT_OFFER.getMessage());
         return ResponseEntity.ok(jobseekerId);
     }
-    
+
     @Operation(summary = "기업 삭제", description = "기업 id로 해당 기업 정보를 삭제합니다.")
     @DeleteMapping("/leave")
-    public ResponseEntity<Integer> deleteCompany(@RequestParam int id) {
+    public ResponseEntity<Integer> deleteCompany(@RequestParam("id") int id, HttpServletResponse response) {
+        Cookie accessTokenCookie = new Cookie("accessToken", null);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge(0); // 쿠키 만료 시간 설정 (0: 즉시 만료)
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", null);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(0); // 쿠키 만료 시간 설정 (0: 즉시 만료)
+
+        // 응답에 쿠키 추가
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
         return ResponseEntity.ok(companyService.deleteCompany(id));
     }
 }

@@ -36,10 +36,10 @@ public class Blacklist {
     @Column(name = "us_idx", nullable = false)
     private Integer usIdx;
 
-    @Column(name = "bl_title", nullable = false, length = 20)
+    @Column(name = "bl_title", nullable = false, length = 100)
     private String blTitle;
 
-    @Column(name = "bl_content", nullable = false, length = 100)
+    @Column(name = "bl_content", nullable = false, length = 500)
     private String blContent;
 
     @Column(name = "bl_date", nullable = false)

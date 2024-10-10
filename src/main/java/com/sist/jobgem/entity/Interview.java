@@ -37,7 +37,7 @@ public class Interview {
     @Column(name = "co_idx", nullable = false)
     private Integer coIdx;
 
-    @Column(name = "in_content", nullable = false)
+    @Column(name = "in_content", nullable = false, length = 500)
     private String inContent;
 
     @Column(name = "in_write_date", nullable = false)
