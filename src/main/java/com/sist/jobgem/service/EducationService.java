@@ -27,11 +27,18 @@ public class EducationService {
 
   public boolean addEdu(String itemName) {
     EducationDto eDto = new EducationDto();
-    eDto.setEdName(itemName);
 
-    Education e = EducationMapper.INSTANCE.toEntity(eDto);
+    Integer i = educationRepository.findByEdName(itemName);
 
-    return educationRepository.save(e) != null;
+    if (i == null) {
+      eDto.setEdName(itemName);
+      Education e = EducationMapper.INSTANCE.toEntity(eDto);
+
+      return educationRepository.save(e) != null;
+
+    } else {
+      return false;
+    }
   }
 
   @Transactional(rollbackFor = Exception.class)
@@ -47,6 +54,15 @@ public class EducationService {
 
   @Transactional
   public boolean updateEdu(int id, String editItemName) {
-    return educationRepository.updateEdu(id, editItemName) > 0;
+    String itemName = editItemName;
+    Integer i = educationRepository.findByEdName(itemName);
+
+    if (i == null) {
+      return educationRepository.updateEdu(id, editItemName) > 0;
+
+    } else {
+      return false;
+    }
+
   }
 }

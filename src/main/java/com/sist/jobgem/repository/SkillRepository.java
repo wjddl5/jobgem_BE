@@ -14,4 +14,7 @@ public interface SkillRepository extends JpaRepository<Skill, Integer> {
     @Modifying
     @Query("UPDATE Skill s SET s.skName = :editItemName WHERE s.id = :id")
     int updateSki(@Param("id") int id, @Param("editItemName") String editItemName);
+
+    @Query("SELECT 1 FROM Skill s WHERE s.skName = :itemName")
+    Integer findBySkName(@Param("itemName") String itemName);
 }
