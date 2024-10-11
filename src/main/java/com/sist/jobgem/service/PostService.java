@@ -152,8 +152,8 @@ public class PostService {
         Map<String, Object> response = new HashMap<>();
         response.put("title", postRepository.findTitleById(id));
         response.put("applyCount", applymentRepository.countByPoIdx(id));
-        response.put("viewCount", applymentRepository.countByPoIdxAndApRead(id, 1));
-        response.put("unviewCount", applymentRepository.countByPoIdxAndApRead(id, 0));
+        response.put("viewCount", applymentRepository.countByPoIdxAndApReadAndJobseekerUserUsState(id, 1,1));
+        response.put("unviewCount", applymentRepository.countByPoIdxAndApReadAndJobseekerUserUsState(id, 0,1));
         return response;
     }
 
