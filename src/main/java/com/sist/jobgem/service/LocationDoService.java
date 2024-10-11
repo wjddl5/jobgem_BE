@@ -32,11 +32,15 @@ public class LocationDoService {
 
   public boolean addLoc(String itemName) {
     LocationDoDto lDto = new LocationDoDto();
-    lDto.setName(itemName);
+    Integer i = locationDoRepository.findByLdName(itemName);
 
-    LocationDo e = LocationDoMapper.INSTANCE.toEntity(lDto);
-
-    return locationDoRepository.save(e) != null;
+    if (i == null) {
+      lDto.setName(itemName);
+      LocationDo e = LocationDoMapper.INSTANCE.toEntity(lDto);
+      return locationDoRepository.save(e) != null;
+    } else {
+      return false;
+    }
   }
 
   @Transactional(rollbackFor = Exception.class)
@@ -53,6 +57,13 @@ public class LocationDoService {
 
   @Transactional
   public boolean updateLoc(int id, String editItemName) {
-    return locationDoRepository.updateLoc(id, editItemName) > 0;
+    String itemName = editItemName;
+    Integer i = locationDoRepository.findByLdName(itemName);
+
+    if (i == null) {
+      return locationDoRepository.updateLoc(id, editItemName) > 0;
+    } else {
+      return false;
+    }
   }
 }

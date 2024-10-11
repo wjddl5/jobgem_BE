@@ -27,12 +27,17 @@ public class LocationGuSiService {
 
     public boolean addLocGuSi(String itemName, int ldIdx) {
         LocationGuSiDto lDto = new LocationGuSiDto();
-        lDto.setLgName(itemName);
-        lDto.setLdIdx(ldIdx);
+        Integer i = locationGuSiRepository.findByLgName(itemName);
 
-        LocationGuSi e = LocationGuSiMapper.INSTANCE.toEntity(lDto);
+        if (i == null) {
+            lDto.setLgName(itemName);
+            lDto.setLdIdx(ldIdx);
+            LocationGuSi e = LocationGuSiMapper.INSTANCE.toEntity(lDto);
+            return locationGuSiRepository.save(e) != null;
 
-        return locationGuSiRepository.save(e) != null;
+        } else {
+            return false;
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -48,6 +53,13 @@ public class LocationGuSiService {
 
     @Transactional
     public boolean updateLocGuSi(int id, String editItemName) {
-        return locationGuSiRepository.updateLoc(id, editItemName) > 0;
+        String itemName = editItemName;
+        Integer i = locationGuSiRepository.findByLgName(itemName);
+
+        if (i == null) {
+            return locationGuSiRepository.updateLoc(id, editItemName) > 0;
+        } else {
+            return false;
+        }
     }
 }

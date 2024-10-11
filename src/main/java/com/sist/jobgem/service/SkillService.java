@@ -31,11 +31,15 @@ public class SkillService {
 
     public boolean addSki(String itemName) {
         SkillDto eDto = new SkillDto();
-        eDto.setSkName(itemName);
+        Integer i = skillRepository.findBySkName(itemName);
 
-        Skill e = SkillMapper.INSTANCE.toEntity(eDto);
-
-        return skillRepository.save(e) != null;
+        if (i == null) {
+            eDto.setSkName(itemName);
+            Skill e = SkillMapper.INSTANCE.toEntity(eDto);
+            return skillRepository.save(e) != null;
+        } else {
+            return false;
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -52,6 +56,13 @@ public class SkillService {
 
     @Transactional
     public boolean updateSki(int id, String editItemName) {
-        return skillRepository.updateSki(id, editItemName) > 0;
+        String itemName = editItemName;
+        Integer i = skillRepository.findBySkName(itemName);
+
+        if (i == null) {
+            return skillRepository.updateSki(id, editItemName) > 0;
+        } else {
+            return false;
+        }
     }
 }
