@@ -9,7 +9,6 @@ import com.sist.jobgem.repository.ChatroomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,9 +23,9 @@ public class ChatService {
         ChatDto chatDto = ChatDto.builder()
                 .usIdx(chatRequestDto.getUsIdx())
                 .cmIdx(chatRequestDto.getCmIdx())
-                .chDate(LocalDateTime.parse(chatRequestDto.getChDate()))
+                .chDate(LocalDateTime.now())
                 .chContent(chatRequestDto.getChContent())
-                .chIsRead(chatRequestDto.getChIsRead())
+                .chIsRead(0)
                 .build();
         return ChatMapper.INSTANCE.toDto(chatRepository.save(ChatMapper.INSTANCE.toEntity(chatDto)));
     }

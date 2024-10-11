@@ -7,7 +7,6 @@ import com.sist.jobgem.dto.UserDto;
 import com.sist.jobgem.entity.Jobseeker;
 import com.sist.jobgem.entity.User;
 
-import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,7 +29,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+import java.util.Optional;
 @Service
 public class BlockService {
     @Autowired
@@ -97,11 +96,19 @@ public class BlockService {
 
     @Transactional
     public boolean deletecomjobBlock(int id) {
-        int chk = blockRepository.deletecomjobBlock(id);
-        if (chk == 1)
-            return true;
-        else
-            return false;
+        boolean result = false;
+        Block block = blockRepository.findById(id);
+        if(block != null) {
+            if(block.getJoIdx() != null) {
+                userRepository.updateUserStateByBlockJobseeker(block.getJoIdx());
+            }
+            if(block.getCoIdx() != null) {
+                userRepository.updateUserStateByBlockCompany(block.getCoIdx());
+            }
+            blockRepository.delete(block);
+            result = true;
+        }
+        return result;
     }
 
 }

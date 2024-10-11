@@ -68,7 +68,7 @@ public class ChatController {
                 .cmIdx(chat.getCmIdx())
                 .chContent(chat.getChContent())
                 .chDate(LocalDateTime.now().toString())
-                .chIsRead(chat.getChIsRead())
+                .chIsRead(0)
                 .build();
         return redisService.createToListWithTTL("chatroom"+chat.getCmIdx(), chatRedisDto, 1, TimeUnit.HOURS);
     }
