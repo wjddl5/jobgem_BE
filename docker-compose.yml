@@ -1,4 +1,10 @@
 services:
+  redis:
+    image: redis:latest
+    networks:
+      - my-net1
+    ports:
+      - "6379:6379"
   backend:
     build:
       context: ./
@@ -14,6 +20,10 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL8Dialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+    depends_on:
+      - redis
     restart: always
   nginx:
     image: nginx:latest
