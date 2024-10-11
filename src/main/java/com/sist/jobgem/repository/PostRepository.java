@@ -25,7 +25,7 @@ public interface PostRepository extends JpaRepository<Post, Integer>, PostReposi
 
         int countByCoIdxAndPoState(int coIdx, int poState);
 
-        @Query("SELECT new com.sist.jobgem.dto.PostCountApplyDto(p.id, p.coIdx, p.poTitle, p.poContent, p.poDate, p.poDeadline,p.poSal, p.poSubType, p.poAddr, p.poEmail, p.poFax, p.poState, CAST(COUNT(a) AS INTEGER) as applyCount) "
+        @Query("SELECT new com.sist.jobgem.dto.PostCountApplyDto(p.id, p.coIdx, p.poTitle, p.poContent, p.poDate, p.poDeadline,p.poSal, p.poSubType, p.poAddr, p.poEmail, p.poFax, p.poState, CAST(COUNT(a) AS INTEGER) as applyCount, p.company) "
                         +
                         "FROM Post p LEFT JOIN Applyment a ON p.id = a.poIdx " +
                         "WHERE p.coIdx = :coIdx " +
