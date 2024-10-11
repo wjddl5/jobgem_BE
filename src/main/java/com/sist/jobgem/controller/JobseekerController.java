@@ -118,7 +118,7 @@ public class JobseekerController {
     }
 
     @Operation(summary = "입사지원 거절하기", description = "지원 ID를 사용하여 특정 입사 지원을 거절합니다")
-    @PatchMapping("/offers/{offerId}/reject")
+    @PutMapping("/offers/{offerId}/reject")
     public ResponseEntity<Offer> rejectOffer(@PathVariable("offerId") int offerId) {
         return ResponseEntity.ok(offerService.rejectOffer(offerId));
     }
