@@ -117,11 +117,9 @@ public class JobseekerController {
         return ResponseEntity.ok(offerService.getOfferList(id, pageable));
     }
 
-    @Operation(summary = "입사지원 거절하기", description = "ID값으로 특정 입사지원을 거절하기")
-    @PutMapping("/offers/{id}/{offerId}")
-    public ResponseEntity<Offer> updateOfferList(@PathVariable("id") int id,
-            @PathVariable("offerId") int offerId,
-            @RequestParam("curPage") int curPage) {
+    @Operation(summary = "입사지원 거절하기", description = "지원 ID를 사용하여 특정 입사 지원을 거절합니다")
+    @PutMapping("/offers/{offerId}/reject")
+    public ResponseEntity<Offer> rejectOffer(@PathVariable("offerId") int offerId) {
         return ResponseEntity.ok(offerService.rejectOffer(offerId));
     }
 
