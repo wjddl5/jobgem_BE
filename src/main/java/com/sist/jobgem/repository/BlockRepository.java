@@ -31,4 +31,6 @@ public interface BlockRepository extends JpaRepository<Block, Integer>, BlockRep
         @Query("DELETE FROM Block b WHERE b.id = :id")
         int deletecomjobBlock(@Param("id") int id);
 
+        @Query("SELECT b FROM Block b WHERE b.id = :id")
+        Block findById(@Param("id") int id);
 }
