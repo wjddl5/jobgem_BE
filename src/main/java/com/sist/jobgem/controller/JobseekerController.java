@@ -119,13 +119,10 @@ public class JobseekerController {
 
     @Operation(summary = "입사지원 거절하기", description = "ID값으로 특정 입사지원을 거절하기")
     @PutMapping("/offers/{id}/{offerId}")
-    public ResponseEntity<Page<OfferDto>> updateOfferList(@PathVariable("id") int id,
+    public ResponseEntity<Offer> updateOfferList(@PathVariable("id") int id,
             @PathVariable("offerId") int offerId,
             @RequestParam("curPage") int curPage) {
-        offerService.rejectOffer(offerId);
-
-        PageRequest pageable = PageRequest.of(curPage, 5, Sort.by(Sort.Direction.DESC, "id"));
-        return ResponseEntity.ok(offerService.getOfferList(id, pageable));
+        return ResponseEntity.ok(offerService.rejectOffer(offerId));
     }
 
     @Operation(summary = "공고 목록 불러오기", description = "메인페이지 - 무한스크롤 공고목록 불러오기")
