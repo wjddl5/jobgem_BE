@@ -81,7 +81,7 @@ public class OfferService {
     }
 
     // Offer 거절 처리 메서드
-    public boolean rejectOffer(int offerId) {
+    public Offer rejectOffer(int offerId) {
         Offer offer = offerRepository.findById(offerId)
                 .orElseThrow(() -> new IllegalArgumentException("Offer not found with ID: " + offerId));
 
@@ -90,7 +90,7 @@ public class OfferService {
 
         Offer rejectOffer = OfferMapper.INSTANCE.toEntity(oDto);
         // 변경된 상태 저장
-        offerRepository.save(rejectOffer);
-        return true;
+        return offerRepository.save(rejectOffer);
+
     }
 }
