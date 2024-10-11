@@ -63,9 +63,6 @@ public class Jobseeker {
     @JoinTable(name = "have_skills", joinColumns = @JoinColumn(name = "jo_idx"), inverseJoinColumns = @JoinColumn(name = "sk_idx"))
     private List<Skill> skills;
 
-    @ManyToMany
-    @JoinTable(name = "offers", joinColumns = @JoinColumn(name = "jo_idx"), inverseJoinColumns = @JoinColumn(name = "co_idx"))
-    private List<Offer> offers;
 
     // 필드 업데이트 메서드 추가
     public void updateFields(String joName, LocalDate joBirth, String joAddress, String joTel,
