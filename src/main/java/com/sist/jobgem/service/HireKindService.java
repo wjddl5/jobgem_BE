@@ -28,11 +28,16 @@ public class HireKindService {
 
     public boolean addHir(String itemName) {
         HireKindDto eDto = new HireKindDto();
-        eDto.setHkName(itemName);
 
-        HireKind e = HireKindMapper.INSTANCE.toEntity(eDto);
+        Integer i = hireKindRepository.findByHkName(itemName);
 
-        return hireKindRepository.save(e) != null;
+        if (i == null) {
+            eDto.setHkName(itemName);
+            HireKind e = HireKindMapper.INSTANCE.toEntity(eDto);
+            return hireKindRepository.save(e) != null;
+        } else {
+            return false;
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -48,6 +53,14 @@ public class HireKindService {
 
     @Transactional
     public boolean updateHir(int id, String editItemName) {
-        return hireKindRepository.updateHir(id, editItemName) > 0;
+        String itemName = editItemName;
+        Integer i = hireKindRepository.findByHkName(itemName);
+
+        if (i == null) {
+            return hireKindRepository.updateHir(id, editItemName) > 0;
+        } else {
+            return false;
+        }
+
     }
 }

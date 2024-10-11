@@ -13,4 +13,7 @@ public interface CareerRepository extends JpaRepository<Career, Integer> {
     @Modifying
     @Query("UPDATE Career c SET c.crName = :editItemName WHERE c.id = :id")
     int updateCar(@Param("id") int id, @Param("editItemName") String editItemName);
+
+    @Query("SELECT 1 FROM Career c WHERE c.crName = :itemName")
+    Integer findByCrName(@Param("itemName") String itemName);
 }

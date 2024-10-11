@@ -12,4 +12,7 @@ public interface EducationRepository extends JpaRepository<Education, Integer> {
   @Modifying
   @Query("UPDATE Education e SET e.edName = :editItemName WHERE e.id = :id")
   int updateEdu(@Param("id") int id, @Param("editItemName") String editItemName);
+
+  @Query("SELECT 1 FROM Education e WHERE e.edName = :itemName")
+  Integer findByEdName(@Param("itemName") String itemName);
 }

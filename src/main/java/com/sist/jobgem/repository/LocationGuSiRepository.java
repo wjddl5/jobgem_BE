@@ -20,4 +20,7 @@ public interface LocationGuSiRepository extends JpaRepository<LocationGuSi, Inte
     @Modifying
     @Query("DELETE FROM LocationGuSi l WHERE l.ldIdx = :id")
     int deleteByLdIdx(@Param("id") int id);
+
+    @Query("SELECT 1 FROM LocationGuSi l WHERE l.lgName = :itemName")
+    Integer findByLgName(@Param("itemName") String itemName);
 }
