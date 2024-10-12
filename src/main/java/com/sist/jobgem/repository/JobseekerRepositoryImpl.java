@@ -7,7 +7,7 @@ import com.sist.jobgem.entity.QBlock;
 import com.sist.jobgem.entity.QJobseeker;
 import com.sist.jobgem.entity.QUser;
 import lombok.RequiredArgsConstructor;
-
+import com.querydsl.core.types.dsl.Expressions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +53,10 @@ public class JobseekerRepositoryImpl implements JobseekerRepositoryCustom {
                     builder.and(jobseeker.joEdu.contains(value));
                     break;
                 case "sal":
-                    builder.and(jobseeker.joSal.contains(value));
+                    if (!value.isEmpty()) { // 추가: 빈 문자열 체크
+                        builder.and(Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", jobseeker.joSal)
+                                .eq(Integer.parseInt(value)));
+                    }
                     break;
                 case "gender":
                     builder.and(jobseeker.joGender.contains(value));
@@ -111,10 +114,14 @@ public class JobseekerRepositoryImpl implements JobseekerRepositoryCustom {
             builder.and(jobseeker.user.usLeaveDate.loe(LocalDate.parse(params.get("leaveEndDate").toString())));
         }
         if (params.get("minSal") != null) {
-            builder.and(jobseeker.joSal.goe((String) params.get("minSal")));
+            builder.and(
+                    Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", jobseeker.joSal)
+                            .goe(Integer.parseInt(params.get("minSal").toString())));
         }
         if (params.get("maxSal") != null) {
-            builder.and(jobseeker.joSal.loe((String) params.get("maxSal")));
+            builder.and(
+                    Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", jobseeker.joSal)
+                            .loe(Integer.parseInt(params.get("maxSal").toString())));
         }
         if (params.get("searchType") != null && params.get("searchValue") != null) {
             String type = params.get("searchType").toString();

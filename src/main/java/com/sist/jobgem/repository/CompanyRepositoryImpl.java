@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
+import java.time.LocalDate;
+import com.querydsl.core.types.dsl.Expressions;
 
 @Repository
 public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
@@ -37,6 +39,20 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
             pageSize = Integer.parseInt(params.get("size").toString());
         }
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        if (params.get("openStartDate") != null) {
+            builder.and(company.coOpen.goe(LocalDate.parse(params.get("openStartDate").toString())));
+        }
+        if (params.get("openEndDate") != null) {
+            builder.and(company.coOpen.loe(LocalDate.parse(params.get("openEndDate").toString())));
+        }
+        if (params.get("minSales") != null) {
+            builder.and(Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", company.coSales)
+                    .goe(Integer.parseInt(params.get("minSales").toString())));
+        }
+        if (params.get("maxSales") != null) {
+            builder.and(Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", company.coSales)
+                    .loe(Integer.parseInt(params.get("maxSales").toString())));
+        }
         if (params.get("searchType") != null && params.get("searchValue") != null) {
             String type = params.get("searchType").toString();
             String value = params.get("searchValue").toString();
@@ -123,7 +139,10 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                     builder.and(company.coEmployee.stringValue().contains(value));
                     break;
                 case "sales":
-                    builder.and(company.coSales.stringValue().contains(value));
+                    if (!value.isEmpty()) {
+                        builder.and(Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", company.coSales)
+                                .eq(Integer.parseInt(value)));
+                    }
                     break;
                 case "score":
                     builder.and(company.coScore.stringValue().contains(value));

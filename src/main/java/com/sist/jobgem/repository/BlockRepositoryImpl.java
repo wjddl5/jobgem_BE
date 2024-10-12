@@ -15,7 +15,7 @@ import com.sist.jobgem.entity.QBlock;
 import com.sist.jobgem.entity.QJobseeker;
 import com.sist.jobgem.entity.QUser;
 import com.sist.jobgem.entity.QCompany;
-
+import com.querydsl.core.types.dsl.Expressions;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 
@@ -40,7 +40,6 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
 
         QBlock block = QBlock.block;
         QJobseeker jobseeker = QJobseeker.jobseeker;
-        QUser user = QUser.user;
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(block.joIdx.isNotNull());
@@ -58,26 +57,29 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
             builder.and(jobseeker.joBirth.loe(LocalDate.parse(params.get("birthEndDate").toString())));
         }
         if (params.get("joinStartDate") != null) {
-            builder.and(user.usJoinDate.goe(
+            builder.and(jobseeker.user.usJoinDate.goe(
                     LocalDate.parse(params.get("joinStartDate").toString()).atStartOfDay(ZoneOffset.UTC).toInstant()));
         }
         if (params.get("joinEndDate") != null) {
-            builder.and(user.usJoinDate.loe(
+            builder.and(jobseeker.user.usJoinDate.loe(
                     LocalDate.parse(params.get("joinEndDate").toString()).atStartOfDay(ZoneOffset.UTC).toInstant()));
         }
         if (params.get("leaveStartDate") != null) {
-            builder.and(user.usLeaveDate.goe(LocalDate.parse(params.get("leaveStartDate").toString())));
+            builder.and(jobseeker.user.usLeaveDate.goe(LocalDate.parse(params.get("leaveStartDate").toString())));
         }
         if (params.get("leaveEndDate") != null) {
-            builder.and(user.usLeaveDate.loe(LocalDate.parse(params.get("leaveEndDate").toString())));
+            builder.and(jobseeker.user.usLeaveDate.loe(LocalDate.parse(params.get("leaveEndDate").toString())));
         }
         if (params.get("minSal") != null) {
-            builder.and(jobseeker.joSal.goe(params.get("minSal").toString()));
+            builder.and(
+                    Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", jobseeker.joSal)
+                            .goe(Integer.parseInt(params.get("minSal").toString())));
         }
         if (params.get("maxSal") != null) {
-            builder.and(jobseeker.joSal.loe(params.get("maxSal").toString()));
+            builder.and(
+                    Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", jobseeker.joSal)
+                            .loe(Integer.parseInt(params.get("maxSal").toString())));
         }
-
         if (params.get("searchType") != null && params.get("searchValue") != null) {
             String type = params.get("searchType").toString();
             String value = params.get("searchValue").toString();
@@ -87,9 +89,6 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
                     break;
                 case "name":
                     builder.and(jobseeker.joName.contains(value));
-                    break;
-                case "birth":
-                    builder.and(jobseeker.joBirth.stringValue().contains(value));
                     break;
                 case "tel":
                     builder.and(jobseeker.joTel.contains(value));
@@ -101,15 +100,6 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
                     builder.and(jobseeker.joEdu.contains(value));
                 case "gender":
                     builder.and(jobseeker.joGender.contains(value));
-                    break;
-                case "joinDate":
-                    builder.and(user.usJoinDate.stringValue().contains(value));
-                    break;
-                case "leaveDate":
-                    builder.and(user.usLeaveDate.stringValue().contains(value));
-                    break;
-                case "blockContent":
-                    builder.and(block.blContent.contains(value));
                     break;
                 default:
                     break;
@@ -151,17 +141,20 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
         if (params.get("blockEndDate") != null) {
             builder.and(block.blDate.loe(LocalDate.parse(params.get("blockEndDate").toString())));
         }
-        if (params.get("OpenStartDate") != null) {
-            builder.and(company.coOpen.goe(LocalDate.parse(params.get("OpenStartDate").toString())));
+        if (params.get("openStartDate") != null) {
+            builder.and(company.coOpen.goe(LocalDate.parse(params.get("openStartDate").toString())));
         }
-        if (params.get("OpenEndDate") != null) {
-            builder.and(company.coOpen.loe(LocalDate.parse(params.get("OpenEndDate").toString())));
+        if (params.get("openEndDate") != null) {
+            builder.and(company.coOpen.loe(LocalDate.parse(params.get("openEndDate").toString())));
         }
-        if (params.get("minSal") != null) {
-            builder.and(company.coSales.goe(params.get("minSal").toString()));
+        if (params.get("minSales") != null) {
+            builder.and(
+                    Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", company.coSales)
+                            .goe(Integer.parseInt(params.get("minSales").toString())));
         }
-        if (params.get("maxSal") != null) {
-            builder.and(company.coSales.loe(params.get("maxSal").toString()));
+        if (params.get("maxSales") != null) {
+            builder.and(Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", company.coSales)
+                    .loe(Integer.parseInt(params.get("maxSales").toString())));
         }
 
         if (params.get("searchType") != null && params.get("searchValue") != null) {
