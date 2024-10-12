@@ -14,63 +14,63 @@ import java.util.List;
 @Repository
 public interface BlacklistRepository extends JpaRepository<Blacklist, Integer> {
 
-  @Query("SELECT b FROM Blacklist b " +
-      "WHERE b.blState = :blState ")
-  Page<Blacklist> findByStatus(
-      @Param("blState") int blState, @Param("pageable2") Pageable pageable2);
+    @Query("SELECT b FROM Blacklist b " +
+            "WHERE b.blState = :blState ")
+    Page<Blacklist> findByStatus(
+            @Param("blState") int blState, @Param("pageable2") Pageable pageable2);
 
-  @Query("SELECT b FROM Blacklist b " +
-      "WHERE b.blState = :blState " +
-      "AND ((:searchType = 'title' AND b.blTitle LIKE %:searchValue%) " +
-      "OR (:searchType = 'content' AND b.blContent LIKE %:searchValue%) " +
-      "OR (:searchType = 'writer' AND b.user.usId LIKE %:searchValue%))")
-  Page<Blacklist> findByWithSearch(
-      @Param("blState") int blState, @Param("pageable2") Pageable pageable2,
-      @Param("searchType") String searchType, @Param("searchValue") String searchValue);
+    @Query("SELECT b FROM Blacklist b " +
+            "WHERE b.blState = :blState " +
+            "AND ((:searchType = 'title' AND b.blTitle LIKE %:searchValue%) " +
+            "OR (:searchType = 'content' AND b.blContent LIKE %:searchValue%) " +
+            "OR (:searchType = 'writer' AND b.user.usId LIKE %:searchValue%))")
+    Page<Blacklist> findByWithSearch(
+            @Param("blState") int blState, @Param("pageable2") Pageable pageable2,
+            @Param("searchType") String searchType, @Param("searchValue") String searchValue);
 
-  @Query("SELECT b FROM Blacklist b " +
-      "WHERE b.blState = :blState " +
-      "AND b.coIdx IS NOT NULL")
-  Page<Blacklist> findByStatusAndCompany(@Param("blState") int blState, @Param("pageable2") Pageable pageable2);
+    @Query("SELECT b FROM Blacklist b " +
+            "WHERE b.blState = :blState " +
+            "AND b.coIdx IS NOT NULL")
+    Page<Blacklist> findByStatusAndCompany(@Param("blState") int blState, @Param("pageable2") Pageable pageable2);
 
-  @Query("SELECT b FROM Blacklist b " +
-      "WHERE b.blState = :blState " +
-      "AND b.coIdx IS NOT NULL " +
-      "AND ((:searchType = 'title' AND b.blTitle LIKE %:searchValue%) " +
-      "OR (:searchType = 'content' AND b.blContent LIKE %:searchValue%) " +
-      "OR (:searchType = 'writer' AND b.user.usId LIKE %:searchValue%))")
-  Page<Blacklist> findByWithSearchAndCompany(
-      @Param("blState") int blState, @Param("pageable2") Pageable pageable2,
-      @Param("searchType") String searchType, @Param("searchValue") String searchValue);
+    @Query("SELECT b FROM Blacklist b " +
+            "WHERE b.blState = :blState " +
+            "AND b.coIdx IS NOT NULL " +
+            "AND ((:searchType = 'title' AND b.blTitle LIKE %:searchValue%) " +
+            "OR (:searchType = 'content' AND b.blContent LIKE %:searchValue%) " +
+            "OR (:searchType = 'writer' AND b.user.usId LIKE %:searchValue%))")
+    Page<Blacklist> findByWithSearchAndCompany(
+            @Param("blState") int blState, @Param("pageable2") Pageable pageable2,
+            @Param("searchType") String searchType, @Param("searchValue") String searchValue);
 
-  @Query("SELECT b FROM Blacklist b " +
-      "WHERE b.blState = :blState " +
-      "AND b.joIdx IS NOT NULL")
-  Page<Blacklist> findByStatusAndJobseeker(@Param("blState") int blState, @Param("pageable2") Pageable pageable2);
+    @Query("SELECT b FROM Blacklist b " +
+            "WHERE b.blState = :blState " +
+            "AND b.joIdx IS NOT NULL")
+    Page<Blacklist> findByStatusAndJobseeker(@Param("blState") int blState, @Param("pageable2") Pageable pageable2);
 
-  @Query("SELECT b FROM Blacklist b " +
-      "WHERE b.blState = :blState " +
-      "AND b.joIdx IS NOT NULL " +
-      "AND ((:searchType = 'title' AND b.blTitle LIKE %:searchValue%) " +
-      "OR (:searchType = 'content' AND b.blContent LIKE %:searchValue%) " +
-      "OR (:searchType = 'writer' AND b.user.usId LIKE %:searchValue%))")
-  Page<Blacklist> findByWithSearchAndJobseeker(
-      @Param("blState") int blState, @Param("pageable2") Pageable pageable2,
-      @Param("searchType") String searchType, @Param("searchValue") String searchValue);
+    @Query("SELECT b FROM Blacklist b " +
+            "WHERE b.blState = :blState " +
+            "AND b.joIdx IS NOT NULL " +
+            "AND ((:searchType = 'title' AND b.blTitle LIKE %:searchValue%) " +
+            "OR (:searchType = 'content' AND b.blContent LIKE %:searchValue%) " +
+            "OR (:searchType = 'writer' AND b.user.usId LIKE %:searchValue%))")
+    Page<Blacklist> findByWithSearchAndJobseeker(
+            @Param("blState") int blState, @Param("pageable2") Pageable pageable2,
+            @Param("searchType") String searchType, @Param("searchValue") String searchValue);
 
-  @Modifying
-  @Query("UPDATE Blacklist b SET b.blState = 0 WHERE b.id = :id")
-  int updateStateById(@Param("id") int id);
+    @Modifying
+    @Query("UPDATE Blacklist b SET b.blState = 0 WHERE b.id = :id")
+    int updateStateById(@Param("id") int id);
 
-  @Modifying
-  @Query("UPDATE Blacklist b SET b.blProcess = 0 WHERE b.id = :id")
-  int updateProcessNo(@Param("id") int id);
+    @Modifying
+    @Query("UPDATE Blacklist b SET b.blProcess = 0 WHERE b.id = :id")
+    int updateProcessNo(@Param("id") int id);
 
-  @Modifying
-  @Query("UPDATE Blacklist b SET b.blProcess = 1 WHERE b.id = :id")
-  int updateProcessYes(@Param("id") int id);
+    @Modifying
+    @Query("UPDATE Blacklist b SET b.blProcess = 1 WHERE b.id = :id")
+    int updateProcessYes(@Param("id") int id);
 
-  @Query("SELECT b FROM Blacklist b WHERE b.blState = 1 AND b.blProcess = 0")
-  List<Blacklist> findByPending();
+    @Query("SELECT b FROM Blacklist b WHERE b.blState = 1 ")
+    List<Blacklist> findByPending();
 
 }

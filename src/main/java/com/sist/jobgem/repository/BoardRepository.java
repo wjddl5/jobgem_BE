@@ -55,7 +55,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
         @Query("UPDATE Board b SET b.boHit = b.boHit+1 WHERE b.id = :id")
         void hitUp(@Param("id") int id);
 
-        @Query("SELECT b FROM Board b WHERE b.boType = 2 AND b.boStatus = 1 AND b.boAnswer = 0")
+        @Query("SELECT b FROM Board b WHERE b.boType = 2 AND b.boStatus = 1 ")
         List<Board> findByUnanswered();
 
 }
