@@ -1,11 +1,10 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: ["EC2"]
-#    branches: ["main"]
-#  pull_request:
-#    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  # push:
+  #   branches: ["EC2"]
 
 jobs:
   build:
