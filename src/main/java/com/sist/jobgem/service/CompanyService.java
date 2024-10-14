@@ -57,7 +57,7 @@ public class CompanyService {
         return CompanyIndexDto.builder()
                 .company(CompanyMapper.INSTANCE.toDto(companyRepository.findById(id).orElseThrow()))
                 .postCount(postRepository.countByCoIdxAndPoState(id, 1))
-                .noPostCount(postRepository.countByCoIdxAndPoState(id, 0))
+                .noPostCount(postRepository.countByCoIdxAndPoDeadline(id))
                 .reviewCount(reviewRepository.countByCoIdxAndReState(id, 1))
                 .interviewCount(interviewRepository.countByCoIdxAndInState(id, 1))
                 .talentCount(talentRepository.countByCoIdx(id))
