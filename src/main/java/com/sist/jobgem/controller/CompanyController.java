@@ -1,18 +1,45 @@
 package com.sist.jobgem.controller;
 
-import com.sist.jobgem.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sist.jobgem.dto.BlackListRequestDto;
+import com.sist.jobgem.dto.BlockDto;
+import com.sist.jobgem.dto.CompanyDto;
+import com.sist.jobgem.dto.CompanyIndexDto;
+import com.sist.jobgem.dto.InterviewDto;
+import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.dto.OfferDto;
+import com.sist.jobgem.dto.ReviewDto;
+import com.sist.jobgem.dto.TalentDto;
 import com.sist.jobgem.enums.AlertMessageEnum;
-import com.sist.jobgem.service.*;
+import com.sist.jobgem.service.AlertService;
+import com.sist.jobgem.service.BlackListService;
+import com.sist.jobgem.service.BlockService;
+import com.sist.jobgem.service.CompanyService;
+import com.sist.jobgem.service.InterviewService;
+import com.sist.jobgem.service.OfferService;
+import com.sist.jobgem.service.ReviewService;
+import com.sist.jobgem.service.SseService;
+import com.sist.jobgem.service.TalentService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Company", description = "기업 API")
 @RestController
@@ -154,5 +181,11 @@ public class CompanyController {
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
         return ResponseEntity.ok(companyService.deleteCompany(id));
+    }
+
+    @Operation(summary = "기업 아이디 찾기", description = "기업명과 사업자 등록번호로 기업 아이디를 찾습니다.")
+    @GetMapping("/search/id")
+    public ResponseEntity<String> getCompanyId(@RequestParam("coName") String coName, @RequestParam("coNumber") String coNumber) {
+        return ResponseEntity.ok(companyService.getCompanyUserId(coName, coNumber));
     }
 }

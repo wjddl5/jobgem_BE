@@ -1,10 +1,10 @@
 package com.sist.jobgem.service;
 
-import com.sist.jobgem.dto.*;
-import com.sist.jobgem.entity.Company;
-import com.sist.jobgem.mapper.CompanyMapper;
-import com.sist.jobgem.mapper.UserMapper;
-import com.sist.jobgem.repository.*;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,9 +12,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
+import com.sist.jobgem.dto.CompanyDto;
+import com.sist.jobgem.dto.CompanyIndexDto;
+import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.dto.TalentDto;
+import com.sist.jobgem.dto.UserDto;
+import com.sist.jobgem.entity.Company;
+import com.sist.jobgem.mapper.CompanyMapper;
+import com.sist.jobgem.mapper.UserMapper;
+import com.sist.jobgem.repository.BlockRepository;
+import com.sist.jobgem.repository.ChatroomRepository;
+import com.sist.jobgem.repository.CompanyRepository;
+import com.sist.jobgem.repository.InterviewRepository;
+import com.sist.jobgem.repository.JobseekerRepository;
+import com.sist.jobgem.repository.PostRepository;
+import com.sist.jobgem.repository.ReviewRepository;
+import com.sist.jobgem.repository.TalentRepository;
+import com.sist.jobgem.repository.UserRepository;
 
 @Service
 public class CompanyService {
@@ -93,5 +107,18 @@ public class CompanyService {
         user.setUsState(0);
         user.setUsLeaveDate(LocalDate.now());
         return userRepository.save(UserMapper.INSTANCE.toEntity(user)).getId();
+    }
+
+    public String getCompanyUserId(String coName, String coNumber) {
+        Optional<Company> company = companyRepository.findByCoNameAndCoNumber(coName, coNumber);
+        if (company.isPresent()) {
+            if (company.get().getUser().getUsState() == 1) {
+                return company.get().getUser().getUsId();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }
