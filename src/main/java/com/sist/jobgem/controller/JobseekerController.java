@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sist.jobgem.enums.AlertMessageEnum;
+import com.sist.jobgem.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,15 +37,6 @@ import com.sist.jobgem.entity.Jobseeker;
 import com.sist.jobgem.entity.Offer;
 import com.sist.jobgem.entity.Resume;
 import com.sist.jobgem.entity.Review;
-import com.sist.jobgem.service.ApplymentService;
-import com.sist.jobgem.service.InterviewService;
-import com.sist.jobgem.service.JobseekerService;
-import com.sist.jobgem.service.OfferService;
-import com.sist.jobgem.service.PostService;
-import com.sist.jobgem.service.ResumeService;
-import com.sist.jobgem.service.ReviewService;
-import com.sist.jobgem.service.SkillService;
-import com.sist.jobgem.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
