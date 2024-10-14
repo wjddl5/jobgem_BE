@@ -14,6 +14,8 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -63,6 +65,9 @@ public class ChatController {
     public Object receiveMessage(ChatRequestDto chat) {
         template.convertAndSend("/sub/chatroom/"+chat.getCmIdx(), chat);
         chatService.createChat(chat);
+        LocalDateTime utcNow = LocalDateTime.now();
+        ZonedDateTime kstNow = utcNow.atZone(ZoneId.of("UTC"))
+                .withZoneSameInstant(ZoneId.of("Asia/Seoul"));
         ChatRedisDto chatRedisDto = ChatRedisDto.builder()
                 .usIdx(chat.getUsIdx())
                 .cmIdx(chat.getCmIdx())
