@@ -1,23 +1,55 @@
 package com.sist.jobgem.controller;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.sist.jobgem.dto.*;
-import com.sist.jobgem.entity.*;
-import com.sist.jobgem.service.*;
+import com.sist.jobgem.dto.ApplymentDto;
+import com.sist.jobgem.dto.ApplymentSearchDto;
+import com.sist.jobgem.dto.CompanyDto;
+import com.sist.jobgem.dto.InterviewDto;
+import com.sist.jobgem.dto.JobseekerDto;
+import com.sist.jobgem.dto.OfferDto;
+import com.sist.jobgem.dto.PostDto;
+import com.sist.jobgem.dto.ResumeDto;
+import com.sist.jobgem.dto.ReviewDto;
+import com.sist.jobgem.dto.SkillDto;
+import com.sist.jobgem.entity.Applyment;
+import com.sist.jobgem.entity.Interview;
+import com.sist.jobgem.entity.Jobseeker;
+import com.sist.jobgem.entity.Offer;
+import com.sist.jobgem.entity.Resume;
+import com.sist.jobgem.entity.Review;
+import com.sist.jobgem.service.ApplymentService;
+import com.sist.jobgem.service.InterviewService;
+import com.sist.jobgem.service.JobseekerService;
+import com.sist.jobgem.service.OfferService;
+import com.sist.jobgem.service.PostService;
+import com.sist.jobgem.service.ResumeService;
+import com.sist.jobgem.service.ReviewService;
+import com.sist.jobgem.service.SkillService;
+import com.sist.jobgem.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Jobseeker", description = "구직자 API")
 @RestController
@@ -312,4 +344,14 @@ public class JobseekerController {
         }
     }
 
+    @Operation(summary = "구직자 아이디 찾기", description = "구직자 이름과 전화번호로 구직자 아이디 찾기")
+    @GetMapping("/search/id")
+    public ResponseEntity<String> findUserId(@RequestParam("joName") String joName, @RequestParam("joTel") String joTel) {
+        String userId = jobseekerService.getJobseekerUserId(joName, joTel);
+        if (userId != null) {
+            return ResponseEntity.ok(userId);
+        } else {
+            return ResponseEntity.badRequest().body("user not found");
+        }
+    }
 }

@@ -1,8 +1,12 @@
 package com.sist.jobgem.service;
 
-import com.sist.jobgem.dto.FitJobseekerDto;
-import com.sist.jobgem.repository.ApplymentRepository;
-import com.sist.jobgem.repository.InterestCompanyRepository;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,10 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
-
+import com.sist.jobgem.dto.FitJobseekerDto;
 import com.sist.jobgem.dto.JobseekerDto;
 import com.sist.jobgem.dto.UserDto;
 import com.sist.jobgem.entity.Jobseeker;
@@ -22,6 +23,8 @@ import com.sist.jobgem.entity.Skill;
 import com.sist.jobgem.entity.User;
 import com.sist.jobgem.mapper.JobseekerMapper;
 import com.sist.jobgem.mapper.UserMapper;
+import com.sist.jobgem.repository.ApplymentRepository;
+import com.sist.jobgem.repository.InterestCompanyRepository;
 import com.sist.jobgem.repository.JobseekerRepository;
 import com.sist.jobgem.repository.OfferRepository;
 import com.sist.jobgem.repository.ScrapRepository;
@@ -189,4 +192,16 @@ public class JobseekerService {
         return map;
     }
 
+    public String getJobseekerUserId(String joName, String joTel) {
+        Optional<Jobseeker> jobseeker = jobseekerRepository.findByJoNameAndJoTel(joName, joTel);
+        if (jobseeker.isPresent()) {
+            if (jobseeker.get().getUser().getUsState() == 1) {
+                return jobseeker.get().getUser().getUsId();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 }

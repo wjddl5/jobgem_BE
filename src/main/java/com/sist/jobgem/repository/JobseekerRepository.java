@@ -65,4 +65,6 @@ public interface JobseekerRepository extends JpaRepository<Jobseeker, Integer>, 
         Slice<JobseekerDto> findByWithfitJobseeker(@Param("companyId") int id, Pageable pageable);
 
         Optional<Jobseeker> findByUser_Id(int id);
+
+        Optional<Jobseeker> findByJoNameAndJoTel(String joName, String joTel);
 }
