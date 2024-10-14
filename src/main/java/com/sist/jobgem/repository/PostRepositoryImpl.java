@@ -24,7 +24,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
-
+import com.querydsl.core.types.dsl.Expressions;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Repository;
@@ -45,9 +45,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         QCompany company = QCompany.company;
         BooleanBuilder builder = new BooleanBuilder();
         OrderSpecifier<?> sort = post.poDate.desc();
-        
+
         builder.and(post.poState.ne(0));
-        
+
         if (map.get("coIdx") != null) {
             builder.and(post.coIdx.eq(Integer.parseInt(map.get("coIdx").toString())));
         }
@@ -59,62 +59,67 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
             builder.and(post.poState.eq(Integer.parseInt(map.get("state").toString())));
         }
         if (map.get("searchType") != null) {
-            if(map.get("searchType").toString().equals("title")){
+            if (map.get("searchType").toString().equals("title")) {
                 System.err.println("search: " + map.get("search"));
                 builder.and(post.poTitle.contains(map.get("search").toString()));
-            }else if(map.get("searchType").toString().equals("content")){
+            } else if (map.get("searchType").toString().equals("content")) {
                 builder.and(post.poContent.contains(map.get("search").toString()));
             }
         }
         if (map.get("sort") != null) {
-            if(map.get("sort").toString().equals("poDateDesc")){
+            if (map.get("sort").toString().equals("poDateDesc")) {
                 sort = post.poDate.desc();
-            }else if(map.get("sort").toString().equals("poDeadlineAsc")){
+            } else if (map.get("sort").toString().equals("poDeadlineAsc")) {
                 sort = post.poDeadline.asc();
-            }else if(map.get("sort").toString().equals("applyCountDesc")){
+            } else if (map.get("sort").toString().equals("applyCountDesc")) {
                 sort = applyment.count().desc();
-            }else if(map.get("sort").toString().equals("poDateAsc")){
+            } else if (map.get("sort").toString().equals("poDateAsc")) {
                 sort = post.poDate.asc();
             }
         }
-        if(map.get("minSal") != null){
-            builder.and(post.poSal.goe((String)map.get("minSal"))); 
+        if (map.get("minSal") != null) {
+            builder.and(
+                    Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", post.poSal)
+                            .goe(Integer.parseInt(map.get("minSal").toString())));
         }
-        if(map.get("maxSal") != null){
-            builder.and(post.poSal.loe((String)map.get("maxSal")));
+        if (map.get("maxSal") != null) {
+            builder.and(
+                    Expressions.numberTemplate(Integer.class, "CAST({0} AS int)", post.poSal)
+                            .loe(Integer.parseInt(map.get("maxSal").toString())));
         }
-        if(map.get("startDate") != null){
+        if (map.get("startDate") != null) {
             builder.and(post.poDate.goe(LocalDate.parse(map.get("startDate").toString())));
         }
-        if(map.get("endDate") != null){
+        if (map.get("endDate") != null) {
             builder.and(post.poDate.loe(LocalDate.parse(map.get("endDate").toString())));
         }
         List<PostCountApplyDto> content = queryFactory
-            .select(Projections.constructor(PostCountApplyDto.class,
-                post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline, post.poSal, post.poSubType, post.poAddr,
-                post.poEmail, post.poFax, post.poState,
-                applyment.count().intValue().as("applyCount"), company))
-            .from(post)
-            .leftJoin(applyment).on(post.id.eq(applyment.poIdx))
-            .leftJoin(company).on(post.coIdx.eq(company.id))
-            .where(builder)
-            .groupBy(post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
-                post.poSal, post.poSubType, post.poAddr,
-                post.poEmail, post.poFax, post.poState)
-            .orderBy(sort)
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
-            .fetch();
+                .select(Projections.constructor(PostCountApplyDto.class,
+                        post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline, post.poSal,
+                        post.poSubType, post.poAddr,
+                        post.poEmail, post.poFax, post.poState,
+                        applyment.count().intValue().as("applyCount"), company))
+                .from(post)
+                .leftJoin(applyment).on(post.id.eq(applyment.poIdx))
+                .leftJoin(company).on(post.coIdx.eq(company.id))
+                .where(builder)
+                .groupBy(post.id, post.coIdx, post.poTitle, post.poContent, post.poDate, post.poDeadline,
+                        post.poSal, post.poSubType, post.poAddr,
+                        post.poEmail, post.poFax, post.poState)
+                .orderBy(sort)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
 
         long total = queryFactory
-            .select(post.count())
-            .from(post)
-            .where(builder)
-            .fetchOne();
+                .select(post.count())
+                .from(post)
+                .where(builder)
+                .fetchOne();
 
         return new PageImpl<>(content, pageable, total);
     }
-    
+
     @Override
     public Slice<Post> findByRecruit(RecruitRequest request, Pageable pageable) {
         QPost qPost = QPost.post;
@@ -140,7 +145,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .leftJoin(qEducationBridge).on(qPost.id.eq(qEducationBridge.poIdx))
                 .leftJoin(qHkBridge).on(qPost.id.eq(qHkBridge.poIdx))
                 .leftJoin(qLocationBridge).on(qPost.id.eq(qLocationBridge.poIdx))
-                .leftJoin(qSkillBridge).on(qPost.id.eq(qSkillBridge.poIdx)) 
+                .leftJoin(qSkillBridge).on(qPost.id.eq(qSkillBridge.poIdx))
                 .where(builder)
                 .offset(pageable.getPageNumber() * pageable.getPageSize())
                 .limit(pageable.getPageSize() + 1);
