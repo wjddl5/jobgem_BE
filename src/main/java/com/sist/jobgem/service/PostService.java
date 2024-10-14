@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.sist.jobgem.entity.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -181,5 +182,10 @@ public class PostService {
 
     public List<PostDto> findAllPosts() {
         return postRepository.findAllWithDto();
+    }
+
+    public Company getCompanyByPoIdx(int id) {
+        Post post = postRepository.findById(id);
+        return post.getCompany();
     }
 }
